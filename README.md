@@ -1,6 +1,6 @@
-# AWS Quick Start cfn-lint rules
+# AWS Marketplace Quick Launch cfn-lint rules
 
-This repo provides CloudFormation linting rules specific to [AWS Quick Start](https://aws.amazon.com/quickstart/)
+This repo provides CloudFormation linting rules specific to [AWS Marketplace](https://aws.amazon.com/marketplace/) Quick Launch
 guidelines, for more information see the [Contributors Guide](https://aws-ia.github.io).
 
 ## Installation and Usage
