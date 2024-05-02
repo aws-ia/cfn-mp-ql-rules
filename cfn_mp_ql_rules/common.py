@@ -1,3 +1,6 @@
+"""Common functions for custom rules"""
+
+
 import re
 import inspect
 from cfnlint.rules import RuleMatch
@@ -43,15 +46,31 @@ def search_resources_for_disallowed_property_values(
     Example use case: AWS::WAFv2::WebACL DefaultAction.Allow cannot be present
     """
     results = []
-    for resource_name, resource_values in cfn.get_resources(
-        [resource_type]
-    ).items():
+    for resource_name, resource_values in cfn.get_resources([resource_type]).items():
         path = ["Resources", resource_name, "Properties"]
         properties = resource_values.get("Properties", {})
         prop_value = deep_get(properties, prop_name.split("."))
         if not prop_value:
             return results
         results.append(path + prop_name.split("."))
+    return results
+
+
+def search_resources_for_properties_present(
+    cfn, resource_type, prop_name) -> []:
+
+    """
+    Searches all resources of resource type, to ensure property is expected value
+    returns a list of paths to violating lines.
+    """
+    results = []
+    for resource_name, resource_values in cfn.get_resources([resource_type]).items():
+        path = ["Resources", resource_name, "Properties"]
+        properties = resource_values.get("Properties", {})
+
+        if prop_name not in properties.keys():
+            results.append(path)
+            return results
     return results
 
 
@@ -63,9 +82,7 @@ def search_resources_for_property_value_violations(
     returns a list of paths to violating lines.
     """
     results = []
-    for resource_name, resource_values in cfn.get_resources(
-        [resource_type]
-    ).items():
+    for resource_name, resource_values in cfn.get_resources([resource_type]).items():
         path = ["Resources", resource_name, "Properties"]
         properties = resource_values.get("Properties", {})
 
@@ -108,7 +125,9 @@ class StubRuleCommon:
 
     @property
     def __doc__(self):
-        return f"""Verify {self.resource_type} resource types have {self.property_name}"""
+        return (
+            f"""Verify {self.resource_type} resource types have {self.property_name}"""
+        )
 
     @property
     def tags(self):
@@ -117,7 +136,7 @@ class StubRuleCommon:
 
 class RequiredPropertyEnabledBase(StubRuleCommon):
     source_url = (
-        "https://github.com/aws-ia/cfn-mp-ql-rules/cfn_mp_ql_rules"
+        "https://github.com/aws-ia/cfn-ia-rules/blob/main/cfn_ia_rules/common.py"
     )
 
     def match(self, cfn):
@@ -139,7 +158,7 @@ class RequiredPropertyEnabledBase(StubRuleCommon):
 
 class ProhibitedResource(StubRuleCommon):
     source_url = (
-        "https://github.com/aws-ia/cfn-mp-ql-rules/cfn_mp_ql_rules"
+        "https://github.com/aws-ia/cfn-ia-rules/blob/main/cfn_ia_rules/common.py"
     )
 
     def __init__(self, *args, **kwargs):
@@ -173,13 +192,13 @@ class ProhibitedResource(StubRuleCommon):
 class ProhibitedResourceProperty(StubRuleCommon):
     @property
     def _lint_error_message(self):
-        return f"{self.resource_type} must have not have {self.property_name} configured"
+        return (
+            f"{self.resource_type} must have not have {self.property_name} configured"
+        )
 
     @property
     def id(self):
-        return (
-            f"E{self._r_suffix}{re.sub('.','',self.property_name)}Prohibited"
-        )
+        return f"E{self._r_suffix}{re.sub('.','',self.property_name)}Prohibited"
 
     @property
     def shortdesc(self):
@@ -221,9 +240,7 @@ class ParameterNoEchoDefault(StubRuleCommon):
     @property
     def _condensed_doc(self):
         if type(self.property_names) == list:
-            return (
-                f"{self.resource_type} properties should not be easily exposed"
-            )
+            return f"{self.resource_type} properties should not be easily exposed"
         else:
             return f"{self.resource_type}/{self.property_names} should not be easily exposed"
 
