@@ -1,4 +1,4 @@
-from .mandatory import *  # noqa
-from .security import *  # noqa
-from .stack import *  # noqa
-from .best_practice import * # noqa
+"""
+AWS Integration & Automation CloudFormation lint rules
+"""
+from .allow_certain_resources import OnlyAllowCertainResourceTypes

@@ -16,26 +16,10 @@
 """
 
 
-from cfnlint.rules import CloudFormationLintRule, RuleMatch
-from cfnlint.rules.metadata.InterfaceParameterExists import InterfaceParameterExists
+from cfn_ia_rules.common import ProhibitedResourcesExcept
+from cfnlint.rules import CloudFormationLintRule
 
-
-class ParamsInMetadataExist(CloudFormationLintRule):
-    """
-    Checks for parameters in metadata that do not exist in the template.
-
-    Wrapper for W4001. We need it as an error.
-    """
-
-    id = "E9009"
-    shortdesc = "Parameters referenced in metadata must exist in the template."
-    description = "Making sure parameters in metadata exist within the template."
-    source_url = "https://github.com/aws-ia/cfn-ia-rules/blob/main/cfn_ia_rules/rules/mandatory/params_in_metadata_exist.py"
-    tags = ["label"]
-
-    def match(self, cfn):
-        """Basic Matching"""
-        converted_matches = []
-        for m in InterfaceParameterExists.match(self, cfn):
-            converted_matches.append(RuleMatch(m.path, self.shortdesc))
-        return converted_matches
+class OnlyAllowCertainResourceTypes(ProhibitedResourcesExcept, CloudFormationLintRule):
+    allowed_resource_types = [
+            "AWS::S3::Bucket"
+    ]
