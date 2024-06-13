@@ -1,3 +1,4 @@
 """
-AWS Integration & Automation CloudFormation lint rules
+Marketplace Quick Launch cfn-lint rules
 """
+from . import *
