@@ -24,7 +24,7 @@ class Base(CloudFormationLintRule):
     id = "W9003"
     shortdesc = "Each parameter should be in a group"
     description = "Each parameter should be in one AWS::CloudFormation::Interface ParameterGroups entry"
-    source_url = "https://github.com/qs_cfn_lint_rules/qs_cfn_lint_rules"
+    source_url = "https://github.com/aws-ia/cfn-mp-ql-rules/cfn_mp_ql_rules"
     tags = ["parameters"]
 
     def match(self, cfn):

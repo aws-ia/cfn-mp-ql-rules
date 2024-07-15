@@ -24,7 +24,7 @@ class Base(CloudFormationLintRule):
     id = "W9004"
     shortdesc = "Each parameter should have a description"
     description = "Each parameter should have a Description entry"
-    source_url = "https://github.com/qs_cfn_lint_rules/qs_cfn_lint_rules"
+    source_url = "https://github.com/aws-ia/cfn-mp-ql-rules/cfn_mp_ql_rules"
     tags = ["parameters"]
 
     def match(self, cfn):
