@@ -39,7 +39,7 @@ class Base(CloudFormationLintRule):
     id = "W9006"
     shortdesc = "Parameter descriptions should be sentence case"
     description = "Parameter descriptions should be sentence case"
-    source_url = "https://github.com/cfn_mp_ql_rules/cfn_mp_ql_rules"
+    source_url = "https://github.com/aws-ia/cfn-mp-ql-rules/cfn_mp_ql_rules"
     tags = ["parameters"]
 
     @staticmethod
