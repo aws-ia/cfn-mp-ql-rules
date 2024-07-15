@@ -32,7 +32,7 @@ class EBSVolumeEncryption(CloudFormationLintRule):
     id = 'EBSVolumeEncryption'
     shortdesc = 'EBS volume missing enryption'
     description = 'EBS volume should have server-side encryption enabled'
-    source_url = 'https://github.com/aws-ia/cfn-mp-ql-rules/qs_mp_ql_rules'
+    source_url = 'https://github.com/aws-ia/cfn-mp-ql-rules/cfn_mp_ql_rules'
     tags = ['EBS', 'encryption']
 
     CFN_NAG_RULES = [

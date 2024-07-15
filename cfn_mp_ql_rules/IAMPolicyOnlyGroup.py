@@ -10,7 +10,7 @@ class IAMPolicyOnlyGroup(CloudFormationLintRule):
     id = 'EIAMPolicyOnlyGroup' # New Rule ID
     shortdesc = 'No direct user on IAM policy' # A short description about the rule
     description = 'IAM policy should not apply directly to users. Should be on group' # (Longer) description about the rule
-    source_url = 'https://github.com/aws-quickstart/qs-cfn-lint-rules/tree/main' # A url to the source of the rule, e.g. documentation, AWS Blog posts etc
+    source_url = 'https://github.com/aws-ia/cfn-mp-ql-rules/tree/main' # A url to the source of the rule, e.g. documentation, AWS Blog posts etc
     tags = ["iam"] 
 
     def match(self, cfn):

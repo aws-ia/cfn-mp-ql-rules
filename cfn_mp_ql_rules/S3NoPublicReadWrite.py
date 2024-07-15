@@ -10,7 +10,7 @@ class S3NoPublicReadWrite(CloudFormationLintRule):
     id = 'ES3NoPublicReadWrite' # New Rule ID
     shortdesc = 'No public read-write ACL on S3' # A short description about the rule
     description = 'S3 Bucket should not have a public read-write acl' # (Longer) description about the rule
-    source_url = 'https://github.com/aws-quickstart/qs-cfn-lint-rules/tree/main' # A url to the source of the rule, e.g. documentation, AWS Blog posts etc
+    source_url = 'https://github.com/aws-ia/cfn-mp-ql-rules/tree/main' # A url to the source of the rule, e.g. documentation, AWS Blog posts etc
     tags = ["S3"] # A set of tags (strings) for searching
 
     def check_value(self, value, path):

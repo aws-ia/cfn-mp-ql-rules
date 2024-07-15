@@ -10,7 +10,7 @@ class MQBrokerPassword(CloudFormationLintRule):
     id = 'EMQBrokerPassword' # New Rule ID
     shortdesc = 'No plaintext password or ref to a default value on a AmazonMQ Broker User' # A short description about the rule
     description = 'AmazonMQ Broker Users Password must not be a plaintext string or a Ref to a Parameter with a Default value. Can be Ref to a NoEcho Parameter without a Default, or a dynamic reference to a secretsmanager value.' # (Longer) description about the rule
-    source_url = 'https://github.com/aws-quickstart/qs-cfn-lint-rules/tree/main' # A url to the source of the rule, e.g. documentation, AWS Blog posts etc
+    source_url = 'https://github.com/aws-ia/cfn-mp-ql-rules/tree/main' # A url to the source of the rule, e.g. documentation, AWS Blog posts etc
     tags = ["amazonmq"]
     all_params = {}
 

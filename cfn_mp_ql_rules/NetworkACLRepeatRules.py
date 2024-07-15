@@ -10,7 +10,7 @@ class NetworkACLRepeatRules(CloudFormationLintRule):
     id = 'ENetworkACLRepeatRules' # New Rule ID
     shortdesc = 'No repeat rules on Network ACL unless different types' # A short description about the rule
     description = 'A NetworkACL\'s rule numbers cannot be repeated unless one is egress and one is ingress.' # (Longer) description about the rule
-    source_url = 'https://github.com/aws-quickstart/qs-cfn-lint-rules/tree/main' # A url to the source of the rule, e.g. documentation, AWS Blog posts etc
+    source_url = 'https://github.com/aws-ia/cfn-mp-ql-rules/tree/main' # A url to the source of the rule, e.g. documentation, AWS Blog posts etc
     tags = ["networkacl"] # A set of tags (strings) for searching
 
     global ingress

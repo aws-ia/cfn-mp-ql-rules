@@ -10,7 +10,7 @@ class IAMPolicyOnlyGroup(CloudFormationLintRule):
     id = 'EIAMUserNotInGroup' # New Rule ID
     shortdesc = 'User not assigned to group' # A short description about the rule
     description = 'IAM User is not assigned to any group' # (Longer) description about the rule
-    source_url = 'https://github.com/aws-quickstart/qs-cfn-lint-rules/tree/main' # A url to the source of the rule, e.g. documentation, AWS Blog posts etc
+    source_url = 'https://github.com/aws-ia/cfn-mp-ql-rules/tree/main' # A url to the source of the rule, e.g. documentation, AWS Blog posts etc
     tags = ["iam"] 
 
     def match(self, cfn):
