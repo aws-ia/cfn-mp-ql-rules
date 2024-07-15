@@ -20,7 +20,7 @@ import json
 import os
 from cfnlint.rules import CloudFormationLintRule
 from cfnlint.rules import RuleMatch
-from qs_cfn_lint_rules.common import deep_get
+from cfn_mp_ql_rules.common import deep_get
 
 LINT_ERROR_MESSAGE = "IAM policy should not allow * resource; This method in this in this policy support granular permissions"
 
@@ -93,7 +93,7 @@ class IAMResourceWildcard(CloudFormationLintRule):
     shortdesc = "* on Resource property is a bad idea"
     description = "Making sure wildcard resources are only used where no other option exists"
     source_url = (
-        "https://github.com/qs_cfn_lint_rules/qs-cfn-python-lint-rules"
+        "https://github.com/aws-ia/cfn-mp-ql-rules/cfn_mp_ql_rules"
     )
     tags = ["iam"]
     SEARCH_PROPS = ["Resource"]
