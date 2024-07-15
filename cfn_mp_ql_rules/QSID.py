@@ -26,7 +26,7 @@ class Base(CloudFormationLintRule):
     shortdesc = "QSIDs should be in template description"
     description = "Making sure a QSID exists within the template"
     source_url = (
-        "https://github.com/qs_cfn_lint_rules/qs-cfn-python-lint-rules"
+        "https://github.com/aws-ia/cfn-mp-ql-rules/cfn_mp_ql_rules"
     )
     tags = ["desc"]
 

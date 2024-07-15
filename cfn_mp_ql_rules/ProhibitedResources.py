@@ -1,4 +1,4 @@
-from qs_cfn_lint_rules.common import ProhibitedResource, inherit_doc_string
+from cfn_mp_ql_rules.common import ProhibitedResource, inherit_doc_string
 from cfnlint.rules import CloudFormationLintRule
 
 

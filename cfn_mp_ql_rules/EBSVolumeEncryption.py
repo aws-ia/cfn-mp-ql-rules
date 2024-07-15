@@ -20,7 +20,7 @@ import re
 import six
 from cfnlint.rules import CloudFormationLintRule
 from cfnlint.rules import RuleMatch
-from qs_cfn_lint_rules.common import (
+from cfn_mp_ql_rules.common import (
     search_resources_for_property_value_violations as srfpvv,
 )
 
@@ -32,7 +32,7 @@ class EBSVolumeEncryption(CloudFormationLintRule):
     id = 'EBSVolumeEncryption'
     shortdesc = 'EBS volume missing enryption'
     description = 'EBS volume should have server-side encryption enabled'
-    source_url = 'https://github.com/qs-cfn-lint-rules/qs_cfn_lint_rules'
+    source_url = 'https://github.com/aws-ia/cfn-mp-ql-rules/qs_mp_ql_rules'
     tags = ['EBS', 'encryption']
 
     CFN_NAG_RULES = [

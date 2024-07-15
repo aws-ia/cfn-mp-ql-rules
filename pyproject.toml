@@ -6,7 +6,7 @@ build-backend = "poetry.masonry.api"
 [tool.poetry]
 name = "cfn_mp_ql_rules"
 version = "0.0.4"
-description = "checks CloudFormation templates against AWS Quick Start contributors guide rules"
+description = "checks CloudFormation templates against AWS Marketplace Quick Launch rules"
 license = "Apache License 2.0"
 keywords = ["aws,", "lint,", "aws-cfn_mp_ql_rules"]
 classifiers = ["Development Status :: 3 - Alpha", "Intended Audience :: Developers", "License :: OSI Approved :: Apache Software License", "Natural Language :: English", "Operating System :: OS Independent", "Programming Language :: Python :: 2", "Programming Language :: Python :: 2.7", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3.4", "Programming Language :: Python :: 3.5", "Programming Language :: Python :: 3.6", "Programming Language :: Python :: 3.7"]

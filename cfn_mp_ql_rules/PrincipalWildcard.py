@@ -20,7 +20,7 @@ import json
 import os
 from cfnlint.rules import CloudFormationLintRule
 from cfnlint.rules import RuleMatch
-from qs_cfn_lint_rules.common import deep_get
+from cfn_mp_ql_rules.common import deep_get
 
 LINT_ERROR_MESSAGE = "Policy should not allow * Principal"
 
@@ -43,7 +43,7 @@ class IAMPrincipalWildcard(CloudFormationLintRule):
     id = "EPolicyWildcardPrincipal"
     shortdesc = "* on Principal property is a bad idea"
     source_url = (
-        "https://github.com/qs_cfn_lint_rules/qs-cfn-python-lint-rules"
+        "https://github.com/aws-ia/cfn-mp-ql-rules/cfn_mp_ql_rules"
     )
     tags = ["iam"]
     SEARCH_PROPS = ["Principal"]

@@ -1,4 +1,4 @@
-from qs_cfn_lint_rules.common import (
+from cfn_mp_ql_rules.common import (
     RequiredPropertyEnabledBase,
     inherit_doc_string,
 )

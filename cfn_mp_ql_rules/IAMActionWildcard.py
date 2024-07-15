@@ -18,7 +18,7 @@
 import json
 from cfnlint.rules import CloudFormationLintRule
 from cfnlint.rules import RuleMatch
-from qs_cfn_lint_rules.common import deep_get
+from cfn_mp_ql_rules.common import deep_get
 import logging
 import os
 
@@ -93,7 +93,7 @@ class IAMActionWildcard(CloudFormationLintRule):
     shortdesc = "* on Action property is a bad idea"
     description = "wildcard should not be used for Action in IAM policies"
     source_url = (
-        "https://github.com/qs_cfn_lint_rules/qs-cfn-python-lint-rules"
+        "https://github.com/aws-ia/cfn-mp-ql-rules/cfn_mp_ql_rules"
     )
     tags = ["iam"]
     SEARCH_PROPS = ["Action"]

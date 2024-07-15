@@ -25,7 +25,7 @@ class Base(CloudFormationLintRule):
     shortdesc = "Name casing should be PascalCase"
     description = "Making sure all names are PascalCase"
     source_url = (
-        "https://github.com/qs_cfn_lint_rules/qs-cfn-python-lint-rules"
+        "https://github.com/aws-ia/cfn-mp-ql-rules/cfn_mp_ql_rules"
     )
     tags = ["case"]
 
