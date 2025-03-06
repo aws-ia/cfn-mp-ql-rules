@@ -1,6 +1,5 @@
 ---
-Description: This template deploys an ECS cluster to the provided VPC and subnets  using
-  an Auto Scaling Group (qs-1nlegmi2j)
+Description: This template deploys an ECS cluster to the provided VPC and subnets  using an Auto Scaling Group (qs-1nlegmi2j)
 Parameters:
   EnvironmentName:
     Description: An environment name that will be prefixed to resource names
@@ -64,9 +63,9 @@ Resources:
       MaxSize: !Ref ClusterSize
       DesiredCapacity: !Ref ClusterSize
       Tags:
-      - Key: Name
-        Value: !Sub ${EnvironmentName} ECS host
-        PropagateAtLaunch: true
+        - Key: Name
+          Value: !Sub ${EnvironmentName} ECS host
+          PropagateAtLaunch: true
     CreationPolicy:
       ResourceSignal:
         Timeout: PT15M
@@ -79,22 +78,15 @@ Resources:
   ECSLaunchConfiguration:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
-      ImageId:
-        !FindInMap
+      ImageId: !FindInMap
         - AWSAMIRegionMap
         - !Ref AWS::Region
         - AMZNECSHVM
       InstanceType: !Ref InstanceType
       SecurityGroups:
-      - !Ref SecurityGroup
+        - !Ref SecurityGroup
       IamInstanceProfile: !Ref ECSInstanceProfile
       KeyName: !Ref KeyName
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash
-          yum install -y aws-cfn-bootstrap
-          /opt/aws/bin/cfn-init -v --region ${AWS::Region} --stack ${AWS::StackName} --resource ECSLaunchConfiguration
-          /opt/aws/bin/cfn-signal -e $? --region ${AWS::Region} --stack ${AWS::StackName} --resource ECSAutoScalingGroup
     Metadata:
       AWS::CloudFormation::Init:
         config:
@@ -122,8 +114,8 @@ Resources:
                 enabled: true
                 ensureRunning: true
                 files:
-                - /etc/cfn/cfn-hup.conf
-                - /etc/cfn/hooks.d/cfn-auto-reloader.conf
+                  - /etc/cfn/cfn-hup.conf
+                  - /etc/cfn/hooks.d/cfn-auto-reloader.conf
   ECSRole:
     Type: AWS::IAM::Role
     Properties:
@@ -131,107 +123,106 @@ Resources:
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
-        - Effect: Allow
-          Principal:
-            Service: ec2.amazonaws.com
-          Action: sts:AssumeRole
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
       Policies:
-      - PolicyName: ConfigPolicy
-        PolicyDocument:
-          Version: 2012-10-17
-          Statement:
-          - Sid: ECS
-            Effect: Allow
-            Action:
-            - ecs:CreateCluster
-            - ecs:DeregisterContainerInstance
-            - ecs:DiscoverPollEndpoint
-            - ecs:Poll
-            - ecs:RegisterContainerInstance
-            - ecs:StartTelemetrySession
-            - ecs:Submit*
-            - logs:CreateLogStream
-            - logs:PutLogEvents
-            - ecr:BatchCheckLayerAvailability
-            - ecr:BatchGetImage
-            - ecr:GetDownloadUrlForLayer
-            - ecr:GetAuthorizationToken
-            Resource: '*'
-          - Sid: DYNAMODB
-            Effect: Allow
-            Action:
-            - dynamodb:Query
-            - dynamodb:PutItem
-            - dynamodb:DescribeTable
-            - dynamodb:DeleteTable
-            - dynamodb:GetItem
-            - dynamodb:CreateTable
-            - dynamodb:Scan
-            Resource: '*'
-          - Sid: IAM
-            Effect: Allow
-            Action:
-            - iam:AttachRolePolicy
-            - iam:CreatePolicy
-            - iam:CreatePolicyVersion
-            - iam:CreateRole
-            - iam:DeletePolicy
-            - iam:DeletePolicyVersion
-            - iam:DeleteRole
-            - iam:DeleteRolePolicy
-            - iam:DetachRolePolicy
-            - iam:GetPolicy
-            - iam:GetPolicyVersion
-            - iam:GetRole
-            - iam:GetRolePolicy
-            - iam:PassRole
-            Resource: '*'
-          - Sid: CognitoIdentity
-            Effect: Allow
-            Action:
-            - cognito-identity:CreateIdentityPool
-            - cognito-identity:DeleteIdentityPool
-            - cognito-identity:DeleteIdentities
-            - cognito-identity:DescribeIdentity
-            - cognito-identity:DescribeIdentityPool
-            - cognito-identity:GetIdentityPoolRoles
-            - cognito-identity:GetOpenIdTokenForDeveloperIdentity
-            - cognito-identity:ListIdentities
-            - cognito-identity:ListIdentityPools
-            - cognito-identity:LookupDeveloperIdentity
-            - cognito-identity:MergeDeveloperIdentities
-            - cognito-identity:SetIdentityPoolRoles
-            - cognito-identity:UnlinkDeveloperIdentity
-            - cognito-identity:UpdateIdentityPool
-            Resource: '*'
-          - Sid: CognitoUP
-            Effect: Allow
-            Action:
-            - cognito-idp:CreateUserPool
-            - cognito-idp:CreateUserPoolClient
-            - cognito-idp:AdminCreateUser
-            - cognito-idp:AdminDeleteUser
-            - cognito-idp:DeleteUserPool
-            - cognito-idp:AdminGetUser
-            Resource: '*'
-          - Sid: APIGatewayKeysCertificates
-            Effect: Allow
-            Action:
-            - apigateway:GET
-            - apigateway:HEAD
-            - apigateway:OPTIONS
-            Resource:
-            - arn:aws:apigateway:us-east-1::/clientcertificates/*
-            - arn:aws:apigateway:us-east-1::/domainnames/*
-            - arn:aws:apigateway:us-east-1::/apikeys/*
+        - PolicyName: ConfigPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: ECS
+                Effect: Allow
+                Action:
+                  - ecs:CreateCluster
+                  - ecs:DeregisterContainerInstance
+                  - ecs:DiscoverPollEndpoint
+                  - ecs:Poll
+                  - ecs:RegisterContainerInstance
+                  - ecs:StartTelemetrySession
+                  - ecs:Submit*
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - ecr:BatchCheckLayerAvailability
+                  - ecr:BatchGetImage
+                  - ecr:GetDownloadUrlForLayer
+                  - ecr:GetAuthorizationToken
+                Resource: '*'
+              - Sid: DYNAMODB
+                Effect: Allow
+                Action:
+                  - dynamodb:Query
+                  - dynamodb:PutItem
+                  - dynamodb:DescribeTable
+                  - dynamodb:DeleteTable
+                  - dynamodb:GetItem
+                  - dynamodb:CreateTable
+                  - dynamodb:Scan
+                Resource: '*'
+              - Sid: IAM
+                Effect: Allow
+                Action:
+                  - iam:AttachRolePolicy
+                  - iam:CreatePolicy
+                  - iam:CreatePolicyVersion
+                  - iam:CreateRole
+                  - iam:DeletePolicy
+                  - iam:DeletePolicyVersion
+                  - iam:DeleteRole
+                  - iam:DeleteRolePolicy
+                  - iam:DetachRolePolicy
+                  - iam:GetPolicy
+                  - iam:GetPolicyVersion
+                  - iam:GetRole
+                  - iam:GetRolePolicy
+                  - iam:PassRole
+                Resource: '*'
+              - Sid: CognitoIdentity
+                Effect: Allow
+                Action:
+                  - cognito-identity:CreateIdentityPool
+                  - cognito-identity:DeleteIdentityPool
+                  - cognito-identity:DeleteIdentities
+                  - cognito-identity:DescribeIdentity
+                  - cognito-identity:DescribeIdentityPool
+                  - cognito-identity:GetIdentityPoolRoles
+                  - cognito-identity:GetOpenIdTokenForDeveloperIdentity
+                  - cognito-identity:ListIdentities
+                  - cognito-identity:ListIdentityPools
+                  - cognito-identity:LookupDeveloperIdentity
+                  - cognito-identity:MergeDeveloperIdentities
+                  - cognito-identity:SetIdentityPoolRoles
+                  - cognito-identity:UnlinkDeveloperIdentity
+                  - cognito-identity:UpdateIdentityPool
+                Resource: '*'
+              - Sid: CognitoUP
+                Effect: Allow
+                Action:
+                  - cognito-idp:CreateUserPool
+                  - cognito-idp:CreateUserPoolClient
+                  - cognito-idp:AdminCreateUser
+                  - cognito-idp:AdminDeleteUser
+                  - cognito-idp:DeleteUserPool
+                  - cognito-idp:AdminGetUser
+                Resource: '*'
+              - Sid: APIGatewayKeysCertificates
+                Effect: Allow
+                Action:
+                  - apigateway:GET
+                  - apigateway:HEAD
+                  - apigateway:OPTIONS
+                Resource:
+                  - arn:aws:apigateway:us-east-1::/clientcertificates/*
+                  - arn:aws:apigateway:us-east-1::/domainnames/*
+                  - arn:aws:apigateway:us-east-1::/apikeys/*
   ECSInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
-      - !Ref ECSRole
+        - !Ref ECSRole
 Outputs:
   Cluster:
     Description: A reference to the ECS cluster
     Value: !Ref ECSCluster
-...

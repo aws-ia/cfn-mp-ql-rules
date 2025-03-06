@@ -1,9 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
-  This template deploys a small demo application which will serve as an application
-  pool on the BIG-IP.  **WARNING** This template creates an auto scale group and associated
-  security group. You will be billed for the AWS resources used if you create a stack
-  from this template.
+  This template deploys a small demo application which will serve as an application pool on the BIG-IP.  **WARNING** This template creates an auto scale group and associated security group. You will be billed for the AWS resources used if you create a stack from this template.
 Outputs:
   appAutoscaleGroupName:
     Value: !Ref 'AppAutoscaleGroup'
@@ -90,8 +87,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       VpcId: !Ref 'vpc'
-      GroupDescription: Enable SSH access via port 22 and enable access to web on
-        80 and 443
+      GroupDescription: Enable SSH access via port 22 and enable access to web on 80 and 443
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: '22'
@@ -127,22 +123,6 @@ Resources:
       KeyName: !Ref 'sshKey'
       SecurityGroups:
         - !Ref 'AppSecurityGroup'
-      UserData: !Base64
-        Fn::Join:
-          - ''
-          - - "#!/bin/bash\n"
-            - "### Xenial 16.04\n"
-            - "# Install Docker\n"
-            - "sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo\
-              \ apt-key add - \n"
-            - "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu\
-              \ $(lsb_release -cs) stable\"\n"
-            - "sudo apt-get update\n"
-            - "sudo apt-get install -y docker-ce\n"
-            - "# Deploy App\n"
-            - 'sudo docker run --name f5demo -p 80:80 -p 443:443 -d '
-            - !Ref 'containerName'
-            - "\n"
   AppAutoscaleGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:

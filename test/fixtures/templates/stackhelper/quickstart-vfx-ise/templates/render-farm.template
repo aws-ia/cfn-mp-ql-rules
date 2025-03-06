@@ -9,56 +9,44 @@ Metadata:
         Parameters:
           - pAvailabilityZones
           - pSupportsEfs
-
       - Label:
           default: Network (existing Production VPC config)
         Parameters:
           - pProductionVPC
           - pProdAppPrivateSubnetA
           - pProdAppPrivateSubnetB
-
       - Label:
           default: Render Farm Instance Configuration
         Parameters:
           - pRenderFarmAmi
           - pRenderFarmTargetCapacity
-
 Parameters:
   pAvailabilityZones:
-    Description: The list of Availability Zones to use for the subnets in the VPC.
-      This template uses two Availability Zones from your list and preserves the logical order you specify.
+    Description: The list of Availability Zones to use for the subnets in the VPC. This template uses two Availability Zones from your list and preserves the logical order you specify.
     Type: List<AWS::EC2::AvailabilityZone::Name>
-
   pSupportsEfs:
     AllowedValues:
       - true
       - false
     Description: Determines if this region supports EFS (passed in from Main template)
     Type: String
-
   pProductionVPC:
     Type: AWS::EC2::VPC::Id
-
   pProdAppPrivateSubnetA:
     Description: Production Application Subnet A (private)
     Type: AWS::EC2::Subnet::Id
-
   pProdAppPrivateSubnetB:
     Description: Production Application Subnet B (private)
     Type: AWS::EC2::Subnet::Id
-
   pRenderFarmAmi:
     Description: Which AMI do you want to use for Render Instances?
     Type: AWS::EC2::Image::Id
-
   pRenderFarmTargetCapacity:
     Description: The number of instances in the spot fleet
     Type: String
-
   pProjectName:
     Description: Project name
     Type: String
-
   pEnvironment:
     AllowedValues:
       - DEV
@@ -67,7 +55,6 @@ Parameters:
     Default: DEV
     Description: Environment (Dev, Test or Prod)
     Type: String
-
 Mappings:
   RegionMap:
     ap-northeast-1:
@@ -98,15 +85,12 @@ Mappings:
       InstanceTypes: [t2.micro, t3.micro]
     us-west-2:
       InstanceTypes: [t2.micro, t3.micro]
-
 Conditions:
   SupportsEfs: !Equals
     - !Ref pSupportsEfs
     - true
-
   NoEfsSupport: !Not
     - Condition: SupportsEfs
-
 Resources:
   rRenderFarmSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -118,7 +102,6 @@ Resources:
           Value: render-farm-sg
         - Key: Environment
           Value: !Ref pEnvironment
-
   rRenderFarmEfsSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Condition: SupportsEfs
@@ -135,7 +118,6 @@ Resources:
           Value: efs-sg
         - Key: Environment
           Value: !Ref pEnvironment
-
   rRenderFarmEfs:
     Type: AWS::EFS::FileSystem
     Condition: SupportsEfs
@@ -147,7 +129,6 @@ Resources:
           Value: RenderFarmFs
         - Key: Project
           Value: !Ref pProjectName
-
   rRenderFarmEfsMountTarget0:
     Type: AWS::EFS::MountTarget
     Condition: SupportsEfs
@@ -156,7 +137,6 @@ Resources:
       SubnetId: !Ref pProdAppPrivateSubnetA
       SecurityGroups:
         - !Ref rRenderFarmEfsSecurityGroup
-
   rRenderFarmEfsMountTarget1:
     Type: AWS::EFS::MountTarget
     Condition: SupportsEfs
@@ -165,7 +145,6 @@ Resources:
       SubnetId: !Ref pProdAppPrivateSubnetB
       SecurityGroups:
         - !Ref rRenderFarmEfsSecurityGroup
-
   rRenderFarmRole:
     Type: AWS::IAM::Role
     Properties:
@@ -179,14 +158,12 @@ Resources:
               - sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
-
   rRenderFarmInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
         - !Ref rRenderFarmRole
-
   rSpotFleetRole:
     Type: AWS::IAM::Role
     Properties:
@@ -200,12 +177,10 @@ Resources:
               - sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetTaggingRole
-
   rRenderFarmLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
       RetentionInDays: 90
-
   rRenderFarmLaunchTemplateNoEfs:
     Condition: NoEfsSupport
     Type: AWS::EC2::LaunchTemplate
@@ -220,7 +195,6 @@ Resources:
           Fn::Base64: |
             #!/bin/bash -xe
             yum -y --security update
-
   rRenderFarmLaunchTemplateEfs:
     Condition: SupportsEfs
     Type: AWS::EC2::LaunchTemplate
@@ -300,7 +274,6 @@ Resources:
             yum install amazon-efs-utils -y
 
             /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource rRenderFarmLaunchTemplateEfs --region ${AWS::Region}
-
   rRenderFarmSpotFleet:
     Type: AWS::EC2::SpotFleet
     Properties:
@@ -319,31 +292,24 @@ Resources:
               - InstanceType: !Select [1, !FindInMap [RegionMap, !Ref 'AWS::Region', InstanceTypes]]
                 AvailabilityZone: !Select [1, !Ref pAvailabilityZones]
                 SubnetId: !Ref pProdAppPrivateSubnetB
-
 Outputs:
   rRenderFarmSecurityGroup:
     Value: !Ref rRenderFarmSecurityGroup
-
   rRenderFarmEfsMountTarget0:
     Condition: SupportsEfs
     Value: !Ref rRenderFarmEfsMountTarget0
-
   rRenderFarmEfsMountTarget1:
     Condition: SupportsEfs
     Value: !Ref rRenderFarmEfsMountTarget1
-
   rRenderFarmRole:
     Value: !Ref rRenderFarmRole
-
   rRenderFarmEfsSecurityGroup:
     Condition: SupportsEfs
     Value: !Ref rRenderFarmEfsSecurityGroup
-
   rRenderFarmLaunchTemplate:
     Value: !If
       - SupportsEfs
       - !Ref rRenderFarmLaunchTemplateEfs
       - !Ref rRenderFarmLaunchTemplateNoEfs
-
   rRenderFarmSpotFleet:
     Value: !Ref rRenderFarmSpotFleet

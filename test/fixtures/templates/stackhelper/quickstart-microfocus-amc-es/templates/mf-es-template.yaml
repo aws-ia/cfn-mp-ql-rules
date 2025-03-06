@@ -13,14 +13,7 @@
 # limitations under the License.
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  "This template deploys a single Micro Focus Enterprise Server instance as
-  defined in the Micro Focus Enterprise Server Reference Architecture.
-  **WARNING** This template creates EC2 instances and related resources. You
-  will be billed for the AWS resources used if you create a stack from this
-  template. License: Apache 2.0 (Please do not remove) Sept,05,2018. Micro Focus
-  Enterprise Server is licensed separately, please review the terms and
-  conditions here (https://www.microfocus.com/about/legal/) for further details.
-  (qs-1p6hinfje)"
+  "This template deploys a single Micro Focus Enterprise Server instance as defined in the Micro Focus Enterprise Server Reference Architecture. **WARNING** This template creates EC2 instances and related resources. You will be billed for the AWS resources used if you create a stack from this template. License: Apache 2.0 (Please do not remove) Sept,05,2018. Micro Focus Enterprise Server is licensed separately, please review the terms and conditions here (https://www.microfocus.com/about/legal/) for further details. (qs-1p6hinfje)"
 Metadata:
   'AWS::CloudFormation::Interface':
     ParameterGroups:
@@ -137,23 +130,19 @@ Parameters:
   AdditionalESStorageinGiB:
     Type: Number
     Description: >-
-      Additional EBS storage capacity in gibibytes (GiBs) added to each
-      Enterprise Server instance. Enter 0-16384 GiB.
+      Additional EBS storage capacity in gibibytes (GiBs) added to each Enterprise Server instance. Enter 0-16384 GiB.
     MinValue: 0
     MaxValue: 16384
     Default: 100
   AvailabilityZones:
     Description: >-
-      List of Availability Zones to use for the subnets in the VPC. Only two
-      Availability Zones are used for this deployment, and the logical order
-      of your selections is preserved.
+      List of Availability Zones to use for the subnets in the VPC. Only two Availability Zones are used for this deployment, and the logical order of your selections is preserved.
     Type: 'List<AWS::EC2::AvailabilityZone::Name>'
   DomainAdminPassword:
     AllowedPattern: >-
       (?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
     Description: >-
-      The password for the domain Admin account. Must be at least 8 characters
-      containing letters, numbers, and symbols.
+      The password for the domain Admin account. Must be at least 8 characters containing letters, numbers, and symbols.
     MaxLength: '32'
     MinLength: '8'
     NoEcho: true
@@ -162,8 +151,7 @@ Parameters:
     AllowedPattern: '[a-zA-Z0-9\-]+\..+'
     Default: example.com
     Description: >-
-      The fully qualified domain name (FQDN), e.g., example.com. Must be 2-255
-      characters.
+      The fully qualified domain name (FQDN), e.g., example.com. Must be 2-255 characters.
     MaxLength: '255'
     MinLength: '2'
     Type: String
@@ -175,8 +163,7 @@ Parameters:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: example
     Description: >-
-      The NetBIOS name of the domain (up to 15 characters) for users of
-      earlier versions of Microsoft Windows, e.g., example.
+      The NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Microsoft Windows, e.g., example.
     MaxLength: '15'
     Type: String
   EMailNotificationTopic:
@@ -185,8 +172,7 @@ Parameters:
   ESClientAccessSGID:
     Type: 'AWS::EC2::SecurityGroup::Id'
     Description: >-
-      Security Group ID for application ingress into the Enterpriser Server
-      instance (e.g., sg-1234abcd).
+      Security Group ID for application ingress into the Enterpriser Server instance (e.g., sg-1234abcd).
   ESCCITCPListenerPort:
     ConstraintDescription: The port number must be between 1 and 65535.
     Default: 86
@@ -215,17 +201,12 @@ Parameters:
     Type: String
   ESLicenseFilename:
     Description: >-
-      Place the license file obtained from Micro Focus in the S3 bucket folder:
-      s3://<Enterprise Server S3 bucket name>/license/
+      Place the license file obtained from Micro Focus in the S3 bucket folder: s3://<Enterprise Server S3 bucket name>/license/
     Type: String
   ESS3BucketName:
     AllowedPattern: '^[a-z0-9][a-z0-9-.]*$'
     Description: >-
-      The name of the existing S3 bucket used to store/retrieve objects specific
-      to this stack. A system integrator extending this Quick Start should use
-      this bucket to store or retrieve items needed. This string can include
-      numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot
-      start or end with a hyphen (-).
+      The name of the existing S3 bucket used to store/retrieve objects specific to this stack. A system integrator extending this Quick Start should use this bucket to store or retrieve items needed. This string can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   FileshareDataFolderUNC:
     Type: String
@@ -245,16 +226,14 @@ Parameters:
       - false
     Default: true
     Description: >-
-      Choose 'false' if you don't want to install the Enterprise Server Fileshare demo
-      app. Requires selection of the 'Create-Remote-Fileshare-Server' Fileshare type.
+      Choose 'false' if you don't want to install the Enterprise Server Fileshare demo app. Requires selection of the 'Create-Remote-Fileshare-Server' Fileshare type.
   InstallSQLDemoApp:
     AllowedValues:
       - true
       - false
     Default: true
     Description: >-
-      Choose 'false' if you don't want to install the Enterprise Server SQLServer demo
-      app. Requires selection of the 'Create-RDS-Remote-Database' Database type.
+      Choose 'false' if you don't want to install the Enterprise Server SQLServer demo app. Requires selection of the 'Create-RDS-Remote-Database' Database type.
     Type: String
   KeyPairName:
     Description: >-
@@ -262,9 +241,7 @@ Parameters:
     Type: 'AWS::EC2::KeyPair::KeyName'
   LicenseAgreement:
     Description: >-
-      I have read and agree to the license terms for Micro Focus Enterprise
-      Server
-      (https://www.microfocus.com/documentation/enterprise-developer/ed-latest/ES-WIN/GUID-0562B3C9-2271-4CE8-AF64-93DE4940077F.html).
+      I have read and agree to the license terms for Micro Focus Enterprise Server (https://www.microfocus.com/documentation/enterprise-developer/ed-latest/ES-WIN/GUID-0562B3C9-2271-4CE8-AF64-93DE4940077F.html).
     Type: String
     Default: '-'
     AllowedValues:
@@ -276,9 +253,7 @@ Parameters:
     AllowedPattern: '[a-zA-Z0-9]*'
     Default: 'MFDSServiceAccount'
     Description: >-
-      The existing domain account name under which the service will run. If left as
-      default, a domain account 'MFDSServiceAccount' is created. The name must be
-      5-25 characters.
+      The existing domain account name under which the service will run. If left as default, a domain account 'MFDSServiceAccount' is created. The name must be 5-25 characters.
     MaxLength: '25'
     MinLength: '5'
   MFDSServiceAccountPassword:
@@ -286,8 +261,7 @@ Parameters:
     AllowedPattern: >-
       (?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
     Description: >-
-      Enter a password for MFDSServiceAccount. Must be at least 8 characters
-      containing letters, numbers, and symbols.
+      Enter a password for MFDSServiceAccount. Must be at least 8 characters containing letters, numbers, and symbols.
     MaxLength: '32'
     MinLength: '8'
     NoEcho: true
@@ -297,30 +271,23 @@ Parameters:
   QSS3BucketName:
     AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
     ConstraintDescription: >-
-      Quick Start bucket name can include numbers, lowercase letters, uppercase
-      letters, and hyphens (-). It cannot start or end with a hyphen (-).
+      Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
     Description: >-
-      S3 bucket name for the Quick Start assets. Quick Start bucket name can
-      include numbers, lowercase letters, uppercase letters, and hyphens (-). It
-      cannot start or end with a hyphen (-).
+      S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: '^[0-9a-zA-Z-/]*$'
     ConstraintDescription: >-
-      Quick Start key prefix can include numbers, lowercase letters, uppercase
-      letters, hyphens (-), and forward slash (/).
+      Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-microfocus-amc-es/
     Description: >-
-      S3 key prefix for the Quick Start assets. Quick Start key prefix can
-      include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+      S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
   RegionsPerInstance:
     ConstraintDescription: Must be between 1 and 10 regions per instance.
     Description: >-
-      The number of regions per Enterprise Server instance. Must be between 1 and
-      10 regions per instance.
+      The number of regions per Enterprise Server instance. Must be between 1 and 10 regions per instance.
     Default: 1
     MaxValue: 10
     MinValue: 1
@@ -585,8 +552,7 @@ Resources:
               waitAfterCompletion: '0'
             b-install-chrome:
               command: >-
-                start /wait c:\cfn\assets\GoogleChromeStandaloneEnterprise64.msi
-                /quiet /passive
+                start /wait c:\cfn\assets\GoogleChromeStandaloneEnterprise64.msi /quiet /passive
               waitAfterCompletion: '0'
         020-ConfigureCWLogs:
           files:
@@ -818,25 +784,13 @@ Resources:
                   - 'c:\cfn\hooks.d\cfn-auto-reloader.conf'
           commands:
             a-set-execution-policy:
-              command:
-                powershell.exe
-                  -Command "Set-ExecutionPolicy RemoteSigned"
-                  -Force
+              command: powershell.exe -Command "Set-ExecutionPolicy RemoteSigned" -Force
               waitAfterCompletion: '0'
             b-unpack-quickstart-module:
-              command:
-                powershell.exe
-                  -File C:\cfn\scripts\Unzip-Archive.ps1
-                    -Source C:\cfn\modules\AWSQuickStart.zip
-                    -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
+              command: powershell.exe -File C:\cfn\scripts\Unzip-Archive.ps1 -Source C:\cfn\modules\AWSQuickStart.zip -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
               waitAfterCompletion: '0'
             c-init-quickstart-module:
-              command: !Sub
-                powershell.exe
-                  -Command New-AWSQuickStartResourceSignal
-                    -Stack ${AWS::StackName}
-                    -Resource ESInstance
-                    -Region ${AWS::Region}
+              command: !Sub powershell.exe -Command New-AWSQuickStartResourceSignal -Stack ${AWS::StackName} -Resource ESInstance -Region ${AWS::Region}
               waitAfterCompletion: '0'
         040-ConfigureEnterpriseServer:
           files:
@@ -851,38 +805,20 @@ Resources:
               authentication: S3AccessCreds
           commands:
             a-update-system-path:
-              command:
-                powershell.exe
-                  -File c:\cfn\scripts\AddTo-SystemPath.ps1
-                    -PathToAdd "C:\Program Files (x86)\Micro Focus\Enterprise Server\bin"
+              command: powershell.exe -File c:\cfn\scripts\AddTo-SystemPath.ps1 -PathToAdd "C:\Program Files (x86)\Micro Focus\Enterprise Server\bin"
               waitAfterCompletion: '0'
             b-configure-windows-firewall-es-admin-portal-rule:
-              command: !Sub
-                powershell.exe
-                  -Command New-NetFirewallRule
-                    -DisplayName 'Micro Focus Enterprise Server Admin Portal'
-                    -LocalPort ${ESCCITCPListenerPort}
-                    -Protocol tcp
+              command: !Sub powershell.exe -Command New-NetFirewallRule -DisplayName 'Micro Focus Enterprise Server Admin Portal' -LocalPort ${ESCCITCPListenerPort} -Protocol tcp
               waitAfterCompletion: '0'
             c-configure-windows-firewall-fs-demoapp-tn3270-portal-rule:
               test: !Sub >-
                 if /I "${InstallFSDemoApp}"=="true" (exit 0) else (exit 1)
-              command: !Sub
-                powershell.exe
-                  -Command New-NetFirewallRule
-                    -DisplayName 'FS Demo App TN3270 Ingress'
-                    -LocalPort ${FSDemoApp3270Port}
-                    -Protocol tcp
+              command: !Sub powershell.exe -Command New-NetFirewallRule -DisplayName 'FS Demo App TN3270 Ingress' -LocalPort ${FSDemoApp3270Port} -Protocol tcp
               waitAfterCompletion: '0'
             d-configure-windows-firewall-sql-demoapp-tn3270-portal-rule:
               test: !Sub >-
                 if /I "${InstallSQLDemoApp}"=="true" (exit 0) else (exit 1)
-              command: !Sub
-                powershell.exe
-                  -Command New-NetFirewallRule
-                    -DisplayName 'SQLServer Demo App TN3270 Ingress'
-                    -LocalPort ${SQLDemoApp3270Port}
-                    -Protocol tcp
+              command: !Sub powershell.exe -Command New-NetFirewallRule -DisplayName 'SQLServer Demo App TN3270 Ingress' -LocalPort ${SQLDemoApp3270Port} -Protocol tcp
               waitAfterCompletion: '0'
         050-ApplyESLicenseFile:
           files:
@@ -898,98 +834,46 @@ Resources:
           commands:
             a-install-license:
               cwd: 'C:\Program Files (x86)\Common Files\SafeNet Sentinel\Sentinel RMS License Manager\WinNT\'
-              command:
-                start /wait
-                  cesadmintool
-                    -term install
-                    -f d:\esdir\Enterprise-Server.mflic
+              command: start /wait cesadmintool -term install -f d:\esdir\Enterprise-Server.mflic
               waitAfterCompletion: '0'
         060-RenameAndJoinDomain:
           commands:
             a-rename-computer:
-              command: !Sub
-                powershell.exe
-                  -File C:\cfn\scripts\Rename-Computer.ps1
-                    -NewName ${ESInstanceName}
-                    -Restart
+              command: !Sub powershell.exe -File C:\cfn\scripts\Rename-Computer.ps1 -NewName ${ESInstanceName} -Restart
               waitAfterCompletion: forever
             b-join-domain-and-restart:
-              command: !Sub
-                powershell.exe
-                  -File C:\cfn\scripts\Join-Domain.ps1
-                    -DomainName ${DomainDNSName}
-                    -UserName ${DomainNetBIOSName}\Admin
-                    -Password ${DomainAdminPassword}
+              command: !Sub powershell.exe -File C:\cfn\scripts\Join-Domain.ps1 -DomainName ${DomainDNSName} -UserName ${DomainNetBIOSName}\Admin -Password ${DomainAdminPassword}
               waitAfterCompletion: forever
             # Add 'Domain Users' to local RDP Group to they can RDP into this instance
             # Install A/D Management Tools
             c-add-domain-users-rdp-users-group:
-              command: !Sub
-                powershell
-                  -Command
-                    "&{
-                        try {
-                          $ErrorActionPreference = 'Stop';
-                          $GroupObj = [ADSI]'WinNT://localhost/Remote Desktop Users';
-                          $GroupObj.Add('WinNT://${DomainNetBIOSName}/Domain Users');
-                          Install-WindowsFeature
-                            -Name GPMC,RSAT-AD-PowerShell,RSAT-AD-AdminCenter,RSAT-ADDS-Tools,RSAT-DNS-Server;
-                        } catch {
-                          $_ | Write-AWSQuickStartException;
-                        }
-                      }"
+              command: !Sub powershell -Command "&{ try { $ErrorActionPreference = 'Stop'; $GroupObj = [ADSI]'WinNT://localhost/Remote Desktop Users'; $GroupObj.Add('WinNT://${DomainNetBIOSName}/Domain Users'); Install-WindowsFeature -Name GPMC,RSAT-AD-PowerShell,RSAT-AD-AdminCenter,RSAT-ADDS-Tools,RSAT-DNS-Server; } catch { $_ | Write-AWSQuickStartException; } }"
               waitAfterCompletion: '0'
         070-Setup-Database-Client-Environment:
           files:
             # Download Microsoft® ODBC Driver 13.1 for SQL Server® - Windows, Linux, & macOS
             # https://www.microsoft.com/en-us/download/details.aspx?id=53339
             'c:\cfn\assets\msodbcsql.msi':
-              source:
-                https://download.microsoft.com/download/D/5/E/D5EEF288-A277-45C8-855B-8E2CB7E25B96/x64/msodbcsql.msi
-
+              source: https://download.microsoft.com/download/D/5/E/D5EEF288-A277-45C8-855B-8E2CB7E25B96/x64/msodbcsql.msi
             # Download Microsoft® Command Line Utilities 14.0.1000 for SQL Server®
             # https://www.microsoft.com/en-us/download/details.aspx?id=53591
             'c:\cfn\assets\MsSqlCmdLnUtils.msi':
-              source:
-                https://download.microsoft.com/download/C/8/8/C88C2E51-8D23-4301-9F4B-64C8E2F163C5/x64/MsSqlCmdLnUtils.msi
+              source: https://download.microsoft.com/download/C/8/8/C88C2E51-8D23-4301-9F4B-64C8E2F163C5/x64/MsSqlCmdLnUtils.msi
           commands:
             a-install-mssqlserver-odbcdriver:
-              command:
-                start /wait
-                  msiexec
-                    /quiet
-                    /passive
-                    /qn
-                    /i c:\cfn\assets\msodbcsql.msi
-                      IACCEPTMSODBCSQLLICENSETERMS=YES
-                      ADDLOCAL=ALL
+              command: start /wait msiexec /quiet /passive /qn /i c:\cfn\assets\msodbcsql.msi IACCEPTMSODBCSQLLICENSETERMS=YES ADDLOCAL=ALL
               waitAfterCompletion: '0'
             b-install-MsSql-CmdLn-Utils:
-              command:
-                start /wait
-                  msiexec
-                    /quiet
-                    /passive
-                    /qn
-                    /i c:\cfn\assets\MsSqlCmdLnUtils.msi
-                      IACCEPTMSSQLCMDLNUTILSLICENSETERMS=YES
+              command: start /wait msiexec /quiet /passive /qn /i c:\cfn\assets\MsSqlCmdLnUtils.msi IACCEPTMSSQLCMDLNUTILSLICENSETERMS=YES
               waitAfterCompletion: '0'
             c-add-mssql-cmdln-utils-to-system-path:
-              command:
-                powershell.exe
-                  -File c:\cfn\scripts\AddTo-SystemPath.ps1
-                    -PathToAdd "c:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn"
+              command: powershell.exe -File c:\cfn\scripts\AddTo-SystemPath.ps1 -PathToAdd "c:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn"
               waitAfterCompletion: '0'
         080-InstallBankDemoFS:
           commands:
             a-import-region:
               cwd: C:\Program Files (x86)\Micro Focus\Enterprise Server\bin
-              command:
-                start /wait
-                  mfds
-                    /g 5
-                    C:\BankDemo_FS\Repo\BNKDMFS.xml
-                    D
+              command: start /wait mfds /g 5 C:\BankDemo_FS\Repo\BNKDMFS.xml D
               waitAfterCompletion: '0'
         090-InstallBankDemoSQL:
           files:
@@ -1008,18 +892,11 @@ Resources:
                 }
           commands:
             a-CreateDSN:
-              command:
-                powershell.exe
-                  -File c:\cfn\scripts\CreateDSN.ps1
+              command: powershell.exe -File c:\cfn\scripts\CreateDSN.ps1
               waitAfterCompletion: '0'
             b-import-region:
               cwd: C:\Program Files (x86)\Micro Focus\Enterprise Server\bin
-              command:
-                start /wait
-                  mfds
-                    /g 5
-                    C:\BankDemo_SQL\BNKDMSQLRegionDefForImport\BNKDMSQL.xml
-                    D
+              command: start /wait mfds /g 5 C:\BankDemo_SQL\BNKDMSQLRegionDefForImport\BNKDMSQL.xml D
               waitAfterCompletion: '0'
         100-ChangeMFDSServiceStartName:
           files:
@@ -1043,57 +920,28 @@ Resources:
               authentication: S3AccessCreds
           commands:
             a-grant-mfds-account-logon-as-a-service:
-              command: !Sub
-                powershell.exe
-                  -File c:\cfn\scripts\Configure-UserLogonPrivileges.ps1
-                    -Username "${DomainNetBIOSName}\${MFDSServiceAccountName}"
-                    -PrivilegeName "SeServiceLogonRight"
-                    -Status Grant
+              command: !Sub powershell.exe -File c:\cfn\scripts\Configure-UserLogonPrivileges.ps1 -Username "${DomainNetBIOSName}\${MFDSServiceAccountName}" -PrivilegeName "SeServiceLogonRight" -Status Grant
               waitAfterCompletion: '0'
             b-grant-mfds-account-logon-as-batch-job:
-              command: !Sub
-                powershell.exe
-                  -File c:\cfn\scripts\Configure-UserLogonPrivileges.ps1
-                    -Username "${DomainNetBIOSName}\${MFDSServiceAccountName}"
-                    -PrivilegeName "SeBatchLogonRight"
-                    -Status Grant
+              command: !Sub powershell.exe -File c:\cfn\scripts\Configure-UserLogonPrivileges.ps1 -Username "${DomainNetBIOSName}\${MFDSServiceAccountName}" -PrivilegeName "SeBatchLogonRight" -Status Grant
               waitAfterCompletion: '0'
             c-change-mfds-service-startname:
-              command: !Sub
-                powershell.exe
-                  -File c:\cfn\scripts\Change-NTServiceStartName.ps1
-                    -ServiceName MF_CCITCP2
-                    -StartName "${DomainNetBIOSName}\${MFDSServiceAccountName}"
-                    -StartPassword ${MFDSServiceAccountPassword}
+              command: !Sub powershell.exe -File c:\cfn\scripts\Change-NTServiceStartName.ps1 -ServiceName MF_CCITCP2 -StartName "${DomainNetBIOSName}\${MFDSServiceAccountName}" -StartPassword ${MFDSServiceAccountPassword}
               waitAfterCompletion: '0'
         110-Start-BNKDMFS:
           commands:
             a-start-BNKDMFS-region:
-              command: !Sub
-                powershell.exe
-                  -File c:\cfn\scripts\Schedule-AD-PowershellTask.ps1
-                    -TaskName startBNKDMFS
-                    -TaskArguments "-File c:\cfn\scripts\StartESRegion.ps1 -RegionName BNKDMFS"
-                    -DomainUserName "${DomainNetBIOSName}\${MFDSServiceAccountName}"
-                    -DomainUserPassword "${MFDSServiceAccountPassword}"
+              command: !Sub powershell.exe -File c:\cfn\scripts\Schedule-AD-PowershellTask.ps1 -TaskName startBNKDMFS -TaskArguments "-File c:\cfn\scripts\StartESRegion.ps1 -RegionName BNKDMFS" -DomainUserName "${DomainNetBIOSName}\${MFDSServiceAccountName}" -DomainUserPassword "${MFDSServiceAccountPassword}"
               waitAfterCompletion: '0'
         120-Start-BNKDMSQL:
           commands:
             a-start-BNKDMSQL-region:
-              command: !Sub
-                powershell.exe
-                  -File c:\cfn\scripts\Schedule-AD-PowershellTask.ps1
-                    -TaskName startBNKDMSQL
-                    -TaskArguments "-File c:\cfn\scripts\StartESRegion.ps1 -RegionName BNKDMSQL"
-                    -DomainUserName "${DomainNetBIOSName}\${MFDSServiceAccountName}"
-                    -DomainUserPassword "${MFDSServiceAccountPassword}"
+              command: !Sub powershell.exe -File c:\cfn\scripts\Schedule-AD-PowershellTask.ps1 -TaskName startBNKDMSQL -TaskArguments "-File c:\cfn\scripts\StartESRegion.ps1 -RegionName BNKDMSQL" -DomainUserName "${DomainNetBIOSName}\${MFDSServiceAccountName}" -DomainUserPassword "${MFDSServiceAccountPassword}"
               waitAfterCompletion: '0'
         130-Finalize:
           commands:
             a-finalize-init:
-              command:
-                powershell.exe
-                  -Command Write-AWSQuickStartStatus
+              command: powershell.exe -Command Write-AWSQuickStartStatus
               waitAfterCompletion: '0'
     Properties:
       AvailabilityZone: !Select
@@ -1116,28 +964,6 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-${ESInstanceName}'
-      UserData: !Base64
-        'Fn::Sub':
-          - |
-            <script>
-              rem Uninstall Amazon SSM Agent and AWS CLI to allow updating
-              wmic product where "description='Amazon SSM Agent' " uninstall
-              wmic product where "description='aws-cfn-bootstrap' " uninstall
-
-              rem Install latest AWS CloudFormation Helper Scripts
-              start /wait c:\Windows\system32\msiexec /passive /qn /i https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-win64-latest.msi
-
-              rem Download and run the latest Amazon SSM Agent setup
-              powershell.exe -Command "iwr https://${QSS3Region}.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/windows_amd64/AmazonSSMAgentSetup.exe -UseBasicParsing -OutFile C:\AmazonSSMAgentSetup.exe"
-              start /wait C:\AmazonSSMAgentSetup.exe /install /quiet
-
-              rem Run cfn-init helper to process AWS::CloudFormation::Init directives
-              cfn-init.exe -v -c config -s ${AWS::StackName} --resource ESInstance --region ${AWS::Region}
-            </script>
-          - QSS3Region: !If
-              - GovCloudCondition
-              - s3-us-gov-west-1
-              - s3
   ESInstanceRecoveryAlarm:
     Type: 'AWS::CloudWatch::Alarm'
     Properties:
@@ -1165,8 +991,7 @@ Outputs:
     Value: !Ref ESInstance
   ESInstanceAZ:
     Description: >-
-      The Availability Zone where the deployed Enterprise Server instance is
-      launched.
+      The Availability Zone where the deployed Enterprise Server instance is launched.
     Value: !GetAtt ESInstance.AvailabilityZone
   ESInstancePrivateDnsName:
     Description: The private DNS name of the deployed Enterprise Server instance

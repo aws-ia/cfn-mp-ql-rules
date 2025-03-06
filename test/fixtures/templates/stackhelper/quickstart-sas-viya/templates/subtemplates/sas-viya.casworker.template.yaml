@@ -2,7 +2,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   This template deploys a SAS Cas controller or worker. This template should only be called as part of the sas-viya.template.yaml, not independently.
-
 Parameters:
   CASInstanceName:
     Type: String
@@ -35,44 +34,35 @@ Parameters:
     Type: Number
   CASLibSize:
     Type: Number
-
-
 Conditions:
   GovCloudCondition: !Equals
     - !Ref AWS::Region
     - us-gov-west-1
-
   IsI3: !Equals
     - Fn::Select:
-      - 0
-      - Fn::Split:
-        - "."
-        - Ref: CASInstanceSize
+        - 0
+        - Fn::Split:
+            - "."
+            - Ref: CASInstanceSize
     - i3
-
   IsNotI3:
     Fn::Not:
-    - Condition: IsI3
-
+      - Condition: IsI3
   CASCacheCreate: !And
-  - !Not
-    - !Equals
-      - Ref: CASCacheSize
-      - 0
-  - Condition: IsNotI3
-
+    - !Not
+      - !Equals
+        - Ref: CASCacheSize
+        - 0
+    - Condition: IsNotI3
   CASLibCreate: !Not
     - !Equals
       - Ref: CASLibSize
       - 0
-
   SNSCondition: !Not
     - !Equals
       - !Ref SNSTopicID
       - ''
-
 Resources:
-
   CASServer:
     Type: AWS::EC2::Instance
     CreationPolicy:
@@ -103,7 +93,6 @@ Resources:
               owner: ec2-user
               group: ec2-user
               authentication: S3AccessCreds
-
           commands:
             01-setup:
               command: !Sub
@@ -123,22 +112,9 @@ Resources:
       PlacementGroupName: !Ref ViyaPlacementGroupID
       SecurityGroupIds:
         - !Ref ViyaSecurityGroupID
-
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName} CAS Controller
-      UserData:
-        Fn::Base64:
-          Fn::Sub: |
-            #!/bin/bash -e
-            export PATH=$PATH:/usr/local/bin
-            curl -O https://bootstrap.pypa.io/get-pip.py && python get-pip.py &> /dev/null
-            pip install awscli==1.15.83 --ignore-installed six &> /dev/null
-            easy_install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
-            cfn-init --stack ${AWS::StackName} --resource CASServer --configsets quickstart --region ${AWS::Region}
-            # Signal the status from cfn-init
-            cfn-signal -e $? --stack ${AWS::StackName} --resource CASServer --region ${AWS::Region}
-
   CASViyaVolume:
     Type: AWS::EC2::Volume
     Properties:
@@ -146,7 +122,6 @@ Resources:
       VolumeType: gp2
       Encrypted: true
       AvailabilityZone: !GetAtt CASServer.AvailabilityZone
-
   CASViyaAttachment:
     Type: AWS::EC2::VolumeAttachment
     Properties:
@@ -154,8 +129,6 @@ Resources:
       Device: /dev/sdg
       InstanceId: !Ref CASServer
       VolumeId: !Ref CASViyaVolume
-
-
   CASLibVolume:
     Condition: CASLibCreate
     Type: AWS::EC2::Volume
@@ -164,7 +137,6 @@ Resources:
       VolumeType: gp2
       Encrypted: true
       AvailabilityZone: !GetAtt CASServer.AvailabilityZone
-
   CASLibAttachment:
     Condition: CASLibCreate
     Type: AWS::EC2::VolumeAttachment
@@ -173,8 +145,6 @@ Resources:
       Device: /dev/sdl
       InstanceId: !Ref CASServer
       VolumeId: !Ref CASLibVolume
-
-
   CASCacheVolume:
     Condition: CASCacheCreate
     Type: AWS::EC2::Volume
@@ -183,7 +153,6 @@ Resources:
       VolumeType: gp2
       Encrypted: true
       AvailabilityZone: !GetAtt CASServer.AvailabilityZone
-
   CASCacheAttachment:
     Condition: CASCacheCreate
     Type: AWS::EC2::VolumeAttachment
@@ -191,8 +160,6 @@ Resources:
       Device: /dev/sdd
       InstanceId: !Ref CASServer
       VolumeId: !Ref CASCacheVolume
-
-
   RecoveryAlarmController:
     Condition: IsNotI3
     Type: AWS::CloudWatch::Alarm
@@ -212,6 +179,6 @@ Resources:
           - !Ref SNSTopicID
           - !Ref AWS::NoValue
       Dimensions:
-      - Name: InstanceId
-        Value:
-          Ref: CASServer
+        - Name: InstanceId
+          Value:
+            Ref: CASServer

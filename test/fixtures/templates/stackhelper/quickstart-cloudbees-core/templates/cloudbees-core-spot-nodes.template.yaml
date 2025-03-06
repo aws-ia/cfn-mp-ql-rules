@@ -1,10 +1,8 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Deploys a multi-instance Spot node pool to an existing EKS Quick Start cluster (qs-1pipqrqj1)
-
 Parameters:
   KeyPairName:
-    Description: The name of an existing public/private key pair, which allows you
-      to securely connect to your instance after it launches
+    Description: The name of an existing public/private key pair, which allows you to securely connect to your instance after it launches
     Type: AWS::EC2::KeyPair::KeyName
   VPCID:
     Type: "AWS::EC2::VPC::Id"
@@ -434,9 +432,8 @@ Parameters:
     Type: String
   KubernetesVersion:
     Type: String
-    AllowedValues: [ "1.13", "1.12", "1.11" ]
+    AllowedValues: ["1.13", "1.12", "1.11"]
     Default: "1.13"
-
 Mappings:
   K8sVersionMap:
     "1.13":
@@ -449,100 +446,100 @@ Mappings:
       STD: AMZNEKS111
       GPU: AMZNEKS111GPU
   InstanceTypes:
-    t2.small: { Type: STD }
-    t2.medium: { Type: STD }
-    t2.large: { Type: STD }
-    t2.xlarge: { Type: STD }
-    t2.2xlarge: { Type: STD }
-    t3.nano: { Type: STD }
-    t3.micro: { Type: STD }
-    t3.small: { Type: STD }
-    t3.medium: { Type: STD }
-    t3.large: { Type: STD }
-    t3.xlarge: { Type: STD }
-    t3.2xlarge: { Type: STD }
-    m3.medium: { Type: STD }
-    m3.large: { Type: STD }
-    m3.xlarge: { Type: STD }
-    m3.2xlarge: { Type: STD }
-    m4.large: { Type: STD }
-    m4.xlarge: { Type: STD }
-    m4.2xlarge: { Type: STD }
-    m4.4xlarge: { Type: STD }
-    m4.10xlarge: { Type: STD }
-    m5.large: { Type: STD }
-    m5.xlarge: { Type: STD }
-    m5.2xlarge: { Type: STD }
-    m5.4xlarge: { Type: STD }
-    m5.12xlarge: { Type: STD }
-    m5.24xlarge: { Type: STD }
-    m5.metal: { Type: STD }
-    m5d.large: { Type: STD }
-    m5d.xlarge: { Type: STD }
-    m5d.2xlarge: { Type: STD }
-    m5d.4xlarge: { Type: STD }
-    m5d.12xlarge: { Type: STD }
-    m5d.24xlarge: { Type: STD }
-    m5d.metal: { Type: STD }
-    m5a.large: { Type: STD }
-    m5a.xlarge: { Type: STD }
-    m5a.2xlarge: { Type: STD }
-    m5a.4xlarge: { Type: STD }
-    m5a.12xlarge: { Type: STD }
-    m5a.24xlarge: { Type: STD }
-    c4.large: { Type: STD }
-    c4.xlarge: { Type: STD }
-    c4.2xlarge: { Type: STD }
-    c4.4xlarge: { Type: STD }
-    c4.8xlarge: { Type: STD }
-    c5.large: { Type: STD }
-    c5.xlarge: { Type: STD }
-    c5.2xlarge: { Type: STD }
-    c5.4xlarge: { Type: STD }
-    c5.9xlarge: { Type: STD }
-    c5.18xlarge: { Type: STD }
-    i3.large: { Type: STD }
-    i3.xlarge: { Type: STD }
-    i3.2xlarge: { Type: STD }
-    i3.4xlarge: { Type: STD }
-    i3.8xlarge: { Type: STD }
-    i3.16xlarge: { Type: STD }
-    r3.xlarge: { Type: STD }
-    r3.2xlarge: { Type: STD }
-    r3.4xlarge: { Type: STD }
-    r3.8xlarge: { Type: STD }
-    r4.large: { Type: STD }
-    r4.xlarge: { Type: STD }
-    r4.2xlarge: { Type: STD }
-    r4.4xlarge: { Type: STD }
-    r4.8xlarge: { Type: STD }
-    r4.16xlarge: { Type: STD }
-    x1.16xlarge: { Type: STD }
-    x1.32xlarge: { Type: STD }
-    p2.xlarge: { Type: GPU }
-    p2.8xlarge: { Type: GPU }
-    p2.16xlarge: { Type: GPU }
-    p3.2xlarge: { Type: GPU }
-    p3.8xlarge: { Type: GPU }
-    p3.16xlarge: { Type: GPU }
-    r5.large: { Type: STD }
-    r5.xlarge: { Type: STD }
-    r5.2xlarge: { Type: STD }
-    r5.4xlarge: { Type: STD }
-    r5.12xlarge: { Type: STD }
-    r5.24xlarge: { Type: STD }
-    r5d.large: { Type: STD }
-    r5d.xlarge: { Type: STD }
-    r5d.2xlarge: { Type: STD }
-    r5d.4xlarge: { Type: STD }
-    r5d.12xlarge: { Type: STD }
-    r5d.24xlarge: { Type: STD }
-    z1d.large: { Type: STD }
-    z1d.xlarge: { Type: STD }
-    z1d.2xlarge: { Type: STD }
-    z1d.3xlarge: { Type: STD }
-    z1d.6xlarge: { Type: STD }
-    z1d.12xlarge: { Type: STD }
+    t2.small: {Type: STD}
+    t2.medium: {Type: STD}
+    t2.large: {Type: STD}
+    t2.xlarge: {Type: STD}
+    t2.2xlarge: {Type: STD}
+    t3.nano: {Type: STD}
+    t3.micro: {Type: STD}
+    t3.small: {Type: STD}
+    t3.medium: {Type: STD}
+    t3.large: {Type: STD}
+    t3.xlarge: {Type: STD}
+    t3.2xlarge: {Type: STD}
+    m3.medium: {Type: STD}
+    m3.large: {Type: STD}
+    m3.xlarge: {Type: STD}
+    m3.2xlarge: {Type: STD}
+    m4.large: {Type: STD}
+    m4.xlarge: {Type: STD}
+    m4.2xlarge: {Type: STD}
+    m4.4xlarge: {Type: STD}
+    m4.10xlarge: {Type: STD}
+    m5.large: {Type: STD}
+    m5.xlarge: {Type: STD}
+    m5.2xlarge: {Type: STD}
+    m5.4xlarge: {Type: STD}
+    m5.12xlarge: {Type: STD}
+    m5.24xlarge: {Type: STD}
+    m5.metal: {Type: STD}
+    m5d.large: {Type: STD}
+    m5d.xlarge: {Type: STD}
+    m5d.2xlarge: {Type: STD}
+    m5d.4xlarge: {Type: STD}
+    m5d.12xlarge: {Type: STD}
+    m5d.24xlarge: {Type: STD}
+    m5d.metal: {Type: STD}
+    m5a.large: {Type: STD}
+    m5a.xlarge: {Type: STD}
+    m5a.2xlarge: {Type: STD}
+    m5a.4xlarge: {Type: STD}
+    m5a.12xlarge: {Type: STD}
+    m5a.24xlarge: {Type: STD}
+    c4.large: {Type: STD}
+    c4.xlarge: {Type: STD}
+    c4.2xlarge: {Type: STD}
+    c4.4xlarge: {Type: STD}
+    c4.8xlarge: {Type: STD}
+    c5.large: {Type: STD}
+    c5.xlarge: {Type: STD}
+    c5.2xlarge: {Type: STD}
+    c5.4xlarge: {Type: STD}
+    c5.9xlarge: {Type: STD}
+    c5.18xlarge: {Type: STD}
+    i3.large: {Type: STD}
+    i3.xlarge: {Type: STD}
+    i3.2xlarge: {Type: STD}
+    i3.4xlarge: {Type: STD}
+    i3.8xlarge: {Type: STD}
+    i3.16xlarge: {Type: STD}
+    r3.xlarge: {Type: STD}
+    r3.2xlarge: {Type: STD}
+    r3.4xlarge: {Type: STD}
+    r3.8xlarge: {Type: STD}
+    r4.large: {Type: STD}
+    r4.xlarge: {Type: STD}
+    r4.2xlarge: {Type: STD}
+    r4.4xlarge: {Type: STD}
+    r4.8xlarge: {Type: STD}
+    r4.16xlarge: {Type: STD}
+    x1.16xlarge: {Type: STD}
+    x1.32xlarge: {Type: STD}
+    p2.xlarge: {Type: GPU}
+    p2.8xlarge: {Type: GPU}
+    p2.16xlarge: {Type: GPU}
+    p3.2xlarge: {Type: GPU}
+    p3.8xlarge: {Type: GPU}
+    p3.16xlarge: {Type: GPU}
+    r5.large: {Type: STD}
+    r5.xlarge: {Type: STD}
+    r5.2xlarge: {Type: STD}
+    r5.4xlarge: {Type: STD}
+    r5.12xlarge: {Type: STD}
+    r5.24xlarge: {Type: STD}
+    r5d.large: {Type: STD}
+    r5d.xlarge: {Type: STD}
+    r5d.2xlarge: {Type: STD}
+    r5d.4xlarge: {Type: STD}
+    r5d.12xlarge: {Type: STD}
+    r5d.24xlarge: {Type: STD}
+    z1d.large: {Type: STD}
+    z1d.xlarge: {Type: STD}
+    z1d.2xlarge: {Type: STD}
+    z1d.3xlarge: {Type: STD}
+    z1d.6xlarge: {Type: STD}
+    z1d.12xlarge: {Type: STD}
   AWSAMIRegionMap:
     AMI:
       AMZNEKS111: amazon-eks-node-1.11-v20
@@ -642,7 +639,6 @@ Mappings:
       AMZNEKS111GPU: ami-052da6a4e0ae156ad
       AMZNEKS112: ami-0355c210cb3f58aa2
       AMZNEKS112GPU: ami-084e8e620163aa50e
-
 Resources:
   NodeSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -650,8 +646,8 @@ Resources:
       GroupDescription: Security group for all nodes in the node group
       VpcId: !Ref VPCID
       Tags:
-      - Key: !Sub "kubernetes.io/cluster/${EKSControlPlane}"
-        Value: 'owned'
+        - Key: !Sub "kubernetes.io/cluster/${EKSControlPlane}"
+          Value: 'owned'
   NodeSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -732,17 +728,17 @@ Resources:
       #PlacementGroup: String
       #ServiceLinkedRoleARN: String
       Tags:
-      - Key: Name
-        Value: !Sub "${EKSControlPlane}-${NodeGroupName}-SpotNode"
-        PropagateAtLaunch: true
-      - Key: !Sub 'kubernetes.io/cluster/${EKSControlPlane}'
-        Value: 'owned'
-        PropagateAtLaunch: true
+        - Key: Name
+          Value: !Sub "${EKSControlPlane}-${NodeGroupName}-SpotNode"
+          PropagateAtLaunch: true
+        - Key: !Sub 'kubernetes.io/cluster/${EKSControlPlane}'
+          Value: 'owned'
+          PropagateAtLaunch: true
       # TargetGroupARNs:
       #   - String
       # TerminationPolicies:
       #   - String
-      VPCZoneIdentifier: [ !Ref PrivateSubnet1ID, !Ref PrivateSubnet2ID, !Ref PrivateSubnet3ID ]
+      VPCZoneIdentifier: [!Ref PrivateSubnet1ID, !Ref PrivateSubnet2ID, !Ref PrivateSubnet3ID]
       MixedInstancesPolicy:
         LaunchTemplate:
           LaunchTemplateSpecification:
@@ -801,35 +797,33 @@ Resources:
             Description: String
             Groups:
               - !Ref NodeSecurityGroup
-            #SourceDestCheck: false
+              #SourceDestCheck: false
         ImageId: !FindInMap
-        - AWSAMIRegionMap
-        - !Ref "AWS::Region"
-        - !FindInMap
-          - K8sVersionMap
-          - !Ref KubernetesVersion
+          - AWSAMIRegionMap
+          - !Ref "AWS::Region"
           - !FindInMap
-            - InstanceTypes
-            - !Ref SpotNodeInstanceType1
-            - Type
+            - K8sVersionMap
+            - !Ref KubernetesVersion
+            - !FindInMap
+              - InstanceTypes
+              - !Ref SpotNodeInstanceType1
+              - Type
         InstanceType: !Ref SpotNodeInstanceType1
         #RamDiskId: String
         #Monitoring: Monitoring
         #CreditSpecification: CreditSpecification
-          #CpuCredits: The credit option for CPU usage of a T2 instance. Valid values include standard and unlimited.
+        #CpuCredits: The credit option for CPU usage of a T2 instance. Valid values include standard and unlimited.
         UserData:
-          Fn::Base64:
-            !Sub |
-              #!/bin/bash
-              set -o xtrace
-              /etc/eks/bootstrap.sh ${EKSControlPlane} --kubelet-extra-args \
-                '--node-labels=partition=spot-agents \
-                --register-with-taints=partition=spot-agents:NoSchedule' \
-              /opt/aws/bin/cfn-signal --exit-code $? \
-                    --stack  ${AWS::StackName} \
-                    --resource NodeGroup  \
-                    --region ${AWS::Region}
-
+          Fn::Base64: !Sub |
+            #!/bin/bash
+            set -o xtrace
+            /etc/eks/bootstrap.sh ${EKSControlPlane} --kubelet-extra-args \
+              '--node-labels=partition=spot-agents \
+              --register-with-taints=partition=spot-agents:NoSchedule' \
+            /opt/aws/bin/cfn-signal --exit-code $? \
+                  --stack  ${AWS::StackName} \
+                  --resource NodeGroup  \
+                  --region ${AWS::Region}
 Outputs:
   EKSNodeSecurityGroup:
     Value: !Ref NodeSecurityGroup

@@ -40,8 +40,7 @@ Parameters:
     Type: String
   DNSName:
     Default: ''
-    Description: DNS Name for the magento site, you should create an alias for the
-      ELB after the stack creation
+    Description: DNS Name for the magento site, you should create an alias for the ELB after the stack creation
     Type: String
   EFSSecurityGroup:
     Description: EFS Security Group
@@ -56,8 +55,7 @@ Parameters:
   ElasticLoadBalancerSubnets:
     ConstraintDescription: Must be list of existing Public subnet IDs
     Default: ''
-    Description: A list of public subnet identifiers of Amazon VPCs where the Elastic
-      Load Balancer would be launched.
+    Description: A list of public subnet identifiers of Amazon VPCs where the Elastic Load Balancer would be launched.
     Type: List<AWS::EC2::Subnet::Id>
   KeyPair:
     ConstraintDescription: Must be the name of an existing EC2 KeyPair.
@@ -94,22 +92,15 @@ Parameters:
     Type: String
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-      (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
-    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
-      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
-      It cannot start or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-magento/
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
   SSLCertificateId:
     Default: 'none'
@@ -124,38 +115,38 @@ Parameters:
     Type: Number
   WebServerInstanceType:
     AllowedValues:
-    - t2.micro
-    - t2.small
-    - t2.medium
-    - t2.large
-    - m4.large
-    - m4.xlarge
-    - m4.2xlarge
-    - m4.4xlarge
-    - m4.10xlarge
-    - m3.medium
-    - m3.large
-    - m3.xlarge
-    - m3.2xlarge
-    - c4.large
-    - c4.xlarge
-    - c4.2xlarge
-    - c4.4xlarge
-    - c4.8xlarge
-    - c3.large
-    - c3.xlarge
-    - c3.2xlarge
-    - c3.4xlarge
-    - c3.8xlarge
-    - r3.large
-    - r3.xlarge
-    - r3.2xlarge
-    - r3.4xlarge
-    - r3.8xlarge
-    - i2.xlarge
-    - i2.2xlarge
-    - i2.4xlarge
-    - i2.8xlarge
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t2.large
+      - m4.large
+      - m4.xlarge
+      - m4.2xlarge
+      - m4.4xlarge
+      - m4.10xlarge
+      - m3.medium
+      - m3.large
+      - m3.xlarge
+      - m3.2xlarge
+      - c4.large
+      - c4.xlarge
+      - c4.2xlarge
+      - c4.4xlarge
+      - c4.8xlarge
+      - c3.large
+      - c3.xlarge
+      - c3.2xlarge
+      - c3.4xlarge
+      - c3.8xlarge
+      - r3.large
+      - r3.xlarge
+      - r3.2xlarge
+      - r3.4xlarge
+      - r3.8xlarge
+      - i2.xlarge
+      - i2.2xlarge
+      - i2.4xlarge
+      - i2.8xlarge
     ConstraintDescription: Choose an instance type.
     Default: m4.large
     Description: Web Server node instance type
@@ -174,17 +165,14 @@ Parameters:
   WebServerSubnets:
     ConstraintDescription: must be list of existing subnet Ids
     Default: ''
-    Description: A list of subnet identifiers of Amazon VPCs where the WebServer Autoscaling
-      would be launched.
+    Description: A list of subnet identifiers of Amazon VPCs where the WebServer Autoscaling would be launched.
     Type: List<AWS::EC2::Subnet::Id>
 Conditions:
-  UseSSL:
-    !Not
+  UseSSL: !Not
     - !Equals
       - !Ref SSLCertificateId
       - ''
-  UseELBName:
-    !Equals
+  UseELBName: !Equals
     - !Ref DNSName
     - ''
 Resources:
@@ -194,28 +182,26 @@ Resources:
       PerformanceMode: generalPurpose
       Encrypted: true
       FileSystemTags:
-      - Key: Name
-        Value: EFS AWS Quick Start
+        - Key: Name
+          Value: EFS AWS Quick Start
   MountTarget1:
     Type: AWS::EFS::MountTarget
     Properties:
       FileSystemId: !Ref FileSystem
-      SubnetId:
-        !Select
+      SubnetId: !Select
         - '0'
         - !Ref WebServerSubnets
       SecurityGroups:
-      - !Ref EFSSecurityGroup
+        - !Ref EFSSecurityGroup
   MountTarget2:
     Type: AWS::EFS::MountTarget
     Properties:
       FileSystemId: !Ref FileSystem
-      SubnetId:
-        !Select
+      SubnetId: !Select
         - '1'
         - !Ref WebServerSubnets
       SecurityGroups:
-      - !Ref EFSSecurityGroup
+        - !Ref EFSSecurityGroup
   MagentoMainLogGroup:
     Type: AWS::Logs::LogGroup
   NewIamInstanceRole:
@@ -223,34 +209,34 @@ Resources:
     Properties:
       AssumeRolePolicyDocument:
         Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - ec2.amazonaws.com
-          Action:
-          - sts:AssumeRole
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
       Path: /
       Policies:
-      - PolicyDocument:
-          Statement:
-          - Effect: Allow
-            Action:
-            - logs:CreateLogGroup
-            - logs:CreateLogStream
-            - logs:PutLogEvents
-            - logs:DescribeLogStreams
-            Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${MagentoMainLogGroup}:*
-          - Effect: Allow
-            Action:
-            - s3:GetObject
-            Resource: '*'
-        PolicyName: Instance-Limited-Role
+        - PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - logs:DescribeLogStreams
+                Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${MagentoMainLogGroup}:*
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                Resource: '*'
+          PolicyName: Instance-Limited-Role
   NewIamInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
-      - !Ref NewIamInstanceRole
+        - !Ref NewIamInstanceRole
   MagentoAMIWaitHandle:
     Type: AWS::CloudFormation::WaitConditionHandle
   MagentoAMIWaitCondition:
@@ -262,8 +248,8 @@ Resources:
   MagentoAMI:
     Type: AWS::EC2::Instance
     DependsOn:
-    - MountTarget1
-    - MountTarget2
+      - MountTarget1
+      - MountTarget2
     Metadata:
       Comment: Install a Magento web server
       AWS::CloudFormation::Authentication:
@@ -331,8 +317,7 @@ Resources:
               group: root
               authentication: S3AccessCreds
             /tmp/params.txt:
-              content:
-                !Sub
+              content: !Sub
                 - |
                   MySQLEndPointAddress|${MySQLEndPointAddress}
                   DBMasterUsername|${DBMasterUsername}
@@ -352,8 +337,7 @@ Resources:
                   MagentoLanguage|${MagentoLanguage}
                   MagentoCurrency|${MagentoCurrency}
                   MagentoTimezone|${MagentoTimezone}
-                - Param1:
-                    !If
+                - Param1: !If
                     - UseELBName
                     - !GetAtt ApplicationLoadBalancer.DNSName
                     - !Ref DNSName
@@ -366,67 +350,58 @@ Resources:
                 enabled: 'true'
                 ensureRunning: 'true'
                 files:
-                - /etc/cfn/cfn-hup.conf
-                - /etc/cfn/hooks.d/cfn-auto-reloader.conf
+                  - /etc/cfn/cfn-hup.conf
+                  - /etc/cfn/hooks.d/cfn-auto-reloader.conf
               awslogs:
                 enabled: 'true'
                 ensureRunning: 'true'
                 files:
-                - /etc/awslogs/awslogs.conf
+                  - /etc/awslogs/awslogs.conf
                 packages:
                   yum:
-                  - awslogs
+                    - awslogs
     Properties:
       KeyName: !Ref KeyPair
       IamInstanceProfile: !Ref NewIamInstanceProfile
       ImageId: !Ref AmazonLinuxAMI
       InstanceType: !Ref WebServerInstanceType
-      SubnetId:
-        !Select
+      SubnetId: !Select
         - '0'
         - !Ref WebServerSubnets
       SecurityGroupIds:
-      - !Ref WebServerSecurityGroup
-      UserData:
-        !Base64
-          Fn::Sub: |
-            #!/bin/bash
-            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource MagentoAMI  --region ${AWS::Region}
-            chmod a+x install_magento.sh
-            ./install_magento.sh /tmp/params.txt
-            /opt/aws/bin/cfn-signal -e $? -d "`cat /home/ec2-user/adminuri`" -r "Build Process Complete" '${MagentoAMIWaitHandle}'
+        - !Ref WebServerSecurityGroup
       Tags:
-      - Key: Application
-        Value: AWS Quick Start (Magento)
-      - Key: Name
-        Value: MagentoAMI (AWS Quick Start)
+        - Key: Application
+          Value: AWS Quick Start (Magento)
+        - Key: Name
+          Value: MagentoAMI (AWS Quick Start)
   AMIInfoFunctionExecutionRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - lambda.amazonaws.com
-          Action:
-          - sts:AssumeRole
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
       Path: /
       Policies:
-      - PolicyName: root
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-          - Effect: Allow
-            Action:
-            - ec2:Describe*
-            - ec2:StopInstances
-            - ec2:CreateImage
-            - ec2:DeregisterImage
-            Resource: '*'
+        - PolicyName: root
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ec2:Describe*
+                  - ec2:StopInstances
+                  - ec2:CreateImage
+                  - ec2:DeregisterImage
+                Resource: '*'
       ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
   AMIInfoFunction:
     Type: AWS::Lambda::Function
     Properties:
@@ -500,8 +475,8 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       Subscription:
-      - Endpoint: !Ref NotificationEmail
-        Protocol: email
+        - Endpoint: !Ref NotificationEmail
+          Protocol: email
   WebServerASG:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -510,35 +485,28 @@ Resources:
       MaxSize: !Ref WebServerMaxSize
       DesiredCapacity: !Ref WebServerDesiredCapacity
       TargetGroupARNs:
-      - !Ref ALBTargetGroup
+        - !Ref ALBTargetGroup
       VPCZoneIdentifier: !Ref WebServerSubnets
       NotificationConfigurations:
-      - TopicARN: !Ref NotificationTopic
-        NotificationTypes:
-        - autoscaling:EC2_INSTANCE_LAUNCH
-        - autoscaling:EC2_INSTANCE_LAUNCH_ERROR
-        - autoscaling:EC2_INSTANCE_TERMINATE
-        - autoscaling:EC2_INSTANCE_TERMINATE_ERROR
+        - TopicARN: !Ref NotificationTopic
+          NotificationTypes:
+            - autoscaling:EC2_INSTANCE_LAUNCH
+            - autoscaling:EC2_INSTANCE_LAUNCH_ERROR
+            - autoscaling:EC2_INSTANCE_TERMINATE
+            - autoscaling:EC2_INSTANCE_TERMINATE_ERROR
       Tags:
-      - Key: Name
-        Value: !Sub ${AWS::StackName}-Web Server
-        PropagateAtLaunch: true
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-Web Server
+          PropagateAtLaunch: true
   WebServerLC:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       ImageId: !GetAtt CreateAMI.ami
       InstanceType: !Ref WebServerInstanceType
       SecurityGroups:
-      - !Ref WebServerSecurityGroup
+        - !Ref WebServerSecurityGroup
       IamInstanceProfile: !Ref NewIamInstanceProfile
       KeyName: !Ref KeyPair
-      UserData:
-        !Base64
-          Fn::Sub: |
-            #cloud-config
-            runcmd:
-            - echo "${FileSystem}.efs.${AWS::Region}.amazonaws.com:/    /var/www/html/pub/media   nfs4    defaults" >> /etc/fstab
-            - mount -a
   WebServerTargetTrackingScalingPolicy:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
@@ -556,34 +524,30 @@ Resources:
       Scheme: internet-facing
       Subnets: !Ref ElasticLoadBalancerSubnets
       SecurityGroups:
-      - !Ref ELBSecurityGroup
+        - !Ref ELBSecurityGroup
       Tags:
-      - Key: Name
-        Value: MagentoWebserverALB
+        - Key: Name
+          Value: MagentoWebserverALB
   ALBTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       HealthCheckIntervalSeconds: 30
       HealthCheckPath: /health
-      HealthCheckPort:
-        !If
+      HealthCheckPort: !If
         - UseSSL
         - '443'
         - '80'
-      HealthCheckProtocol:
-        !If
+      HealthCheckProtocol: !If
         - UseSSL
         - HTTPS
         - HTTP
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
-      Port:
-        !If
+      Port: !If
         - UseSSL
         - 443
         - 80
-      Protocol:
-        !If
+      Protocol: !If
         - UseSSL
         - HTTPS
         - HTTP
@@ -591,58 +555,51 @@ Resources:
       VpcId:
         Ref: VPCID
       TargetGroupAttributes:
-      - Key: stickiness.enabled
-        Value: 'true'
-      - Key: stickiness.type
-        Value: lb_cookie
-      - Key: stickiness.lb_cookie.duration_seconds
-        Value: '30'
+        - Key: stickiness.enabled
+          Value: 'true'
+        - Key: stickiness.type
+          Value: lb_cookie
+        - Key: stickiness.lb_cookie.duration_seconds
+          Value: '30'
   ALBListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       Certificates:
-      - !If
-        - UseSSL
-        - CertificateArn: !Ref SSLCertificateId
-        - !Ref AWS::NoValue
+        - !If
+          - UseSSL
+          - CertificateArn: !Ref SSLCertificateId
+          - !Ref AWS::NoValue
       DefaultActions:
-      - Type: forward
-        TargetGroupArn: !Ref ALBTargetGroup
+        - Type: forward
+          TargetGroupArn: !Ref ALBTargetGroup
       LoadBalancerArn: !Ref ApplicationLoadBalancer
-      Port:
-        !If
+      Port: !If
         - UseSSL
         - 443
         - 80
-      Protocol:
-        !If
+      Protocol: !If
         - UseSSL
         - HTTPS
         - HTTP
 Outputs:
   URL:
     Description: The URL of the website
-    Value:
-      !Sub
+    Value: !Sub
       - ${Param1}://${Param2}
-      - Param2:
-          !If
+      - Param2: !If
           - UseELBName
           - !GetAtt ApplicationLoadBalancer.DNSName
           - !Ref DNSName
-        Param1:
-          !If
+        Param1: !If
           - UseSSL
           - https
           - http
   ELBURL:
-    Description: The URL of the ELB, you should create a CNAME or alias to this name
-      if you specified a DNS name
+    Description: The URL of the ELB, you should create a CNAME or alias to this name if you specified a DNS name
     Value: !GetAtt ApplicationLoadBalancer.DNSName
   AdminURL:
     Description: Admin path
-    Value:
-      !Select
+    Value: !Select
       - '0'
       - !Split
         - '"'
@@ -651,4 +608,3 @@ Outputs:
           - !Split
             - ':'
             - !GetAtt MagentoAMIWaitCondition.Data
-...

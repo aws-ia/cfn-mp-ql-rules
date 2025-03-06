@@ -68,7 +68,6 @@ Metadata:
         Parameters:
           - QSS3BucketName
           - QSS3KeyPrefix
-
     ParameterLabels:
       BitbucketProperties:
         default: Bitbucket properties
@@ -150,7 +149,6 @@ Metadata:
         default: Quick Start S3 Bucket Name
       QSS3KeyPrefix:
         default: Quick Start S3 Key Prefix
-
 Parameters:
   BitbucketProperties:
     Default: ''
@@ -508,90 +506,53 @@ Parameters:
   QSS3BucketName:
     Default: 'aws-quickstart'
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-      (-).
-    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
-      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
-      It cannot start or end with a hyphen (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     Default: 'quickstart-atlassian-bitbucket/'
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/).
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
-
 Conditions:
-  DBProvisionedIops:
-    !Equals [!Ref DBStorageType, Provisioned IOPS]
-  EnableCloudWatch:
-    !Not [!Equals [!Ref CloudWatchIntegration, 'Off']]
-  EnableCloudWatchLogs:
-    !Equals [!Ref CloudWatchIntegration, 'Metrics and Logs']
-  RestoreFromEBSSnapshot:
-    !Not [!Equals [!Ref HomeVolumeSnapshotId, '']]
-  RestoreFromRDSSnapshot:
-    !Not [!Equals [!Ref DBSnapshotId, '']]
-  RestoreFromESSnapshot:
-    !And
+  DBProvisionedIops: !Equals [!Ref DBStorageType, Provisioned IOPS]
+  EnableCloudWatch: !Not [!Equals [!Ref CloudWatchIntegration, 'Off']]
+  EnableCloudWatchLogs: !Equals [!Ref CloudWatchIntegration, 'Metrics and Logs']
+  RestoreFromEBSSnapshot: !Not [!Equals [!Ref HomeVolumeSnapshotId, '']]
+  RestoreFromRDSSnapshot: !Not [!Equals [!Ref DBSnapshotId, '']]
+  RestoreFromESSnapshot: !And
     - !Not [!Equals [!Ref ESSnapshotId, '']]
     - Condition: ESBucketNameSet
-  CreateESBucket:
-    !And
+  CreateESBucket: !And
     - !Equals [!Ref CreateBucket, 'true']
     - !And
-      - !Not [Condition: RestoreFromESSnapshot]
+      - !Not [{Condition: RestoreFromESSnapshot}]
       - Condition: ESBucketNameSet
-  ESBucketNameSet:
-    !Not [!Equals [!Ref ESBucketName, '']]
-  StandbyMode:
-    !Not [!Equals [!Ref DBMaster, '']]
-  UseCustomDnsName:
-    !Not [!Equals [!Ref CustomDnsName, '']]
-  DoSSL:
-    !Not [!Equals [!Ref SSLCertificateARN, '']]
-  NotStandbyMode:
-    !Equals [!Ref DBMaster, '']
-  KeyProvided:
-    !Not [!Equals [!Ref KeyPairName, '']]
-  IsHomeProvisionedIops:
-    !Equals [!Ref HomeVolumeType, Provisioned IOPS]
-  IsVersion5X:
-    !Equals ['5', !Select [0, !Split ['.', !Ref BitbucketVersion]]]
-  IsVersionX0:
-    !Equals ['0', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
-  IsVersionX1:
-    !Equals ['1', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
-  IsVersionX2:
-    !Equals ['2', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
-  IsVersionX3:
-    !Equals ['3', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
-  IsVersionX4:
-    !Equals ['4', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
-  IsVersionX5:
-    !Equals ['5', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
-  IsVersionX6:
-    !Equals ['6', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
-  ShouldUseES23:
-    !And [Condition: IsVersion5X, !Or [Condition: IsVersionX0, Condition: IsVersionX1, Condition: IsVersionX2, Condition: IsVersionX3, Condition: IsVersionX4, Condition: IsVersionX5, Condition: IsVersionX6]]
-  RestoreRDSOrStandby:
-    !Or [Condition: RestoreFromRDSSnapshot, Condition: StandbyMode]
-  SetDBMasterUserAndPassword:
-    !And [!Not [!Equals [!Ref DBMasterUserPassword, '']], Condition: NotStandbyMode]
-  UsePublicIp:
-    !Equals [!Ref InternetFacingLoadBalancer, 'true']
+  ESBucketNameSet: !Not [!Equals [!Ref ESBucketName, '']]
+  StandbyMode: !Not [!Equals [!Ref DBMaster, '']]
+  UseCustomDnsName: !Not [!Equals [!Ref CustomDnsName, '']]
+  DoSSL: !Not [!Equals [!Ref SSLCertificateARN, '']]
+  NotStandbyMode: !Equals [!Ref DBMaster, '']
+  KeyProvided: !Not [!Equals [!Ref KeyPairName, '']]
+  IsHomeProvisionedIops: !Equals [!Ref HomeVolumeType, Provisioned IOPS]
+  IsVersion5X: !Equals ['5', !Select [0, !Split ['.', !Ref BitbucketVersion]]]
+  IsVersionX0: !Equals ['0', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
+  IsVersionX1: !Equals ['1', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
+  IsVersionX2: !Equals ['2', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
+  IsVersionX3: !Equals ['3', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
+  IsVersionX4: !Equals ['4', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
+  IsVersionX5: !Equals ['5', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
+  IsVersionX6: !Equals ['6', !Select [1, !Split ['.', !Ref BitbucketVersion]]]
+  ShouldUseES23: !And [{Condition: IsVersion5X}, !Or [{Condition: IsVersionX0}, {Condition: IsVersionX1}, {Condition: IsVersionX2}, {Condition: IsVersionX3}, {Condition: IsVersionX4}, {Condition: IsVersionX5}, {Condition: IsVersionX6}]]
+  RestoreRDSOrStandby: !Or [{Condition: RestoreFromRDSSnapshot}, {Condition: StandbyMode}]
+  SetDBMasterUserAndPassword: !And [!Not [!Equals [!Ref DBMasterUserPassword, '']], {Condition: NotStandbyMode}]
+  UsePublicIp: !Equals [!Ref InternetFacingLoadBalancer, 'true']
   GovCloudCondition: !Equals
     - !Ref 'AWS::Region'
     - us-gov-west-1
-  DBEngineAurora:
-    !Equals [!Ref DBEngine, "Amazon Aurora PostgreSQL"]
-  DBEnginePostgres:
-    !Equals [!Ref DBEngine, "PostgreSQL"]
-
+  DBEngineAurora: !Equals [!Ref DBEngine, "Amazon Aurora PostgreSQL"]
+  DBEnginePostgres: !Equals [!Ref DBEngine, "PostgreSQL"]
 Mappings:
   AWSRegionArch2AMI:
     ap-northeast-1:
@@ -642,7 +603,6 @@ Mappings:
     us-west-2:
       HVM64: ami-082b5a644766e0e6f
       HVMG2: NOT_SUPPORTED
-
 Resources:
   BitbucketFileServerRole:
     Type: AWS::IAM::Role
@@ -698,8 +658,8 @@ Resources:
                     - 's3:ListBucket'
                     - 's3:PutObject'
                   Resource:
-                    - !Sub ["arn:aws:s3:::${BucketName}", BucketName: !Ref ESBucketName]
-                    - !Sub ["arn:aws:s3:::${BucketName}/*", BucketName: !Ref ESBucketName]
+                    - !Sub ["arn:aws:s3:::${BucketName}", {BucketName: !Ref ESBucketName}]
+                    - !Sub ["arn:aws:s3:::${BucketName}/*", {BucketName: !Ref ESBucketName}]
                 - !Ref "AWS::NoValue"
   BitbucketClusterNodeRole:
     Type: AWS::IAM::Role
@@ -740,10 +700,10 @@ Resources:
       MinSize: !If [StandbyMode, '0', !Ref ClusterNodeMin]
       MaxSize: !Ref ClusterNodeMax
       LoadBalancerNames: [!Ref LoadBalancer]
-      VPCZoneIdentifier: !Select [0, [!Split [ ',', !ImportValue ATL-PriNets]]]
+      VPCZoneIdentifier: !Select [0, [!Split [',', !ImportValue ATL-PriNets]]]
       Tags:
         - Key: Name
-          Value: !Sub ["${StackName} Bitbucket Node", StackName: !Ref 'AWS::StackName']
+          Value: !Sub ["${StackName} Bitbucket Node", {StackName: !Ref 'AWS::StackName'}]
           PropagateAtLaunch: true
         - Key: Cluster
           Value: !Ref AWS::StackName
@@ -755,57 +715,53 @@ Resources:
         config:
           files:
             /etc/atl:
-              content:
-                !Join
+              content: !Join
                 - "\n"
-                -
-                  - "ATL_PRODUCT=bitbucket"
+                - - "ATL_PRODUCT=bitbucket"
                   - "ATL_APP_DATA_MOUNT_ENABLED=false"
                   - ""
-                  - !Sub ["ATL_PRODUCT_VERSION=${BitbucketVersion}", BitbucketVersion: !Ref BitbucketVersion]
-                  - !Sub ["ATL_PROXY_NAME=${AtlProxyName}", AtlProxyName: !If [UseCustomDnsName, !Ref CustomDnsName, !GetAtt LoadBalancer.DNSName]]
-                  - !Sub ["ATL_FILESERVER_IP=${FileServerPrivateIp}", FileServerPrivateIp: !GetAtt FileServer.PrivateIp]
-                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY=${DeployRepository}", DeployRepository: !Ref "DeploymentAutomationRepository"]
-                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_BRANCH=${DeployRepositoryBranch}", DeployRepositoryBranch: !Ref "DeploymentAutomationBranch"]
-                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_PLAYBOOK=${DeployRepositoryPlaybook}", DeployRepositoryPlaybook: !Ref "DeploymentAutomationPlaybook"]
-                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_KEYNAME=${DeployRepositoryKeyName}", DeployRepositoryKeyName: !Ref "DeploymentAutomationKeyName"]
-                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_CUSTOM_PARAMS='${DeployRepositoryCustomParams}'", DeployRepositoryCustomParams: !Ref "DeploymentAutomationCustomParams"]
+                  - !Sub ["ATL_PRODUCT_VERSION=${BitbucketVersion}", {BitbucketVersion: !Ref BitbucketVersion}]
+                  - !Sub ["ATL_PROXY_NAME=${AtlProxyName}", {AtlProxyName: !If [UseCustomDnsName, !Ref CustomDnsName, !GetAtt LoadBalancer.DNSName]}]
+                  - !Sub ["ATL_FILESERVER_IP=${FileServerPrivateIp}", {FileServerPrivateIp: !GetAtt FileServer.PrivateIp}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY=${DeployRepository}", {DeployRepository: !Ref "DeploymentAutomationRepository"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_BRANCH=${DeployRepositoryBranch}", {DeployRepositoryBranch: !Ref "DeploymentAutomationBranch"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_PLAYBOOK=${DeployRepositoryPlaybook}", {DeployRepositoryPlaybook: !Ref "DeploymentAutomationPlaybook"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_KEYNAME=${DeployRepositoryKeyName}", {DeployRepositoryKeyName: !Ref "DeploymentAutomationKeyName"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_CUSTOM_PARAMS='${DeployRepositoryCustomParams}'", {DeployRepositoryCustomParams: !Ref "DeploymentAutomationCustomParams"}]
                   - ""
-                  - !Sub ["ATL_JVM_HEAP=${JvmHeapOverride}", JvmHeapOverride: !Ref "JvmHeapOverride"]
-                  - !Sub ["ATL_JVM_OPTS=${JvmSupportOpts}", JvmSupportOpts: !Ref "JvmSupportOpts"]
+                  - !Sub ["ATL_JVM_HEAP=${JvmHeapOverride}", {JvmHeapOverride: !Ref "JvmHeapOverride"}]
+                  - !Sub ["ATL_JVM_OPTS=${JvmSupportOpts}", {JvmSupportOpts: !Ref "JvmSupportOpts"}]
                   - ""
-                  - !Sub ["ATL_AWS_REGION=${Region}", Region: !Ref "AWS::Region"]
-                  - !Sub ["ATL_AWS_STACK_NAME=${StackName}", StackName: !Ref "AWS::StackName"]
-                  - !Sub ["ATL_AWS_IAM_ROLE=${Role}", Role: !Ref BitbucketClusterNodeRole]
-                  - !Sub ["ATL_AWS_IAM_ROLE_ARN=${Role}", Role: !GetAtt BitbucketFileServerRole.Arn]
+                  - !Sub ["ATL_AWS_REGION=${Region}", {Region: !Ref "AWS::Region"}]
+                  - !Sub ["ATL_AWS_STACK_NAME=${StackName}", {StackName: !Ref "AWS::StackName"}]
+                  - !Sub ["ATL_AWS_IAM_ROLE=${Role}", {Role: !Ref BitbucketClusterNodeRole}]
+                  - !Sub ["ATL_AWS_IAM_ROLE_ARN=${Role}", {Role: !GetAtt BitbucketFileServerRole.Arn}]
                   - ""
                   - "ATL_JDBC_DB_NAME=bitbucket"
                   - "ATL_JDBC_DRIVER=org.postgresql.Driver"
                   - "ATL_JDBC_USER=atlbitbucket"
-                  - !Sub ["ATL_JDBC_PASSWORD='${DBPassword}'", DBPassword: !Ref DBPassword]
-                  - !Sub ["ATL_DB_ROOT_PASSWORD='${DBMasterUserPassword}'", DBMasterUserPassword: !Ref DBMasterUserPassword]
-                  - !Sub ["ATL_DB_ENGINE=${DBEngine}", DBEngine: !If [DBEngineAurora, aurora_postgres, !If [DBEnginePostgres, rds_postgres, '']]]
-                  - !Sub ["ATL_DB_HOST=${DBEndpointAddress}", DBEndpointAddress: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointAddress, !GetAtt DB.Endpoint.Address]]
-                  - !Sub ["ATL_DB_PORT=${DBEndpointPort}", DBEndpointPort: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointPort, !GetAtt DB.Endpoint.Port]]
-                  - !Sub ["ATL_JDBC_URL=jdbc:postgresql://${DBEndpointAddress}:${DBEndpointPort}/bitbucket", { DBEndpointAddress: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointAddress, !GetAtt DB.Endpoint.Address], DBEndpointPort: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointPort, !GetAtt DB.Endpoint.Port]}]
+                  - !Sub ["ATL_JDBC_PASSWORD='${DBPassword}'", {DBPassword: !Ref DBPassword}]
+                  - !Sub ["ATL_DB_ROOT_PASSWORD='${DBMasterUserPassword}'", {DBMasterUserPassword: !Ref DBMasterUserPassword}]
+                  - !Sub ["ATL_DB_ENGINE=${DBEngine}", {DBEngine: !If [DBEngineAurora, aurora_postgres, !If [DBEnginePostgres, rds_postgres, '']]}]
+                  - !Sub ["ATL_DB_HOST=${DBEndpointAddress}", {DBEndpointAddress: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointAddress, !GetAtt DB.Endpoint.Address]}]
+                  - !Sub ["ATL_DB_PORT=${DBEndpointPort}", {DBEndpointPort: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointPort, !GetAtt DB.Endpoint.Port]}]
+                  - !Sub ["ATL_JDBC_URL=jdbc:postgresql://${DBEndpointAddress}:${DBEndpointPort}/bitbucket", {DBEndpointAddress: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointAddress, !GetAtt DB.Endpoint.Address], DBEndpointPort: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointPort, !GetAtt DB.Endpoint.Port]}]
                   - ""
-                  - !Sub ["ATL_RDS_INSTANCE_ID=${DB}", DB: !If [ DBEngineAurora, !Ref "DBCluster", !Ref "DB"]]
-                  - !Sub ["ATL_RDS_INSTANCE_CLASS=${DBInstanceClass}", DBInstanceClass: !Ref "DBInstanceClass"]
-                  - !Sub ["ATL_RDS_MULTI_AZ=${DBMultiAZ}", DBMultiAZ: !Ref "DBMultiAZ"]
-                  - !Sub ["ATL_RDS_SUBNET_GROUP_NAME=${DBSubnetGroup}", DBSubnetGroup: !If [ DBEnginePostgres, !Ref "DBSubnetGroup", '']]
-                  - !Sub ["ATL_RDS_SECURITY_GROUP=${SecurityGroup}", SecurityGroup: !Ref "SecurityGroup"]
+                  - !Sub ["ATL_RDS_INSTANCE_ID=${DB}", {DB: !If [DBEngineAurora, !Ref "DBCluster", !Ref "DB"]}]
+                  - !Sub ["ATL_RDS_INSTANCE_CLASS=${DBInstanceClass}", {DBInstanceClass: !Ref "DBInstanceClass"}]
+                  - !Sub ["ATL_RDS_MULTI_AZ=${DBMultiAZ}", {DBMultiAZ: !Ref "DBMultiAZ"}]
+                  - !Sub ["ATL_RDS_SUBNET_GROUP_NAME=${DBSubnetGroup}", {DBSubnetGroup: !If [DBEnginePostgres, !Ref "DBSubnetGroup", '']}]
+                  - !Sub ["ATL_RDS_SECURITY_GROUP=${SecurityGroup}", {SecurityGroup: !Ref "SecurityGroup"}]
                   - ""
-                  - !Sub ["ATL_NFS_DISK_VOLUME_TYPE=${VolType}", VolType: !If [IsHomeProvisionedIops, "io1", "gp2"]]
-                  - !Sub ["ATL_NFS_DISK_VOLUME_IOPS=${VolIOPs}", VolIOPs: !If [IsHomeProvisionedIops, !Ref "HomeIops", ""]]
+                  - !Sub ["ATL_NFS_DISK_VOLUME_TYPE=${VolType}", {VolType: !If [IsHomeProvisionedIops, "io1", "gp2"]}]
+                  - !Sub ["ATL_NFS_DISK_VOLUME_IOPS=${VolIOPs}", {VolIOPs: !If [IsHomeProvisionedIops, !Ref "HomeIops", ""]}]
                   - ""
-                  - !Sub ["ATL_ELASTICSEARCH_HOST=${ESEndpoint}", ESEndpoint: !GetAtt Elasticsearch.DomainEndpoint]
-                  - !Sub ["ATL_ELASTICSEARCH_ENDPOINT=http://${ESEndpoint}", ESEndpoint: !GetAtt Elasticsearch.DomainEndpoint]
-                  - !Sub ["ATL_BITBUCKET_PROPERTIES=\"${BitbucketProperties}\"", BitbucketProperties: !Join ["\\\n", !Ref BitbucketProperties]]
+                  - !Sub ["ATL_ELASTICSEARCH_HOST=${ESEndpoint}", {ESEndpoint: !GetAtt Elasticsearch.DomainEndpoint}]
+                  - !Sub ["ATL_ELASTICSEARCH_ENDPOINT=http://${ESEndpoint}", {ESEndpoint: !GetAtt Elasticsearch.DomainEndpoint}]
+                  - !Sub ["ATL_BITBUCKET_PROPERTIES=\"${BitbucketProperties}\"", {BitbucketProperties: !Join ["\\\n", !Ref BitbucketProperties]}]
                   - !If [DoSSL, "ATL_SSL_PROXY=true", !Ref "AWS::NoValue"]
-
-                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH=${EnableCW}", EnableCW: !If [EnableCloudWatch, true, false]]
-                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH_LOGS=${EnableCWLogs}", EnableCWLogs: !If [EnableCloudWatchLogs, true, false]]
-
+                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH=${EnableCW}", {EnableCW: !If [EnableCloudWatch, true, false]}]
+                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH_LOGS=${EnableCWLogs}", {EnableCWLogs: !If [EnableCloudWatchLogs, true, false]}]
             /opt/atlassian/bin/clone_deployment_repo:
               content: !Sub |
                 #!/bin/bash
@@ -828,7 +784,6 @@ Resources:
               mode: "000750"
               owner: root
               group: root
-
           commands:
             070_create_atl_dir:
               test: "test ! -d /opt/atlassian/"
@@ -845,29 +800,16 @@ Resources:
               command: !Sub |
                 cd /opt/atlassian/dc-deployments-automation/ && ./bin/install-ansible && ./bin/ansible-with-atl-env inv/aws_node_local ${DeploymentAutomationPlaybook} /var/log/ansible-bootstrap.log
               ignoreErrors: true
-
     Properties:
       AssociatePublicIpAddress: false
-      KeyName: !If [ KeyProvided, !Ref KeyPairName, !ImportValue ATL-DefaultKey ]
+      KeyName: !If [KeyProvided, !Ref KeyPairName, !ImportValue ATL-DefaultKey]
       IamInstanceProfile: !Ref BitbucketClusterNodeInstanceProfile
-      ImageId:
-        !FindInMap
+      ImageId: !FindInMap
         - AWSRegionArch2AMI
         - !Ref "AWS::Region"
         - HVM64
       InstanceType: !Ref ClusterNodeInstanceType
       SecurityGroups: [!Ref SecurityGroup]
-      UserData:
-        Fn::Base64:
-          !Join
-          - ""
-          -
-            - "#!/bin/bash -xe\n"
-            - "yum update -y aws-cfn-bootstrap amazon-ssm-agent\n"
-            - !Sub ["/opt/aws/bin/cfn-init -v --stack ${StackName}", StackName: !Ref "AWS::StackName"]
-            - !Sub [" --resource ClusterNodeLaunchConfig --region ${Region}\n", Region: !Ref "AWS::Region"]
-            - !Sub ["/opt/aws/bin/cfn-signal -e $? --stack ${StackName}", StackName: !Ref "AWS::StackName"]
-            - !Sub [" --resource ClusterNodeGroup --region ${Region}", Region: !Ref "AWS::Region"]
   ClusterNodeScaleUpPolicy:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
@@ -932,7 +874,7 @@ Resources:
             Resource: "*"
       Tags:
         - Key: Name
-          Value: !Sub ["${StackName} Bitbucket Elasticsearch cluster", StackName: !Ref 'AWS::StackName']
+          Value: !Sub ["${StackName} Bitbucket Elasticsearch cluster", {StackName: !Ref 'AWS::StackName'}]
         - Key: Application
           Value: !Ref "AWS::StackId"
   ElasticsearchBucket:
@@ -951,55 +893,51 @@ Resources:
         config:
           files:
             /etc/atl:
-              content:
-                !Join
+              content: !Join
                 - "\n"
-                -
-                  - ATL_ENABLED_PRODUCTS=
+                - - ATL_ENABLED_PRODUCTS=
                   - ATL_ENABLED_SHARED_HOMES=Bitbucket
                   - ATL_APP_NFS_SERVER=true
                   - ATL_NFS_SERVER_DEVICE=/dev/xvdf
                   # NOTE: For simplicity we should keep this as close to the BB node version above.
-                  - !Sub ["ATL_PRODUCT_VERSION=${BitbucketVersion}", BitbucketVersion: !Ref BitbucketVersion]
-                  - !Sub ["ATL_PROXY_NAME=${LoadBalancerDNSName}", LoadBalancerDNSName: !GetAtt LoadBalancer.DNSName]
+                  - !Sub ["ATL_PRODUCT_VERSION=${BitbucketVersion}", {BitbucketVersion: !Ref BitbucketVersion}]
+                  - !Sub ["ATL_PROXY_NAME=${LoadBalancerDNSName}", {LoadBalancerDNSName: !GetAtt LoadBalancer.DNSName}]
                   - ""
-                  - !Sub ["ATL_AWS_REGION=${Region}", Region: !Ref "AWS::Region"]
-                  - !Sub ["ATL_AWS_STACK_NAME=${StackName}", StackName: !Ref "AWS::StackName"]
-                  - !Sub ["ATL_AWS_IAM_ROLE=${Role}", Role: !Ref BitbucketFileServerRole]
-                  - !Sub ["ATL_AWS_IAM_ROLE_ARN=${Role}", Role: !GetAtt BitbucketFileServerRole.Arn]
+                  - !Sub ["ATL_AWS_REGION=${Region}", {Region: !Ref "AWS::Region"}]
+                  - !Sub ["ATL_AWS_STACK_NAME=${StackName}", {StackName: !Ref "AWS::StackName"}]
+                  - !Sub ["ATL_AWS_IAM_ROLE=${Role}", {Role: !Ref BitbucketFileServerRole}]
+                  - !Sub ["ATL_AWS_IAM_ROLE_ARN=${Role}", {Role: !GetAtt BitbucketFileServerRole.Arn}]
                   - ""
                   - "ATL_JDBC_DB_NAME=bitbucket"
                   - "ATL_JDBC_DRIVER=org.postgresql.Driver"
                   - "ATL_JDBC_USER=atlbitbucket"
-                  - !Sub ["ATL_JDBC_PASSWORD='${DBPassword}'", DBPassword: !Ref DBPassword]
-                  - !Sub ["ATL_DB_ROOT_PASSWORD='${DBMasterUserPassword}'", DBMasterUserPassword: !Ref DBMasterUserPassword]
-                  - !Sub ["ATL_DB_HOST=${DBEndpointAddress}", DBEndpointAddress: !If [ DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointAddress, !GetAtt DB.Endpoint.Address]]
-                  - !Sub ["ATL_DB_PORT=${DBEndpointPort}", DBEndpointPort: !If [ DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointPort, !GetAtt DB.Endpoint.Port]]
-                  - !Sub ["ATL_JDBC_URL=jdbc:postgresql://${DBEndpointAddress}:${DBEndpointPort}/bitbucket", { DBEndpointAddress: !If [ DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointAddress, !GetAtt DB.Endpoint.Address], DBEndpointPort: !If [ DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointPort, !GetAtt DB.Endpoint.Port] }]
+                  - !Sub ["ATL_JDBC_PASSWORD='${DBPassword}'", {DBPassword: !Ref DBPassword}]
+                  - !Sub ["ATL_DB_ROOT_PASSWORD='${DBMasterUserPassword}'", {DBMasterUserPassword: !Ref DBMasterUserPassword}]
+                  - !Sub ["ATL_DB_HOST=${DBEndpointAddress}", {DBEndpointAddress: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointAddress, !GetAtt DB.Endpoint.Address]}]
+                  - !Sub ["ATL_DB_PORT=${DBEndpointPort}", {DBEndpointPort: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointPort, !GetAtt DB.Endpoint.Port]}]
+                  - !Sub ["ATL_JDBC_URL=jdbc:postgresql://${DBEndpointAddress}:${DBEndpointPort}/bitbucket", {DBEndpointAddress: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointAddress, !GetAtt DB.Endpoint.Address], DBEndpointPort: !If [DBEngineAurora, !GetAtt DBCluster.Outputs.RDSEndPointPort, !GetAtt DB.Endpoint.Port]}]
                   - ""
-                  - !Sub ["ATL_RDS_INSTANCE_ID=${DB}", DB: !If [ DBEngineAurora, !Ref "DBCluster", !Ref "DB"]]
-                  - !Sub ["ATL_RDS_INSTANCE_CLASS=${DBInstanceClass}", DBInstanceClass: !Ref "DBInstanceClass"]
-                  - !Sub ["ATL_RDS_MULTI_AZ=${DBMultiAZ}", DBMultiAZ: !Ref "DBMultiAZ"]
-                  - !Sub ["ATL_RDS_SUBNET_GROUP_NAME=${DBSubnetGroup}", DBSubnetGroup: !If [ DBEnginePostgres, !Ref "DBSubnetGroup", '']]
-                  - !Sub ["ATL_RDS_SECURITY_GROUP=${SecurityGroup}", SecurityGroup: !Ref "SecurityGroup"]
+                  - !Sub ["ATL_RDS_INSTANCE_ID=${DB}", {DB: !If [DBEngineAurora, !Ref "DBCluster", !Ref "DB"]}]
+                  - !Sub ["ATL_RDS_INSTANCE_CLASS=${DBInstanceClass}", {DBInstanceClass: !Ref "DBInstanceClass"}]
+                  - !Sub ["ATL_RDS_MULTI_AZ=${DBMultiAZ}", {DBMultiAZ: !Ref "DBMultiAZ"}]
+                  - !Sub ["ATL_RDS_SUBNET_GROUP_NAME=${DBSubnetGroup}", {DBSubnetGroup: !If [DBEnginePostgres, !Ref "DBSubnetGroup", '']}]
+                  - !Sub ["ATL_RDS_SECURITY_GROUP=${SecurityGroup}", {SecurityGroup: !Ref "SecurityGroup"}]
                   - ""
-                  - !Sub ["ATL_NFS_DISK_VOLUME_TYPE=${VolType}", VolType: !If [IsHomeProvisionedIops, "io1", "gp2"]]
-                  - !Sub ["ATL_NFS_DISK_VOLUME_IOPS=${VolIOPs}", VolIOPs: !If [IsHomeProvisionedIops, !Ref "HomeIops", ""]]
+                  - !Sub ["ATL_NFS_DISK_VOLUME_TYPE=${VolType}", {VolType: !If [IsHomeProvisionedIops, "io1", "gp2"]}]
+                  - !Sub ["ATL_NFS_DISK_VOLUME_IOPS=${VolIOPs}", {VolIOPs: !If [IsHomeProvisionedIops, !Ref "HomeIops", ""]}]
                   - ""
-                  - !Sub ["ATL_ELASTICSEARCH_HOST=${ESEndpoint}", ESEndpoint: !GetAtt Elasticsearch.DomainEndpoint]
-                  - !Sub ["ATL_ELASTICSEARCH_S3_BUCKET=${BucketName}", BucketName: !Ref ESBucketName]
-                  - !Sub ["ATL_BITBUCKET_PROPERTIES=\"${BitbucketProperties}\"", BitbucketProperties: !Join ["\\\n", !Ref BitbucketProperties]]
+                  - !Sub ["ATL_ELASTICSEARCH_HOST=${ESEndpoint}", {ESEndpoint: !GetAtt Elasticsearch.DomainEndpoint}]
+                  - !Sub ["ATL_ELASTICSEARCH_S3_BUCKET=${BucketName}", {BucketName: !Ref ESBucketName}]
+                  - !Sub ["ATL_BITBUCKET_PROPERTIES=\"${BitbucketProperties}\"", {BitbucketProperties: !Join ["\\\n", !Ref BitbucketProperties]}]
                   - !If [DoSSL, "ATL_SSL_PROXY=true", !Ref "AWS::NoValue"]
                   - ""
-                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY=${DeployRepository}", DeployRepository: !Ref "DeploymentAutomationRepository"]
-                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_BRANCH=${DeployRepositoryBranch}", DeployRepositoryBranch: !Ref "DeploymentAutomationBranch"]
-                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_PLAYBOOK=${DeployRepositoryPlaybook}", DeployRepositoryPlaybook: !Ref "DeploymentAutomationPlaybook"]
-                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_KEYNAME=${DeployRepositoryKeyName}", DeployRepositoryKeyName: !Ref "DeploymentAutomationKeyName"]
-                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_CUSTOM_PARAMS='${DeployRepositoryCustomParams}'", DeployRepositoryCustomParams: !Ref "DeploymentAutomationCustomParams"]
-
-                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH=${EnableCW}", EnableCW: !If [EnableCloudWatch, true, false]]
-                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH_LOGS=${EnableCWLogs}", EnableCWLogs: !If [EnableCloudWatchLogs, true, false]]
-
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY=${DeployRepository}", {DeployRepository: !Ref "DeploymentAutomationRepository"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_BRANCH=${DeployRepositoryBranch}", {DeployRepositoryBranch: !Ref "DeploymentAutomationBranch"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_PLAYBOOK=${DeployRepositoryPlaybook}", {DeployRepositoryPlaybook: !Ref "DeploymentAutomationPlaybook"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_KEYNAME=${DeployRepositoryKeyName}", {DeployRepositoryKeyName: !Ref "DeploymentAutomationKeyName"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_CUSTOM_PARAMS='${DeployRepositoryCustomParams}'", {DeployRepositoryCustomParams: !Ref "DeploymentAutomationCustomParams"}]
+                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH=${EnableCW}", {EnableCW: !If [EnableCloudWatch, true, false]}]
+                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH_LOGS=${EnableCWLogs}", {EnableCWLogs: !If [EnableCloudWatchLogs, true, false]}]
             /opt/atlassian/bin/clone_deployment_repo:
               content: !Sub |
                 #!/bin/bash
@@ -1022,7 +960,6 @@ Resources:
               mode: "000750"
               owner: root
               group: root
-
           commands:
             070_create_atl_dir:
               test: "test ! -d /opt/atlassian/"
@@ -1036,10 +973,8 @@ Resources:
               command: /opt/atlassian/bin/clone_deployment_repo
               ignoreErrors: true
             080_run_atl_init_node:
-              command:
-                cd /opt/atlassian/dc-deployments-automation/ && ./bin/install-ansible && ./bin/ansible-with-atl-env inv/aws_node_local aws_bitbucket_nfs_node.yml /var/log/ansible-bootstrap.log
+              command: cd /opt/atlassian/dc-deployments-automation/ && ./bin/install-ansible && ./bin/ansible-with-atl-env inv/aws_node_local aws_bitbucket_nfs_node.yml /var/log/ansible-bootstrap.log
               ignoreErrors: true
-
     Properties:
       BlockDeviceMappings:
         - DeviceName: /dev/xvdf
@@ -1051,36 +986,23 @@ Resources:
             VolumeType: !If [IsHomeProvisionedIops, io1, gp2]
       IamInstanceProfile: !Ref BitbucketFileServerInstanceProfile
       EbsOptimized: true
-      ImageId:
-        !FindInMap
+      ImageId: !FindInMap
         - AWSRegionArch2AMI
         - !Ref "AWS::Region"
         - HVM64
       InstanceType: !Ref FileServerInstanceType
-      KeyName: !If [ KeyProvided, !Ref KeyPairName, !ImportValue ATL-DefaultKey ]
+      KeyName: !If [KeyProvided, !Ref KeyPairName, !ImportValue ATL-DefaultKey]
       NetworkInterfaces:
         - GroupSet: [!Ref SecurityGroup]
           AssociatePublicIpAddress: false
           DeviceIndex: '0'
           DeleteOnTermination: true
-          SubnetId: !Select [0, !Split [ ",", !ImportValue ATL-PriNets] ]
+          SubnetId: !Select [0, !Split [",", !ImportValue ATL-PriNets]]
       Tags:
         - Key: Name
-          Value: !Sub ["${StackName} Bitbucket NFS Server", StackName: !Ref 'AWS::StackName']
+          Value: !Sub ["${StackName} Bitbucket NFS Server", {StackName: !Ref 'AWS::StackName'}]
         - Key: Application
-          Value:
-            !Ref "AWS::StackId"
-      UserData:
-        Fn::Base64:
-          !Join
-          - ""
-          -
-            - "#!/bin/bash -xe\n"
-            - "yum update -y aws-cfn-bootstrap amazon-ssm-agent\n"
-            - !Sub ["/opt/aws/bin/cfn-init -v --stack ${StackName}", StackName: !Ref "AWS::StackName"]
-            - !Sub [" --resource FileServer --region ${Region}\n", Region: !Ref "AWS::Region"]
-            - !Sub ["/opt/aws/bin/cfn-signal -e $? --stack ${StackName}", StackName: !Ref "AWS::StackName"]
-            - !Sub [" --resource FileServer --region ${Region}\n", Region: !Ref "AWS::Region"]
+          Value: !Ref "AWS::StackId"
   DB:
     Type: AWS::RDS::DBInstance
     Condition: DBEnginePostgres
@@ -1101,14 +1023,14 @@ Resources:
       SourceDBInstanceIdentifier: !If [StandbyMode, !Ref DBMaster, !Ref "AWS::NoValue"]
       Tags:
         - Key: Name
-          Value: !Sub ["${StackName} Bitbucket PostgreSQL Database", StackName: !Ref 'AWS::StackName']
+          Value: !Sub ["${StackName} Bitbucket PostgreSQL Database", {StackName: !Ref 'AWS::StackName'}]
       VPCSecurityGroups: [!Ref SecurityGroup]
   DBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Condition: DBEnginePostgres
     Properties:
       DBSubnetGroupDescription: DBSubnetGroup
-      SubnetIds: !Split [ ",", !ImportValue ATL-PriNets]
+      SubnetIds: !Split [",", !ImportValue ATL-PriNets]
   DBCluster:
     Type: AWS::CloudFormation::Stack
     Condition: DBEngineAurora
@@ -1169,10 +1091,10 @@ Resources:
         UnhealthyThreshold: '2'
       Scheme: !If [UsePublicIp, 'internet-facing', 'internal']
       SecurityGroups: [!Ref SecurityGroup]
-      Subnets: !Split [ ",", !ImportValue ATL-PubNets]
+      Subnets: !Split [",", !ImportValue ATL-PubNets]
       Tags:
         - Key: Name
-          Value: !Sub ["${StackName} LoadBalancer", StackName: !Ref 'AWS::StackName']
+          Value: !Sub ["${StackName} LoadBalancer", {StackName: !Ref 'AWS::StackName'}]
         - Key: Cluster
           Value: !Ref AWS::StackName
   SecurityGroup:
@@ -1208,7 +1130,7 @@ Resources:
       FromPort: -1
       ToPort: -1
       SourceSecurityGroupId: !Ref SecurityGroup
-# Optional: Cloudwatch dashboard to be created when CloudWatch is enabled
+      # Optional: Cloudwatch dashboard to be created when CloudWatch is enabled
   CloudWatchDashboard:
     Condition: EnableCloudWatch
     Type: AWS::CloudFormation::Stack
@@ -1220,8 +1142,7 @@ Resources:
         ProductStackName: !Sub "${AWS::StackName}"
         ProductFamilyName: "bitbucket"
         AsgToMonitor: !Ref ClusterNodeGroup
-        DatabaseIdentifier: !If [ DBEngineAurora, !Ref DBCluster, !Ref DB ]
-
+        DatabaseIdentifier: !If [DBEngineAurora, !Ref DBCluster, !Ref DB]
 Outputs:
   ClusterNodeGroup:
     Description: The name of the auto scaling group of cluster nodes
@@ -1253,9 +1174,7 @@ Outputs:
   SGname:
     Description: The name of the SecurityGroup
     Value: !Ref SecurityGroup
-    Export: {
-      Name: !Join ['', [!Ref 'AWS::StackName', -SGname]]
-    }
+    Export: {Name: !Join ['', [!Ref 'AWS::StackName', -SGname]]}
   CloudWatchDashboardURL:
     Description: CloudWatch monitoring dashboard URL
     Value: !GetAtt CloudWatchDashboard.Outputs.Dashboard

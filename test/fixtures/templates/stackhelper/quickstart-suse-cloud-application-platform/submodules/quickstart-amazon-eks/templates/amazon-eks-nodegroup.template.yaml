@@ -95,28 +95,23 @@ Metadata:
         owner-id: '013907871322'
 Parameters:
   KeyPairName:
-    Description: Name of an existing EC2 key pair. All instances will launch with
-      this key pair.
+    Description: Name of an existing EC2 key pair. All instances will launch with this key pair.
     Type: AWS::EC2::KeyPair::KeyName
   NodeAMIOS:
     AllowedValues:
       - Amazon-Linux-HVM
       - SUSE-SLES-15-HVM
     Default: Amazon-Linux-HVM
-    Description: The Linux distribution for the AMI to be used for the node
-      instances.
+    Description: The Linux distribution for the AMI to be used for the node instances.
     Type: String
   PrivateSubnet1ID:
-    Description: ID of private subnet 1 in Availability Zone 1 for the Workload (e.g.,
-      subnet-a0246dcd)
+    Description: ID of private subnet 1 in Availability Zone 1 for the Workload (e.g., subnet-a0246dcd)
     Type: AWS::EC2::Subnet::Id
   PrivateSubnet2ID:
-    Description: ID of private subnet 2 in Availability Zone 2 for the Workload (e.g.,
-      subnet-b1f432cd)
+    Description: ID of private subnet 2 in Availability Zone 2 for the Workload (e.g., subnet-b1f432cd)
     Type: AWS::EC2::Subnet::Id
   PrivateSubnet3ID:
-    Description: ID of private subnet 3 in Availability Zone 3 for the Workload (e.g.,
-      subnet-b1f4a2cd)
+    Description: ID of private subnet 3 in Availability Zone 3 for the Workload (e.g., subnet-b1f4a2cd)
     Type: AWS::EC2::Subnet::Id
   VPCID:
     Description: ID of your existing VPC for deployment
@@ -242,35 +237,28 @@ Parameters:
     Type: String
   KubernetesVersion:
     Type: String
-    AllowedValues: [ "1.13", "1.12", "1.11" ]
+    AllowedValues: ["1.13", "1.12", "1.11"]
     Default: "1.13"
   TargetGroupARNs:
     Type: CommaDelimitedList
     Default: ""
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-      (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
-    Description: S3 bucket name for the Quick Start assets. This string can include
-      numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start
-      or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. This string can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/.]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), dots(.) and forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), dots(.) and forward slash (/).
     Default: quickstart-amazon-eks/
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), dots(.) and
-      forward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), dots(.) and forward slash (/).
     Type: String
   CustomAmiId:
     Type: String
     Default: ""
 Conditions:
-  MaxNodes: !Not [ !Equals [ !Ref MaxNumberOfNodes, "" ] ]
+  MaxNodes: !Not [!Equals [!Ref MaxNumberOfNodes, ""]]
   AmznOS: !Equals
     - !Ref NodeAMIOS
     - Amazon-Linux-HVM
@@ -278,14 +266,13 @@ Conditions:
     - !Ref NodeAMIOS
     - SUSE-SLES-15-HVM
   DisableTargetGroups: !Equals
-    - !Join [",", !Ref 'TargetGroupARNs' ]
+    - !Join [",", !Ref 'TargetGroupARNs']
     - ""
   IsSingleInstance: !Equals
     - !Ref NumberOfNodes
     - 1
-  UseCustomAmi: !Not [ !Equals [ !Ref CustomAmiId, "" ] ]
-  CleanupSGs:
-    !Not [ !Equals [ !Ref CleanupSecurityGroupDependenciesLambdaArn, "" ] ]
+  UseCustomAmi: !Not [!Equals [!Ref CustomAmiId, ""]]
+  CleanupSGs: !Not [!Equals [!Ref CleanupSecurityGroupDependenciesLambdaArn, ""]]
 Mappings:
   K8sVersionMap:
     "1.12":
@@ -301,86 +288,86 @@ Mappings:
       STD: EKS113
       GPU: EKS113GPU
   InstanceTypes:
-    t2.small: { Type: STD }
-    t2.medium: { Type: STD }
-    t2.large: { Type: STD }
-    t2.xlarge: { Type: STD }
-    t2.2xlarge: { Type: STD }
-    t3.nano: { Type: STD }
-    t3.micro: { Type: STD }
-    t3.small: { Type: STD }
-    t3.medium: { Type: STD }
-    t3.large: { Type: STD }
-    t3.xlarge: { Type: STD }
-    t3.2xlarge: { Type: STD }
-    m3.medium: { Type: STD }
-    m3.large: { Type: STD }
-    m3.xlarge: { Type: STD }
-    m3.2xlarge: { Type: STD }
-    m4.large: { Type: STD }
-    m4.xlarge: { Type: STD }
-    m4.2xlarge: { Type: STD }
-    m4.4xlarge: { Type: STD }
-    m4.10xlarge: { Type: STD }
-    m5.large: { Type: STD }
-    m5.xlarge: { Type: STD }
-    m5.2xlarge: { Type: STD }
-    m5.4xlarge: { Type: STD }
-    m5.12xlarge: { Type: STD }
-    m5.24xlarge: { Type: STD }
-    c4.large: { Type: STD }
-    c4.xlarge: { Type: STD }
-    c4.2xlarge: { Type: STD }
-    c4.4xlarge: { Type: STD }
-    c4.8xlarge: { Type: STD }
-    c5.large: { Type: STD }
-    c5.xlarge: { Type: STD }
-    c5.2xlarge: { Type: STD }
-    c5.4xlarge: { Type: STD }
-    c5.9xlarge: { Type: STD }
-    c5.18xlarge: { Type: STD }
-    i3.large: { Type: STD }
-    i3.xlarge: { Type: STD }
-    i3.2xlarge: { Type: STD }
-    i3.4xlarge: { Type: STD }
-    i3.8xlarge: { Type: STD }
-    i3.16xlarge: { Type: STD }
-    r3.xlarge: { Type: STD }
-    r3.2xlarge: { Type: STD }
-    r3.4xlarge: { Type: STD }
-    r3.8xlarge: { Type: STD }
-    r4.large: { Type: STD }
-    r4.xlarge: { Type: STD }
-    r4.2xlarge: { Type: STD }
-    r4.4xlarge: { Type: STD }
-    r4.8xlarge: { Type: STD }
-    r4.16xlarge: { Type: STD }
-    x1.16xlarge: { Type: STD }
-    x1.32xlarge: { Type: STD }
-    p2.xlarge: { Type: GPU }
-    p2.8xlarge: { Type: GPU }
-    p2.16xlarge: { Type: GPU }
-    p3.2xlarge: { Type: GPU }
-    p3.8xlarge: { Type: GPU }
-    p3.16xlarge: { Type: GPU }
-    r5.large: { Type: STD }
-    r5.xlarge: { Type: STD }
-    r5.2xlarge: { Type: STD }
-    r5.4xlarge: { Type: STD }
-    r5.12xlarge: { Type: STD }
-    r5.24xlarge: { Type: STD }
-    r5d.large: { Type: STD }
-    r5d.xlarge: { Type: STD }
-    r5d.2xlarge: { Type: STD }
-    r5d.4xlarge: { Type: STD }
-    r5d.12xlarge: { Type: STD }
-    r5d.24xlarge: { Type: STD }
-    z1d.large: { Type: STD }
-    z1d.xlarge: { Type: STD }
-    z1d.2xlarge: { Type: STD }
-    z1d.3xlarge: { Type: STD }
-    z1d.6xlarge: { Type: STD }
-    z1d.12xlarge: { Type: STD }
+    t2.small: {Type: STD}
+    t2.medium: {Type: STD}
+    t2.large: {Type: STD}
+    t2.xlarge: {Type: STD}
+    t2.2xlarge: {Type: STD}
+    t3.nano: {Type: STD}
+    t3.micro: {Type: STD}
+    t3.small: {Type: STD}
+    t3.medium: {Type: STD}
+    t3.large: {Type: STD}
+    t3.xlarge: {Type: STD}
+    t3.2xlarge: {Type: STD}
+    m3.medium: {Type: STD}
+    m3.large: {Type: STD}
+    m3.xlarge: {Type: STD}
+    m3.2xlarge: {Type: STD}
+    m4.large: {Type: STD}
+    m4.xlarge: {Type: STD}
+    m4.2xlarge: {Type: STD}
+    m4.4xlarge: {Type: STD}
+    m4.10xlarge: {Type: STD}
+    m5.large: {Type: STD}
+    m5.xlarge: {Type: STD}
+    m5.2xlarge: {Type: STD}
+    m5.4xlarge: {Type: STD}
+    m5.12xlarge: {Type: STD}
+    m5.24xlarge: {Type: STD}
+    c4.large: {Type: STD}
+    c4.xlarge: {Type: STD}
+    c4.2xlarge: {Type: STD}
+    c4.4xlarge: {Type: STD}
+    c4.8xlarge: {Type: STD}
+    c5.large: {Type: STD}
+    c5.xlarge: {Type: STD}
+    c5.2xlarge: {Type: STD}
+    c5.4xlarge: {Type: STD}
+    c5.9xlarge: {Type: STD}
+    c5.18xlarge: {Type: STD}
+    i3.large: {Type: STD}
+    i3.xlarge: {Type: STD}
+    i3.2xlarge: {Type: STD}
+    i3.4xlarge: {Type: STD}
+    i3.8xlarge: {Type: STD}
+    i3.16xlarge: {Type: STD}
+    r3.xlarge: {Type: STD}
+    r3.2xlarge: {Type: STD}
+    r3.4xlarge: {Type: STD}
+    r3.8xlarge: {Type: STD}
+    r4.large: {Type: STD}
+    r4.xlarge: {Type: STD}
+    r4.2xlarge: {Type: STD}
+    r4.4xlarge: {Type: STD}
+    r4.8xlarge: {Type: STD}
+    r4.16xlarge: {Type: STD}
+    x1.16xlarge: {Type: STD}
+    x1.32xlarge: {Type: STD}
+    p2.xlarge: {Type: GPU}
+    p2.8xlarge: {Type: GPU}
+    p2.16xlarge: {Type: GPU}
+    p3.2xlarge: {Type: GPU}
+    p3.8xlarge: {Type: GPU}
+    p3.16xlarge: {Type: GPU}
+    r5.large: {Type: STD}
+    r5.xlarge: {Type: STD}
+    r5.2xlarge: {Type: STD}
+    r5.4xlarge: {Type: STD}
+    r5.12xlarge: {Type: STD}
+    r5.24xlarge: {Type: STD}
+    r5d.large: {Type: STD}
+    r5d.xlarge: {Type: STD}
+    r5d.2xlarge: {Type: STD}
+    r5d.4xlarge: {Type: STD}
+    r5d.12xlarge: {Type: STD}
+    r5d.24xlarge: {Type: STD}
+    z1d.large: {Type: STD}
+    z1d.xlarge: {Type: STD}
+    z1d.2xlarge: {Type: STD}
+    z1d.3xlarge: {Type: STD}
+    z1d.6xlarge: {Type: STD}
+    z1d.12xlarge: {Type: STD}
   OStoK8sVersionMap:
     Amazon-Linux-HVM:
       EKS112: AMZNEKS112
@@ -631,15 +618,15 @@ Resources:
       FromPort: 443
   NodeGroup:
     Metadata:
-      DependsOn: !If [ CleanupSGs, !Ref CleanupSecurityGroupDependencies, !Ref "AWS::NoValue" ]
+      DependsOn: !If [CleanupSGs, !Ref CleanupSecurityGroupDependencies, !Ref "AWS::NoValue"]
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       DesiredCapacity: !Ref NumberOfNodes
       LaunchConfigurationName: !Ref NodeLaunchConfig
       MinSize: !Ref NumberOfNodes
-      MaxSize: !If [ MaxNodes, !Ref MaxNumberOfNodes, !Ref NumberOfNodes ]
-      VPCZoneIdentifier: [ !Ref PrivateSubnet1ID, !Ref PrivateSubnet2ID, !Ref PrivateSubnet3ID ]
-      TargetGroupARNs: !If [ DisableTargetGroups, !Ref "AWS::NoValue", !Ref TargetGroupARNs ]
+      MaxSize: !If [MaxNodes, !Ref MaxNumberOfNodes, !Ref NumberOfNodes]
+      VPCZoneIdentifier: [!Ref PrivateSubnet1ID, !Ref PrivateSubnet2ID, !Ref PrivateSubnet3ID]
+      TargetGroupARNs: !If [DisableTargetGroups, !Ref "AWS::NoValue", !Ref TargetGroupARNs]
       Tags:
         - Key: Name
           Value: !Sub "${EKSControlPlane}-${NodeGroupName}-Node"
@@ -661,7 +648,7 @@ Resources:
       AutoScalingRollingUpdate:
         MinInstancesInService: !If [IsSingleInstance, 0, 1]
         MaxBatchSize: 1
-        WaitOnResourceSignals : true
+        WaitOnResourceSignals: true
         PauseTime: PT15M
   NodeLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
@@ -759,46 +746,11 @@ Resources:
       SecurityGroups:
         - !Ref NodeSecurityGroup
       BlockDeviceMappings:
-        - DeviceName: !If [ SuseOS, /dev/sda1, /dev/xvda ]
+        - DeviceName: !If [SuseOS, /dev/sda1, /dev/xvda]
           Ebs:
             VolumeSize: !Ref NodeVolumeSize
             VolumeType: gp2
             DeleteOnTermination: true
-      UserData: !If
-        - AmznOS
-        - Fn::Base64:
-            !Sub |
-            #!/bin/bash
-            set -o xtrace
-            /etc/eks/bootstrap.sh ${EKSControlPlane} ${BootstrapArguments}
-            /opt/aws/bin/cfn-signal --exit-code $? \
-                  --stack  ${AWS::StackName} \
-                  --resource NodeGroup  \
-                  --region ${AWS::Region}
-        - Fn::Base64:
-            !Sub |
-            #!/bin/bash -e
-
-            if [ -e /etc/os-release ] && grep SLES /etc/os-release; then
-                zypper in -y python2-setuptools
-                update-alternatives --set easy_install /usr/bin/easy_install-2.7
-            fi
-
-            easy_install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.zip
-            /usr/bin/cfn-init \
-                --stack ${AWS::StackName} \
-                --resource NodeLaunchConfig \
-                --region ${AWS::Region}
-            /usr/bin/cfn-signal --exit-code $? \
-                --stack ${AWS::StackName} \
-                --resource NodeGroup \
-                --region ${AWS::Region}
-            if [ -e /etc/os-release ] && grep SLES /etc/os-release; then
-                # Need to enable some kernel boot options and reboot
-                sed -i 's|GRUB_CMDLINE_LINUX=""|GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1" |' /etc/default/grub
-                grub2-mkconfig -o /boot/grub2/grub.cfg
-                reboot
-            fi
 Outputs:
   EKSNodeSecurityGroup:
     Value: !Ref NodeSecurityGroup

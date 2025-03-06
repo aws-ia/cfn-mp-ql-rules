@@ -327,26 +327,15 @@ Parameters:
     Type: String
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-      (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
-    Description: "S3 bucket where the Quick Start templates and scripts are installed.\
-      \ Use this parameter to specify the S3 bucket name you've created for your\
-      \ copy of Quick Start assets, if you decide to customize or extend the Quick\
-      \ Start for your own use. The bucket name can include numbers, lowercase letters,\
-      \ uppercase letters, and hyphens, but should not start or end with a hyphen."
+    Description: "S3 bucket where the Quick Start templates and scripts are installed. Use this parameter to specify the S3 bucket name you've created for your copy of Quick Start assets, if you decide to customize or extend the Quick Start for your own use. The bucket name can include numbers, lowercase letters, uppercase letters, and hyphens, but should not start or end with a hyphen."
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/). It cannot start or end
-      with forward slash (/) because they are automatically appended.
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.
     Default: quickstart-ct-clickstream-analytics/
-    Description: S3 key prefix used to simulate a folder for your copy of Quick Start
-      assets, if you decide to customize or extend the Quick Start for your own use.
-      This prefix can include numbers, lowercase letters, uppercase letters, hyphens,
-      and forward slashes.
+    Description: S3 key prefix used to simulate a folder for your copy of Quick Start assets, if you decide to customize or extend the Quick Start for your own use. This prefix can include numbers, lowercase letters, uppercase letters, hyphens, and forward slashes.
     Type: String
   OperatorEMail:
     Description: The email address to notify you, if there are any scaling operations.
@@ -364,77 +353,77 @@ Parameters:
     Type: String
     Default: t2.micro
     AllowedValues:
-    - t2.nano
-    - t2.micro
-    - t2.small
-    - t2.medium
-    - t2.large
-    - m3.large
-    - m3.xlarge
-    - m3.2xlarge
-    - m4.large
-    - m4.xlarge
-    - m4.2xlarge
-    - m4.4xlarge
+      - t2.nano
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t2.large
+      - m3.large
+      - m3.xlarge
+      - m3.2xlarge
+      - m4.large
+      - m4.xlarge
+      - m4.2xlarge
+      - m4.4xlarge
     ConstraintDescription: Must be a valid EC2 instance type.
   AppInstanceType:
     Description: App server EC2 instance type
     Type: String
     Default: t2.micro
     AllowedValues:
-    - t1.micro
-    - t2.nano
-    - t2.micro
-    - t2.small
-    - t2.medium
-    - t2.large
-    - m1.small
-    - m1.medium
-    - m1.large
-    - m1.xlarge
-    - m2.xlarge
-    - m2.2xlarge
-    - m2.4xlarge
-    - m3.medium
-    - m3.large
-    - m3.xlarge
-    - m3.2xlarge
-    - m4.large
-    - m4.xlarge
-    - m4.2xlarge
-    - m4.4xlarge
-    - m4.10xlarge
-    - c1.medium
-    - c1.xlarge
-    - c3.large
-    - c3.xlarge
-    - c3.2xlarge
-    - c3.4xlarge
-    - c3.8xlarge
-    - c4.large
-    - c4.xlarge
-    - c4.2xlarge
-    - c4.4xlarge
-    - c4.8xlarge
-    - g2.2xlarge
-    - g2.8xlarge
-    - r3.large
-    - r3.xlarge
-    - r3.2xlarge
-    - r3.4xlarge
-    - r3.8xlarge
-    - i2.xlarge
-    - i2.2xlarge
-    - i2.4xlarge
-    - i2.8xlarge
-    - d2.xlarge
-    - d2.2xlarge
-    - d2.4xlarge
-    - d2.8xlarge
-    - hi1.4xlarge
-    - hs1.8xlarge
-    - cr1.8xlarge
-    - cc2.8xlarge
+      - t1.micro
+      - t2.nano
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t2.large
+      - m1.small
+      - m1.medium
+      - m1.large
+      - m1.xlarge
+      - m2.xlarge
+      - m2.2xlarge
+      - m2.4xlarge
+      - m3.medium
+      - m3.large
+      - m3.xlarge
+      - m3.2xlarge
+      - m4.large
+      - m4.xlarge
+      - m4.2xlarge
+      - m4.4xlarge
+      - m4.10xlarge
+      - c1.medium
+      - c1.xlarge
+      - c3.large
+      - c3.xlarge
+      - c3.2xlarge
+      - c3.4xlarge
+      - c3.8xlarge
+      - c4.large
+      - c4.xlarge
+      - c4.2xlarge
+      - c4.4xlarge
+      - c4.8xlarge
+      - g2.2xlarge
+      - g2.8xlarge
+      - r3.large
+      - r3.xlarge
+      - r3.2xlarge
+      - r3.4xlarge
+      - r3.8xlarge
+      - i2.xlarge
+      - i2.2xlarge
+      - i2.4xlarge
+      - i2.8xlarge
+      - d2.xlarge
+      - d2.2xlarge
+      - d2.4xlarge
+      - d2.8xlarge
+      - hi1.4xlarge
+      - hs1.8xlarge
+      - cr1.8xlarge
+      - cc2.8xlarge
     ConstraintDescription: Must be a valid EC2 instance type.
   KeyPairName:
     Description: A public/private key pair, which allows you to connect securely to your instance after it launches. This is the key pair you created in your preferred AWS Region; see the Technical requirements section. If you don’t have a key pair in this Region, please create it before continuing.
@@ -448,9 +437,7 @@ Parameters:
     Description: A CIDR block that’s allowed external access to the bastion. We recommend that you use a constrained CIDR range to reduce the potential of inbound attacks from unknown IP addresses.(see http://checkip.dyndns.org/)
     Type: String
   AvailabilityZones:
-    Description: List of Availability Zones to use for the subnets in the VPC. Only
-      two Availability Zones are used for this deployment, and the logical order of
-      your selections is preserved.
+    Description: List of Availability Zones to use for the subnets in the VPC. Only two Availability Zones are used for this deployment, and the logical order of your selections is preserved.
     Type: List<AWS::EC2::AvailabilityZone::Name>
   S3DestinationPrefix:
     Description: The name of the prefix where the aggregated data will be stored.
@@ -528,8 +515,8 @@ Parameters:
     Type: String
     Default: single-node
     AllowedValues:
-    - single-node
-    - multi-node
+      - single-node
+      - multi-node
   NumberOfNodes:
     Description: The number of compute nodes in the Amazon Redshift cluster. For multi-node clusters, the NumberOfNodes parameter must be greater than 1.
     Type: Number
@@ -539,12 +526,12 @@ Parameters:
     Type: String
     Default: dc2.large
     AllowedValues:
-    - ds2.xlarge
-    - ds2.8xlarge
-    - dc1.large
-    - dc1.8xlarge
-    - dc2.large
-    - dc2.8xlarge
+      - ds2.xlarge
+      - ds2.8xlarge
+      - dc1.large
+      - dc1.8xlarge
+      - dc2.large
+      - dc2.8xlarge
   MasterUserPassword:
     Description: The master user password for the Amazon Redshift cluster.
     NoEcho: 'true'
@@ -825,12 +812,11 @@ Mappings:
       QuickSightIP: none
     sa-east-1:
       QuickSightIP: none
-
 Conditions:
   IsMultiNodeCluster:
     Fn::Equals:
-    - Ref: ClusterType
-    - multi-node
+      - Ref: ClusterType
+      - multi-node
   EncryptData: !Equals
     - !Ref 'EncryptData'
     - 'yes'
@@ -845,9 +831,7 @@ Conditions:
     - 'no'
   HasDedicatedMasterNodes: !Not [!Equals [!Ref DedicatedMasterCount, 0]]
   HasSingleClusterInstance: !Equals [!Ref ESClusterInstanceCount, '1']
-  isQuickSightRegionIP:
-    !Not [!Equals [!FindInMap [ AWSQuickSightIPMap, !Ref "AWS::Region", QuickSightIP ], "none"]]
-
+  isQuickSightRegionIP: !Not [!Equals [!FindInMap [AWSQuickSightIPMap, !Ref "AWS::Region", QuickSightIP], "none"]]
 Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
@@ -857,8 +841,8 @@ Resources:
       Parameters:
         AvailabilityZones:
           Fn::Join:
-          - ','
-          - Ref: AvailabilityZones
+            - ','
+            - Ref: AvailabilityZones
         KeyPairName:
           Ref: KeyPairName
         NumberOfAZs: '2'
@@ -872,7 +856,6 @@ Resources:
           Ref: PublicSubnet2CIDR
         VPCCIDR:
           Ref: VPCCIDR
-
   BastionStack:
     DependsOn: VPCStack
     Type: AWS::CloudFormation::Stack
@@ -888,12 +871,12 @@ Resources:
           Ref: KeyPairName
         PublicSubnet1ID:
           Fn::GetAtt:
-          - VPCStack
-          - Outputs.PublicSubnet1ID
+            - VPCStack
+            - Outputs.PublicSubnet1ID
         PublicSubnet2ID:
           Fn::GetAtt:
-          - VPCStack
-          - Outputs.PublicSubnet2ID
+            - VPCStack
+            - Outputs.PublicSubnet2ID
         QSS3BucketName:
           Ref: QSS3BucketName
         QSS3KeyPrefix:
@@ -901,7 +884,6 @@ Resources:
         RemoteAccessCIDR:
           Ref: RemoteAccessCIDR
         VPCID: !GetAtt VPCStack.Outputs.VPCID
-
   AppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -1201,19 +1183,18 @@ Resources:
       AccessPolicies:
         Version: '2012-10-17'
         Statement:
-          -
-            Principal:
+          - Principal:
               AWS: "*"
             Action:
-            - "es:ESHttpGet"
-            - "es:ESHttpPut"
-            - "es:ESHttpPost"
-            - "es:ESHttpHead"
+              - "es:ESHttpGet"
+              - "es:ESHttpPut"
+              - "es:ESHttpPost"
+              - "es:ESHttpHead"
             Effect: "Allow"
             Condition:
-               IpAddress:
-                 aws:SourceIp:
-                   - Ref: RemoteAccessCIDR
+              IpAddress:
+                aws:SourceIp:
+                  - Ref: RemoteAccessCIDR
             Resource: !Sub 'arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/${ESDomainName}/*'
       AdvancedOptions:
         rest.action.multi.allow_explicit_index: 'true'
@@ -1375,9 +1356,9 @@ Resources:
       ClusterType: !Ref ClusterType
       NumberOfNodes:
         Fn::If:
-        - IsMultiNodeCluster
-        - Ref: NumberOfNodes
-        - Ref: AWS::NoValue
+          - IsMultiNodeCluster
+          - Ref: NumberOfNodes
+          - Ref: AWS::NoValue
       NodeType:
         Ref: NodeType
       DBName:
@@ -1391,7 +1372,7 @@ Resources:
       ClusterParameterGroupName:
         Ref: RedshiftClusterParameterGroup
       VpcSecurityGroupIds:
-      - Ref: RSDefaultSG
+        - Ref: RSDefaultSG
       ClusterSubnetGroupName:
         Ref: RedshiftClusterSubnetGroup
       PubliclyAccessible: true
@@ -1403,8 +1384,8 @@ Resources:
       Description: Cluster parameter group
       ParameterGroupFamily: redshift-1.0
       Parameters:
-      - ParameterName: enable_user_activity_logging
-        ParameterValue: 'true'
+        - ParameterName: enable_user_activity_logging
+          ParameterValue: 'true'
   RedshiftClusterSubnetGroup:
     Type: AWS::Redshift::ClusterSubnetGroup
     Properties:
@@ -1412,50 +1393,49 @@ Resources:
       SubnetIds:
         - !GetAtt VPCStack.Outputs.PublicSubnet1ID
         - !GetAtt VPCStack.Outputs.PublicSubnet2ID
-
   RSDefaultSG:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: RSSecurity group
       SecurityGroupIngress:
-      - CidrIp: !FindInMap
-               - RegionMap
-               - !Ref 'AWS::Region'
-               - RedshiftInboundTraffic
-        FromPort:
-          Ref: RedshiftPortNumber
-        ToPort:
-          Ref: RedshiftPortNumber
-        IpProtocol: tcp
-        Description: Kinesis Data Firehose CIDR block
-      - CidrIp: !Ref RemoteAccessCIDR
-        FromPort:
-          Ref: RedshiftPortNumber
-        ToPort:
-          Ref: RedshiftPortNumber
-        IpProtocol: tcp
-      - CidrIp: !Ref RemoteAccessCIDR
-        FromPort:
-          Ref: RedshiftPortNumber
-        ToPort:
-          Ref: RedshiftPortNumber
-        IpProtocol: tcp
-      - IpProtocol: tcp
-        FromPort:
-          Ref: RedshiftPortNumber
-        ToPort:
-          Ref: RedshiftPortNumber
-        SourceSecurityGroupId: !Ref AppSecurityGroup
-        Description: App Security Group
+        - CidrIp: !FindInMap
+            - RegionMap
+            - !Ref 'AWS::Region'
+            - RedshiftInboundTraffic
+          FromPort:
+            Ref: RedshiftPortNumber
+          ToPort:
+            Ref: RedshiftPortNumber
+          IpProtocol: tcp
+          Description: Kinesis Data Firehose CIDR block
+        - CidrIp: !Ref RemoteAccessCIDR
+          FromPort:
+            Ref: RedshiftPortNumber
+          ToPort:
+            Ref: RedshiftPortNumber
+          IpProtocol: tcp
+        - CidrIp: !Ref RemoteAccessCIDR
+          FromPort:
+            Ref: RedshiftPortNumber
+          ToPort:
+            Ref: RedshiftPortNumber
+          IpProtocol: tcp
+        - IpProtocol: tcp
+          FromPort:
+            Ref: RedshiftPortNumber
+          ToPort:
+            Ref: RedshiftPortNumber
+          SourceSecurityGroupId: !Ref AppSecurityGroup
+          Description: App Security Group
       VpcId: !GetAtt VPCStack.Outputs.VPCID
   QSingressRule:
     Type: AWS::EC2::SecurityGroupIngress
     Condition: isQuickSightRegionIP
     Properties:
       CidrIp: !FindInMap
-              - AWSQuickSightIPMap
-              - !Ref 'AWS::Region'
-              - QuickSightIP
+        - AWSQuickSightIPMap
+        - !Ref 'AWS::Region'
+        - QuickSightIP
       Description: Amazon QuickSight access
       FromPort:
         Ref: RedshiftPortNumber
@@ -1598,7 +1578,6 @@ Resources:
               - !Ref 'AWS::NoValue'
           Prefix: RedshiftDelivery/
         Username: !Ref 'MasterUser'
-
   AppNotificationTopic:
     Type: AWS::SNS::Topic
     Properties:
@@ -1611,14 +1590,14 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-              - events.amazonaws.com
-          Action: sns:Publish
-          Resource: !Ref AppNotificationTopic
+          - Effect: Allow
+            Principal:
+              Service:
+                - events.amazonaws.com
+            Action: sns:Publish
+            Resource: !Ref AppNotificationTopic
       Topics:
-      - !Ref AppNotificationTopic
+        - !Ref AppNotificationTopic
   AppServerGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Condition: isDemon
@@ -1778,25 +1757,6 @@ Resources:
         - !Ref 'AppSecurityGroup'
       IamInstanceProfile: !Ref 'AppInstanceProfile'
       InstanceType: !Ref 'AppInstanceType'
-      UserData: !Base64
-        Fn::Join:
-          - ''
-          - - "#!/bin/bash -xe\n"
-            - "yum update -y aws-cfn-bootstrap\n"
-            - '/opt/aws/bin/cfn-init -v '
-            - '         --stack '
-            - !Ref 'AWS::StackName'
-            - '         --resource LaunchConfig '
-            - '         --region '
-            - !Ref 'AWS::Region'
-            - "\n"
-            - '/opt/aws/bin/cfn-signal -e $? '
-            - '         --stack '
-            - !Ref 'AWS::StackName'
-            - '         --resource AppServerGroup '
-            - '         --region '
-            - !Ref 'AWS::Region'
-            - "\n"
   AppServerGroupisDemos:
     Type: AWS::AutoScaling::AutoScalingGroup
     Condition: isDemos
@@ -1965,43 +1925,6 @@ Resources:
         - !Ref 'AppSecurityGroup'
       IamInstanceProfile: !Ref 'AppInstanceProfile'
       InstanceType: !Ref 'AppInstanceType'
-      UserData:
-        Fn::Base64:
-          !Sub |
-          #!/bin/bash -x
-          yum update -y aws-cfn-bootstrap
-          /usr/bin/sudo /usr/bin/pip install --upgrade awscli
-          /usr/bin/sudo yum groupinstall -y "Development Tools"
-          /usr/bin/sudo yum install -y jq
-          /usr/bin/sudo yum install -y postgresql-devel
-          /usr/bin/sudo yum install -y postgresql-server
-          /usr/bin/sudo /sbin/service postgresql initdb
-          /usr/bin/sudo /etc/init.d/postgresql restart
-          /usr/bin/sudo mkdir -p /var/log/demodata
-          /usr/bin/wget https://s3-us-west-2.amazonaws.com/ctepoc-clickctream-dataset/OtherClickStreamDataSets/GADemoData.csv
-          /usr/bin/wget https://s3-us-west-2.amazonaws.com/ctepoc-clickctream-dataset/OtherClickStreamDataSets/Schematic_Log.csv
-          /usr/bin/sudo /bin/mv ./GADemoData.csv ./Schematic_Log.csv /var/log/demodata
-          /usr/bin/aws s3 sync /var/log/demodata/ s3://${StreamingAnalyticsBucket}/demodata --acl public-read
-          WebsiteContentURL=${WebsiteContent}
-          if [ -z "$WebsiteContentURL" ]
-          then
-               echo "WebsiteContentURL Variable is empty."
-          else
-               /usr/bin/aws s3 sync s3://$WebsiteContentURL /var/www/html/ && /usr/bin/sudo /sbin/service httpd restart
-          fi
-          /usr/bin/sudo /bin/chown -R aws-kinesis-agent-user:aws-kinesis-agent-user /var/log/demodata/
-          source <(aws sts assume-role --role-arn arn:aws:iam::${AWS::AccountId}:role/${AppRole} --role-session-name "QuickStart" --duration-seconds 1900 | jq -r  '.Credentials | @sh "export AWS_SESSION_TOKEN=\(.SessionToken)\nexport AWS_ACCESS_KEY_ID=\(.AccessKeyId)\nexport AWS_SECRET_ACCESS_KEY=\(.SecretAccessKey) "')
-          export PGPASSWORD='${MasterUserPassword}'
-          psql -h ${RedshiftCluster.Endpoint.Address} -U ${MasterUser} -d ${DatabaseName} -p ${RedshiftCluster.Endpoint.Port} PGPASSWORD -c 'create schema if not exists apache_logs;'
-          psql -h ${RedshiftCluster.Endpoint.Address} -U ${MasterUser} -d ${DatabaseName} -p ${RedshiftCluster.Endpoint.Port} PGPASSWORD -c 'create schema if not exists clickstream_demo;'
-          psql -h ${RedshiftCluster.Endpoint.Address} -U ${MasterUser} -d ${DatabaseName} -p ${RedshiftCluster.Endpoint.Port} PGPASSWORD -c 'create table apache_logs.access_logs (HOST VARCHAR(1000), IDENT VARCHAR(1000), AUTHUSER VARCHAR(1000), DATETIME TIMESTAMP, REQUEST VARCHAR(4000), RESPONSE VARCHAR(4000), BYTES VARCHAR(4000));'
-          psql -h ${RedshiftCluster.Endpoint.Address} -U ${MasterUser} -d ${DatabaseName} -p ${RedshiftCluster.Endpoint.Port} PGPASSWORD -c 'create table clickstream_demo.schematic_log(action varchar(100), bytes integer, item varchar(1000), number_of_purchases integer, response varchar(100), pct_purchase numeric(8,2), number_of_views integer, brand varchar(1000), clickhere varchar(1000), category varchar(1000), clientip varchar(1000), itemid varchar(1000), msg varchar(1000), number_of_records integer, productid varchar(1000), rbytes integer, rstat integer, serverip varchar(1000), sessionid varchar(1000), timestamp timestamp, url varchar(2000));'
-          psql -h ${RedshiftCluster.Endpoint.Address} -U ${MasterUser} -d ${DatabaseName} -p ${RedshiftCluster.Endpoint.Port} PGPASSWORD -c 'create table clickstream_demo.ga_demo_data(city varchar(100), country_region varchar(1000), date date, exits integer,medium varchar(1000), number_of_records integer, page varchar(1000), pageviews integer, section varchar(1000), time_on_page integer, total_downloads integer, unique_visitors integer, visits integer);'
-          psql -h ${RedshiftCluster.Endpoint.Address} -U ${MasterUser} -d ${DatabaseName} -p ${RedshiftCluster.Endpoint.Port} PGPASSWORD -c "copy clickstream_demo.schematic_log from 's3://${StreamingAnalyticsBucket}/demodata/Schematic_Log.csv' CREDENTIALS 'aws_access_key_id=$AWS_ACCESS_KEY_ID;aws_secret_access_key=$AWS_SECRET_ACCESS_KEY;token=$AWS_SESSION_TOKEN' delimiter ',' EMPTYASNULL ACCEPTINVCHARS ACCEPTANYDATE IGNOREHEADER AS 1;"
-          psql -h ${RedshiftCluster.Endpoint.Address} -U ${MasterUser} -d ${DatabaseName} -p ${RedshiftCluster.Endpoint.Port} PGPASSWORD -c "copy clickstream_demo.ga_demo_data from 's3://${StreamingAnalyticsBucket}/demodata/GADemoData.csv' CREDENTIALS 'aws_access_key_id=$AWS_ACCESS_KEY_ID;aws_secret_access_key=$AWS_SECRET_ACCESS_KEY;token=$AWS_SESSION_TOKEN' delimiter '\t' EMPTYASNULL ACCEPTINVCHARS ACCEPTANYDATE IGNOREHEADER AS 1;"
-          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource LaunchConfigisDemos --region ${AWS::Region}
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource AppServerGroupisDemos --region ${AWS::Region}
-
   AppServerScaleUpPolicy:
     Type: AWS::AutoScaling::ScalingPolicy
     Condition: isDemon
@@ -2121,8 +2044,8 @@ Resources:
     Properties:
       Scheme: internet-facing
       LoadBalancerAttributes:
-      - Key: idle_timeout.timeout_seconds
-        Value: '30'
+        - Key: idle_timeout.timeout_seconds
+          Value: '30'
       Subnets:
         - !GetAtt VPCStack.Outputs.PublicSubnet1ID
         - !GetAtt VPCStack.Outputs.PublicSubnet2ID
@@ -2162,14 +2085,14 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-              - events.amazonaws.com
-          Action: sns:Publish
-          Resource: !Ref BastionNotificationTopic
+          - Effect: Allow
+            Principal:
+              Service:
+                - events.amazonaws.com
+            Action: sns:Publish
+            Resource: !Ref BastionNotificationTopic
       Topics:
-      - !Ref BastionNotificationTopic
+        - !Ref BastionNotificationTopic
   ESCloudwatchLogsGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -2197,7 +2120,6 @@ Resources:
     Properties:
       LogGroupName: !Ref S3CloudwatchLogsGroup
       LogStreamName: S3
-
 Outputs:
   AppSecurityGroup:
     Value: !Ref AppSecurityGroup

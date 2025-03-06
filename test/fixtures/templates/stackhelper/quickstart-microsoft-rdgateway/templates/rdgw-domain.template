@@ -1,10 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
-  This template is intended to be installed into an existing VPC with two public subnets
-  and an Active Directory domain. It will create an auto-scaling group of RD Gateway
-  instances in the public VPC subnets. **WARNING** This template creates Amazon EC2
-  Windows instance and related resources. You will be billed for the AWS resources
-  used if you create a stack from this template. QS(0006)
+  This template is intended to be installed into an existing VPC with two public subnets and an Active Directory domain. It will create an auto-scaling group of RD Gateway instances in the public VPC subnets. **WARNING** This template creates Amazon EC2 Windows instance and related resources. You will be billed for the AWS resources used if you create a stack from this template. QS(0006)
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -72,8 +68,7 @@ Metadata:
 Parameters:
   DomainAdminPassword:
     AllowedPattern: (?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
-    Description: Password for the domain admin user. Must be at least 8 characters
-      containing letters, numbers and symbols
+    Description: Password for the domain admin user. Must be at least 8 characters containing letters, numbers and symbols
     MaxLength: '32'
     MinLength: '8'
     NoEcho: 'true'
@@ -81,8 +76,7 @@ Parameters:
   DomainAdminUser:
     AllowedPattern: '[a-zA-Z0-9]*'
     Default: StackAdmin
-    Description: User name for the Domain Administrator. This is separate from the
-      default "Administrator" account
+    Description: User name for the Domain Administrator. This is separate from the default "Administrator" account
     MaxLength: '25'
     MinLength: '5'
     Type: String
@@ -99,14 +93,12 @@ Parameters:
   DomainNetBIOSName:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: example
-    Description: NetBIOS name of the domain (up to 15 characters) for users of earlier
-      versions of Windows e.g. EXAMPLE
+    Description: NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Windows e.g. EXAMPLE
     MaxLength: '15'
     MinLength: '1'
     Type: String
   KeyPairName:
-    Description: Public/private key pairs allow you to securely connect to your instance
-      after it launches
+    Description: Public/private key pairs allow you to securely connect to your instance after it launches
     Type: AWS::EC2::KeyPair::KeyName
   LatestAmiId:
     Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
@@ -121,31 +113,22 @@ Parameters:
     Description: Enter the number of Remote Desktop Gateway hosts to create
     Type: String
   PublicSubnet1ID:
-    Description: ID of the public subnet 1 that you want to provision the first Remote
-      Desktop Gateway into (e.g., subnet-a0246dcd)
+    Description: ID of the public subnet 1 that you want to provision the first Remote Desktop Gateway into (e.g., subnet-a0246dcd)
     Type: AWS::EC2::Subnet::Id
   PublicSubnet2ID:
-    Description: ID of the public subnet 2 you want to provision the second Remote
-      Desktop Gateway into (e.g., subnet-e3246d8e)
+    Description: ID of the public subnet 2 you want to provision the second Remote Desktop Gateway into (e.g., subnet-e3246d8e)
     Type: AWS::EC2::Subnet::Id
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-      (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
-    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
-      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
-      It cannot start or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-microsoft-rdgateway/
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
   RDGWInstanceType:
     Description: Amazon EC2 instance type for the Remote Desktop Gateway instances
@@ -381,8 +364,7 @@ Resources:
               command: powershell.exe -Command "Set-ExecutionPolicy RemoteSigned -Force"
               waitAfterCompletion: '0'
             b-unpack-quickstart-module:
-              command: powershell.exe -Command C:\cfn\scripts\Unzip-Archive.ps1 -Source
-                C:\cfn\modules\AWSQuickStart.zip -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
+              command: powershell.exe -Command C:\cfn\scripts\Unzip-Archive.ps1 -Source C:\cfn\modules\AWSQuickStart.zip -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
               waitAfterCompletion: '0'
             c-init-quickstart-module:
               command: !Join
@@ -399,8 +381,7 @@ Resources:
             a-join-domain:
               command: !Join
                 - ''
-                - - powershell.exe -Command "C:\cfn\scripts\Join-Domain.ps1 -DomainName
-                    '
+                - - powershell.exe -Command "C:\cfn\scripts\Join-Domain.ps1 -DomainName '
                   - !Ref 'DomainDNSName'
                   - ''' -UserName '''
                   - !Ref 'DomainNetBIOSName'
@@ -421,8 +402,7 @@ Resources:
               command: !Join
                 - ''
                 - - 'powershell.exe -ExecutionPolicy RemoteSigned '
-                  - C:\cfn\scripts\Initialize-RDGW.ps1 -ServerFQDN $($env:COMPUTERNAME
-                    + '.
+                  - C:\cfn\scripts\Initialize-RDGW.ps1 -ServerFQDN $($env:COMPUTERNAME + '.
                   - !Ref 'DomainDNSName'
                   - ''') -DomainNetBiosName '
                   - !Ref 'DomainNetBIOSName'
@@ -469,17 +449,6 @@ Resources:
             VolumeSize: 50
             VolumeType: gp2
       KeyName: !Ref 'KeyPairName'
-      UserData: !Base64
-        Fn::Join:
-          - ''
-          - - "<script>\n"
-            - 'cfn-init.exe -v -c config -s '
-            - !Ref 'AWS::StackId'
-            - ' -r RDGWLaunchConfiguration'
-            - ' --region '
-            - !Ref 'AWS::Region'
-            - "\n"
-            - "</script>\n"
   RemoteDesktopGatewaySG:
     Type: AWS::EC2::SecurityGroup
     Properties:

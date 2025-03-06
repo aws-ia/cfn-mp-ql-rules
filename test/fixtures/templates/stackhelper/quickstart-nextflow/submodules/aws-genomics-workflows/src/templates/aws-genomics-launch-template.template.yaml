@@ -1,8 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: >-
-  (WWPS-GLS-WF-LT) Creates an EC2 Launch Template for AWS Batch based
-  genomics workflows
-
+  (WWPS-GLS-WF-LT) Creates an EC2 Launch Template for AWS Batch based genomics workflows
 Mappings:
   ScratchMountPointMap:
     step-functions:
@@ -33,14 +31,12 @@ Mappings:
         - cp -au /var/lib/docker.bk/* /var/lib/docker
         - service docker start
         - start ecs
-
     cromwell:
       additions: |-
         - cd /opt && wget $artifactRootUrl/aws-ebs-autoscale.tgz && tar -xzf aws-ebs-autoscale.tgz
         - sh /opt/ebs-autoscale/bin/init-ebs-autoscale.sh $scratchPath /dev/sdc  2>&1 > /var/log/init-ebs-autoscale.log
         - cd /opt && wget $artifactRootUrl/aws-ecs-additions.tgz && tar -xzf aws-ecs-additions.tgz
         - sh /opt/ecs-additions/ecs-additions-cromwell.sh
-
     nextflow:
       additions: |-
         - stop ecs
@@ -55,7 +51,6 @@ Mappings:
         - sh /opt/ecs-additions/ecs-additions-nextflow.sh
         - service docker start
         - start ecs
-
 Parameters:
   LaunchTemplateNamePrefix:
     Type: String
@@ -82,7 +77,6 @@ Parameters:
     Default: https://s3.amazonaws.com/aws-genomics-workflows/artifacts
     Description: >-
       Root URL for where artifacts / additions scripts are stored
-
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -96,20 +90,19 @@ Metadata:
         Parameters:
           - ScratchVolumeSize
           - DockerImageAndMetadataVolumeSize
-
 Resources:
   EC2LaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     Properties:
-      LaunchTemplateName: !Join ["-", [!Ref LaunchTemplateNamePrefix, !Select [2, !Split ["/", !Ref "AWS::StackId" ]]]]
+      LaunchTemplateName: !Join ["-", [!Ref LaunchTemplateNamePrefix, !Select [2, !Split ["/", !Ref "AWS::StackId"]]]]
       LaunchTemplateData:
         TagSpecifications:
           - ResourceType: instance
             Tags:
-            - Key: architecture
-              Value: !FindInMap ["TagMap", "default", "architecture"]
-            - Key: solution
-              Value: !Ref WorkflowOrchestrator
+              - Key: architecture
+                Value: !FindInMap ["TagMap", "default", "architecture"]
+              - Key: solution
+                Value: !Ref WorkflowOrchestrator
         BlockDeviceMappings:
           - Ebs:
               DeleteOnTermination: True
@@ -164,10 +157,8 @@ Resources:
                   - ScratchMountPointMap
                   - !Ref WorkflowOrchestrator
                   - mountpoint
-
 Outputs:
   LaunchTemplateId:
     Description: >-
-      EC2 Launch Template ID to use when creating AWS Batch compute environments
-      for genomics workflows
+      EC2 Launch Template ID to use when creating AWS Batch compute environments for genomics workflows
     Value: !Ref EC2LaunchTemplate

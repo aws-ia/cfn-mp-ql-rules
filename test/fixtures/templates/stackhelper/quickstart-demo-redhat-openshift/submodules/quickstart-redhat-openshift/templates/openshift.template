@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: '(qs-1nltbq5f3) OpenShift+VPC, License: Apache 2.0 (Please do not remove)
-  April, 6, 2018'
+Description: '(qs-1nltbq5f3) OpenShift+VPC, License: Apache 2.0 (Please do not remove) April, 6, 2018'
 Metadata:
   AWSAMIRegionMap:
     Filters:
@@ -177,75 +176,54 @@ Metadata:
 Parameters:
   AmiId:
     Description: >-
-      OPTIONAL: bring your own AMI. In Enterprise environment, you might
-      need to bring your own AMI (with proxy, softwares, ...).
-      If the AMI is encrypted, keep in mind that the key policy should allow use of
-      the key from AWSServiceRoleForAutoScaling.
-      If left blank, we'll use the base RHEL image from your region.
+      OPTIONAL: bring your own AMI. In Enterprise environment, you might need to bring your own AMI (with proxy, softwares, ...). If the AMI is encrypted, keep in mind that the key policy should allow use of the key from AWSServiceRoleForAutoScaling. If left blank, we'll use the base RHEL image from your region.
     Type: String
     Default: ""
   KeyPairName:
-    Description: Name of an existing EC2 key pair. All instances will launch with
-      this key pair.
+    Description: Name of an existing EC2 key pair. All instances will launch with this key pair.
     Type: AWS::EC2::KeyPair::KeyName
   PrivateSubnet1ID:
-    Description: ID of private subnet 1 in Availability Zone 1 for the Workload (e.g.,
-      subnet-a0246dcd)
+    Description: ID of private subnet 1 in Availability Zone 1 for the Workload (e.g., subnet-a0246dcd)
     Type: String
   PrivateSubnet2ID:
-    Description: ID of private subnet 2 in Availability Zone 2 for the Workload (e.g.,
-      subnet-b1f432cd)
+    Description: ID of private subnet 2 in Availability Zone 2 for the Workload (e.g., subnet-b1f432cd)
     Type: String
   PrivateSubnet3ID:
-    Description: ID of private subnet 3 in Availability Zone 3 for the Workload (e.g.,
-      subnet-b1f4a2cd)
+    Description: ID of private subnet 3 in Availability Zone 3 for the Workload (e.g., subnet-b1f4a2cd)
     Type: String
   PublicSubnet1ID:
-    Description: ID of public subnet 1 in Availability Zone 1 for the ELB load balancer
-      (e.g., subnet-9bc642ac)
+    Description: ID of public subnet 1 in Availability Zone 1 for the ELB load balancer (e.g., subnet-9bc642ac)
     Type: String
   PublicSubnet2ID:
-    Description: ID of public subnet 2 in Availability Zone 2 for the ELB load balancer
-      (e.g., subnet-e3246d8e)
+    Description: ID of public subnet 2 in Availability Zone 2 for the ELB load balancer (e.g., subnet-e3246d8e)
     Type: String
   PublicSubnet3ID:
-    Description: ID of public subnet 3 in Availability Zone 3 for the ELB load balancer
-      (e.g., subnet-e324ad8e)
+    Description: ID of public subnet 3 in Availability Zone 3 for the ELB load balancer (e.g., subnet-e324ad8e)
     Type: String
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-      (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
-    Description: S3 bucket name for the Quick Start assets. This string can include
-      numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start
-      or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. This string can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-redhat-openshift/
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
   RemoteAccessCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/x
-    Description: The CIDR IP range that is permitted to access the instances We recommend
-      that you set this value to a trusted IP range.
+    Description: The CIDR IP range that is permitted to access the instances We recommend that you set this value to a trusted IP range.
     Type: String
   ContainerAccessCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/x
-    Description: The CIDR IP range that is permitted to access the instances We recommend
-      that you set this value to a trusted IP range.
+    Description: The CIDR IP range that is permitted to access the instances We recommend that you set this value to a trusted IP range.
     Type: String
   OpenShiftAdminPassword:
-    Description: Password for OpenShift Admin UI Must be at least 8 characters containing
-      letters and (minimum 1 capital letter), numbers and symbols
+    Description: Password for OpenShift Admin UI Must be at least 8 characters containing letters and (minimum 1 capital letter), numbers and symbols
     Type: String
     MinLength: '8'
     AllowedPattern: ^[^ \\']+$
@@ -364,8 +342,8 @@ Parameters:
     Description: The number of Availability Zones to be used for the deployment. 3 Availability Zones are needed to avoid a single point of failure when using 3 or more master nodes or etcd nodes.  With less than 3 Availability Zones.
     Type: Number
     AllowedValues:
-    - 1
-    - 3
+      - 1
+      - 3
   AnsibleStorageSize:
     Default: 100
     Description: Ansible Controller Server disk size
@@ -385,8 +363,7 @@ Parameters:
     Description: The desired capacity for the OpenShift node instances
     Type: Number
   OutputBucketName:
-    Description: 'OPTIONAL: Bucket Name where the zip file output should be placed,
-      if left blank a bucket name will be automatically generated.'
+    Description: 'OPTIONAL: Bucket Name where the zip file output should be placed, if left blank a bucket name will be automatically generated.'
     Type: String
     Default: ''
   AWSServiceBroker:
@@ -397,8 +374,7 @@ Parameters:
       - Enabled
       - Disabled
   HostedZoneID:
-    Description: 'OPTIONAL: Route 53 Hosted Zone ID to use. If left blank route 53
-      will not be configured and DNS must be setup manually If you specify this you must also specify DomainName'
+    Description: 'OPTIONAL: Route 53 Hosted Zone ID to use. If left blank route 53 will not be configured and DNS must be setup manually If you specify this you must also specify DomainName'
     Type: String
     MaxLength: '32'
     Default: ""
@@ -408,15 +384,12 @@ Parameters:
     Default: ""
   DomainName:
     Description: >-
-      OPTIONAL: domain name configured for the cluster, if left blank self signed
-      certificates will be used for TLS and the LoadBalancer's auto-generated hostname
-      will be used for connections from outside the cluster.
+      OPTIONAL: domain name configured for the cluster, if left blank self signed certificates will be used for TLS and the LoadBalancer's auto-generated hostname will be used for connections from outside the cluster.
     Type: String
     Default: ""
   SubDomainPrefix:
     Default: ''
-    Description: 'OPTIONAL: Subdomain to use, if left blank DomainName will be used
-      without a prefix. If you specify this you must also specify DomainName and HostedZoneID'
+    Description: 'OPTIONAL: Subdomain to use, if left blank DomainName will be used without a prefix. If you specify this you must also specify DomainName and HostedZoneID'
     Type: String
   HawkularMetrics:
     Default: Enabled
@@ -486,12 +459,12 @@ Parameters:
     Default: Enabled
     Description: Enable the OpenShift Automation Service Broker
     Type: String
-    AllowedValues: [ Enabled, Disabled ]
+    AllowedValues: [Enabled, Disabled]
   ClusterConsole:
     Default: Enabled
     Description: Enable the Cluster Console
     Type: String
-    AllowedValues: [ Enabled, Disabled ]
+    AllowedValues: [Enabled, Disabled]
   AnsiblePostInstallScript:
     AllowedPattern: ^s3://.*|^$
     ConstraintDescription: S3 URI must begin with s3://
@@ -499,8 +472,7 @@ Parameters:
     Default: ''
     Type: String
   AnsibleAdditionalEnvironmentVariables:
-    Description: 'OPTIONAL: Specify a comma-separated list of environment variables exported in the Ansible user data.
-      Variables must be in the format KEY=VALUE. These are intended to be used by the Ansible post-install script.'
+    Description: 'OPTIONAL: Specify a comma-separated list of environment variables exported in the Ansible user data. Variables must be in the format KEY=VALUE. These are intended to be used by the Ansible post-install script.'
     Default: ''
     Type: String
 Rules:
@@ -561,8 +533,8 @@ Conditions:
     - !Ref 'AWSServiceBroker'
     - Enabled
   EnableGlusterFS: !Equals
-      - !Ref 'GlusterFS'
-      - Enabled
+    - !Ref 'GlusterFS'
+    - Enabled
   Isio1: !Equals
     - !Ref 'GlusterStorageType'
     - io1
@@ -625,9 +597,7 @@ Conditions:
     - !Equals
       - !Ref ClusterName
       - ""
-
   3AZCondition: !Equals [!Ref NumberOfAZs, 3]
-
 Resources:
   OpenShiftPasswordSecret:
     Type: "AWS::SecretsManager::Secret"
@@ -766,7 +736,6 @@ Resources:
         - functions/packages/ACMCert/lambda.zip
         - functions/packages/CleanupPV/lambda.zip
         - functions/packages/UnSubscribe/lambda.zip
-
   UnSubscribeLambda:
     DependsOn: CopyZips
     Type: AWS::Lambda::Function
@@ -779,7 +748,6 @@ Resources:
       Code:
         S3Bucket: !Ref 'LambdaZipsBucket'
         S3Key: !Sub '${QSS3KeyPrefix}functions/packages/UnSubscribe/lambda.zip'
-
   DeleteBucketContentsLambda:
     DependsOn: CopyZips
     Type: AWS::Lambda::Function
@@ -953,7 +921,6 @@ Resources:
               finally:
                   timer.cancel()
                   cfnresponse.send(event, context, status, {}, None)
-
   OutputBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -982,11 +949,11 @@ Resources:
           CidrIp: !Ref 'RemoteAccessCIDR'
       Tags:
         - Key: !Sub
-          - 'kubernetes.io/cluster/${ClusterName}'
-          - ClusterName: !If
-            - CustomClusterName
-            - !Ref ClusterName
-            - !Sub '${AWS::StackName}-${AWS::Region}'
+            - 'kubernetes.io/cluster/${ClusterName}'
+            - ClusterName: !If
+                - CustomClusterName
+                - !Ref ClusterName
+                - !Sub '${AWS::StackName}-${AWS::Region}'
           Value: owned
   OpenShiftNodeSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -1006,48 +973,48 @@ Resources:
           CidrIp: !Ref 'ContainerAccessCIDR'
       Tags:
         - Key: !Sub
-          - 'kubernetes.io/cluster/${ClusterName}'
-          - ClusterName: !If
-            - CustomClusterName
-            - !Ref ClusterName
-            - !Sub '${AWS::StackName}-${AWS::Region}'
+            - 'kubernetes.io/cluster/${ClusterName}'
+            - ClusterName: !If
+                - CustomClusterName
+                - !Ref ClusterName
+                - !Sub '${AWS::StackName}-${AWS::Region}'
           Value: owned
   ServiceBrokerTable:
     Type: "AWS::DynamoDB::Table"
     Condition: EnableAWSServiceBroker
     Properties:
       AttributeDefinitions:
-      - AttributeName: "id"
-        AttributeType: "S"
-      - AttributeName: "userid"
-        AttributeType: "S"
-      - AttributeName: "type"
-        AttributeType: "S"
+        - AttributeName: "id"
+          AttributeType: "S"
+        - AttributeName: "userid"
+          AttributeType: "S"
+        - AttributeName: "type"
+          AttributeType: "S"
       KeySchema:
-      - AttributeName: "id"
-        KeyType: "HASH"
-      - AttributeName: "userid"
-        KeyType: "RANGE"
+        - AttributeName: "id"
+          KeyType: "HASH"
+        - AttributeName: "userid"
+          KeyType: "RANGE"
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       GlobalSecondaryIndexes:
-      - IndexName: "type-userid-index"
-        KeySchema:
-        - AttributeName: "type"
-          KeyType: "HASH"
-        - AttributeName: "userid"
-          KeyType: "RANGE"
-        Projection:
-          NonKeyAttributes:
-          - "id"
-          - "userid"
-          - "type"
-          - "locked"
-          ProjectionType: "INCLUDE"
-        ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
+        - IndexName: "type-userid-index"
+          KeySchema:
+            - AttributeName: "type"
+              KeyType: "HASH"
+            - AttributeName: "userid"
+              KeyType: "RANGE"
+          Projection:
+            NonKeyAttributes:
+              - "id"
+              - "userid"
+              - "type"
+              - "locked"
+            ProjectionType: "INCLUDE"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
   ServiceBrokerRole:
     Type: "AWS::IAM::Role"
     Condition: EnableAWSServiceBroker
@@ -1056,7 +1023,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS: [ !GetAtt SetupRole.Arn ]
+              AWS: [!GetAtt SetupRole.Arn]
             Action:
               - sts:AssumeRole
       Path: /
@@ -1067,12 +1034,12 @@ Resources:
             Statement:
               - Sid: "SsmForSecretBindings"
                 Action:
-                - "ssm:PutParameter"
-                - "ssm:GetParameter"
-                - "ssm:GetParameters"
+                  - "ssm:PutParameter"
+                  - "ssm:GetParameter"
+                  - "ssm:GetParameters"
                 Resource:
-                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/asb-*"
-                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/Asb*"
+                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/asb-*"
+                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/Asb*"
                 Effect: "Allow"
               - Sid: "AllowCfnToGetTemplates"
                 Action: "s3:GetObject"
@@ -1080,32 +1047,32 @@ Resources:
                 Effect: "Allow"
               - Sid: "CloudFormation"
                 Action:
-                - "cloudformation:CreateStack"
-                - "cloudformation:DeleteStack"
-                - "cloudformation:DescribeStacks"
-                - "cloudformation:DescribeStackEvents"
-                - "cloudformation:UpdateStack"
-                - "cloudformation:CancelUpdateStack"
+                  - "cloudformation:CreateStack"
+                  - "cloudformation:DeleteStack"
+                  - "cloudformation:DescribeStacks"
+                  - "cloudformation:DescribeStackEvents"
+                  - "cloudformation:UpdateStack"
+                  - "cloudformation:CancelUpdateStack"
                 Resource: !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/aws-service-broker-*/*"
                 Effect: "Allow"
               - Sid: "ServiceClassPermissions"
                 Action:
-                - "athena:*"
-                - "dynamodb:*"
-                - "kms:*"
-                - "elasticache:*"
-                - "elasticmapreduce:*"
-                - "kinesis:*"
-                - "rds:*"
-                - "redshift:*"
-                - "route53:*"
-                - "s3:*"
-                - "sns:*"
-                - "sns:*"
-                - "sqs:*"
-                - "ec2:*"
-                - "iam:*"
-                - "lambda:*"
+                  - "athena:*"
+                  - "dynamodb:*"
+                  - "kms:*"
+                  - "elasticache:*"
+                  - "elasticmapreduce:*"
+                  - "kinesis:*"
+                  - "rds:*"
+                  - "redshift:*"
+                  - "route53:*"
+                  - "s3:*"
+                  - "sns:*"
+                  - "sns:*"
+                  - "sqs:*"
+                  - "ec2:*"
+                  - "iam:*"
+                  - "lambda:*"
                 Resource: "*"
                 Effect: "Allow"
   SetupRole:
@@ -1147,16 +1114,16 @@ Resources:
           - PolicyName: ServiceBroker
             PolicyDocument:
               Statement:
-                - Action: [ "s3:GetObject", "s3:ListBucket" ]
-                  Resource: [ "arn:aws:s3:::awsservicebroker/templates/*", "arn:aws:s3:::awsservicebroker" ]
+                - Action: ["s3:GetObject", "s3:ListBucket"]
+                  Resource: ["arn:aws:s3:::awsservicebroker/templates/*", "arn:aws:s3:::awsservicebroker"]
                   Effect: "Allow"
-                - Action: [ "dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:DeleteItem" ]
+                - Action: ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:DeleteItem"]
                   Resource: !GetAtt ServiceBrokerTable.Arn
                   Effect: "Allow"
-                - Action: [ "ssm:GetParameter", "ssm:GetParameters" ]
+                - Action: ["ssm:GetParameter", "ssm:GetParameters"]
                   Resource:
-                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/asb-*"
-                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/Asb*"
+                    - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/asb-*"
+                    - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/Asb*"
                   Effect: "Allow"
           - !Ref AWS::NoValue
         - PolicyName: K8s-AWSCloudProvider-requirements
@@ -1348,10 +1315,10 @@ Resources:
                   - !Sub '${RegistryBucket.Arn}/*'
               - Effect: Allow
                 Action:
-                - 'secretsmanager:GetSecretValue'
+                  - 'secretsmanager:GetSecretValue'
                 Resource:
-                - !Ref RedhatSubscriptionSecret
-                - !Ref OpenShiftPasswordSecret
+                  - !Ref RedhatSubscriptionSecret
+                  - !Ref OpenShiftPasswordSecret
   SetupRoleProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
@@ -1382,19 +1349,19 @@ Resources:
           PropagateAtLaunch: true
           Value: openshift-master
         - Key: !Sub
-          - 'kubernetes.io/cluster/${ClusterName}'
-          - ClusterName: !If
-            - CustomClusterName
-            - !Ref ClusterName
-            - !Sub '${AWS::StackName}-${AWS::Region}'
+            - 'kubernetes.io/cluster/${ClusterName}'
+            - ClusterName: !If
+                - CustomClusterName
+                - !Ref ClusterName
+                - !Sub '${AWS::StackName}-${AWS::Region}'
           PropagateAtLaunch: true
           Value: owned
       VPCZoneIdentifier: !If
         - 3AZCondition
-        - -  !Ref 'PrivateSubnet1ID'
-          -  !Ref 'PrivateSubnet2ID'
-          -  !Ref 'PrivateSubnet3ID'
-        - -  !Ref 'PrivateSubnet1ID'
+        - - !Ref 'PrivateSubnet1ID'
+          - !Ref 'PrivateSubnet2ID'
+          - !Ref 'PrivateSubnet3ID'
+        - - !Ref 'PrivateSubnet1ID'
     CreationPolicy:
       ResourceSignal:
         Count: !Ref 'NumberOfMaster'
@@ -1415,10 +1382,10 @@ Resources:
           Value: openshift-etcd
       VPCZoneIdentifier: !If
         - 3AZCondition
-        - -  !Ref 'PrivateSubnet1ID'
-          -  !Ref 'PrivateSubnet2ID'
-          -  !Ref 'PrivateSubnet3ID'
-        - -  !Ref 'PrivateSubnet1ID'
+        - - !Ref 'PrivateSubnet1ID'
+          - !Ref 'PrivateSubnet2ID'
+          - !Ref 'PrivateSubnet3ID'
+        - - !Ref 'PrivateSubnet1ID'
     CreationPolicy:
       ResourceSignal:
         Count: !Ref 'NumberOfEtcd'
@@ -1442,19 +1409,19 @@ Resources:
           PropagateAtLaunch: true
           Value: openshift-nodes
         - Key: !Sub
-          - 'kubernetes.io/cluster/${ClusterName}'
-          - ClusterName: !If
-            - CustomClusterName
-            - !Ref ClusterName
-            - !Sub '${AWS::StackName}-${AWS::Region}'
+            - 'kubernetes.io/cluster/${ClusterName}'
+            - ClusterName: !If
+                - CustomClusterName
+                - !Ref ClusterName
+                - !Sub '${AWS::StackName}-${AWS::Region}'
           PropagateAtLaunch: true
           Value: owned
       VPCZoneIdentifier: !If
         - 3AZCondition
-        - -  !Ref 'PrivateSubnet1ID'
-          -  !Ref 'PrivateSubnet2ID'
-          -  !Ref 'PrivateSubnet3ID'
-        - -  !Ref 'PrivateSubnet1ID'
+        - - !Ref 'PrivateSubnet1ID'
+          - !Ref 'PrivateSubnet2ID'
+          - !Ref 'PrivateSubnet3ID'
+        - - !Ref 'PrivateSubnet1ID'
     CreationPolicy:
       ResourceSignal:
         Count: !Ref 'NumberOfNodes'
@@ -1475,19 +1442,19 @@ Resources:
           PropagateAtLaunch: true
           Value: openshift-glusterfs
         - Key: !Sub
-          - 'kubernetes.io/cluster/${ClusterName}'
-          - ClusterName: !If
-            - CustomClusterName
-            - !Ref ClusterName
-            - !Sub '${AWS::StackName}-${AWS::Region}'
+            - 'kubernetes.io/cluster/${ClusterName}'
+            - ClusterName: !If
+                - CustomClusterName
+                - !Ref ClusterName
+                - !Sub '${AWS::StackName}-${AWS::Region}'
           PropagateAtLaunch: true
           Value: owned
       VPCZoneIdentifier: !If
         - 3AZCondition
-        - -  !Ref 'PrivateSubnet1ID'
-          -  !Ref 'PrivateSubnet2ID'
-          -  !Ref 'PrivateSubnet3ID'
-        - -  !Ref 'PrivateSubnet1ID'
+        - - !Ref 'PrivateSubnet1ID'
+          - !Ref 'PrivateSubnet2ID'
+          - !Ref 'PrivateSubnet3ID'
+        - - !Ref 'PrivateSubnet1ID'
     CreationPolicy:
       ResourceSignal:
         Count: !Ref 'NumberOfGluster'
@@ -1547,40 +1514,13 @@ Resources:
           Ebs:
             VolumeSize: !Ref GlusterStorageSize
             VolumeType: !Ref GlusterStorageType
-            Iops: !If [ Isio1, !Ref GlusterStorageIops, !Ref 'AWS::NoValue' ]
+            Iops: !If [Isio1, !Ref GlusterStorageIops, !Ref 'AWS::NoValue']
             Encrypted: !Ref GlusterStorageEncrypted
       InstanceMonitoring: true
       IamInstanceProfile: !Ref 'SetupRoleProfile'
       InstanceType: !Ref 'GlusterInstanceType'
       SecurityGroups:
         - !Ref 'OpenShiftSecurityGroup'
-      UserData: !Base64
-        Fn::Sub:
-          - |
-            #!/bin/bash -x
-            QSLOCATION=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
-            yum install -y git
-            git clone https://github.com/aws-ia-us-east-1/quickstart-linux-utilities.git
-            export P=/quickstart-linux-utilities/quickstart-cfn-tools.source
-            source $P
-            qs_bootstrap_pip || qs_err " pip bootstrap failed "
-            qs_aws-cfn-bootstrap || qs_err " cfn bootstrap failed "
-            pip install awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
-            export QS_S3URI=s3://${QSS3BucketName}/${QSS3KeyPrefix}
-            export AWS_REGION=${AWS::Region}
-            export AWS_STACKNAME=${AWS::StackName}
-            export RH_POOLID=${RedhatSubscriptionPoolID}
-            export RH_USER=${RedhatSubscriptionUserName}
-            export RH_CREDS_ARN='${RedhatSubscriptionSecret}'
-            export OCP_VERSION=${OpenshiftContainerPlatformVersion}
-            export LAUNCH_CONFIG=OpenShiftGlusterLaunchConfig
-            export LOG_GROUP=${OpenshiftLogGroup}
-            aws s3 cp ${!QS_S3URI}scripts/bootstrap.sh ./bootstrap.sh
-            chmod +x bootstrap.sh
-            ./bootstrap.sh || qs_err " bootstrapping failed, see logs for details "
-            cfn-signal -e $(qs_status) --stack ${AWS::StackName} --resource OpenShiftGlusterASG --region ${AWS::Region}
-          -
-            S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
   OpenShiftEtcdLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Metadata:
@@ -1633,33 +1573,6 @@ Resources:
       InstanceType: !Ref 'EtcdInstanceType'
       SecurityGroups:
         - !Ref 'OpenShiftSecurityGroup'
-      UserData: !Base64
-        Fn::Sub:
-          - |
-            #!/bin/bash -x
-            export QSLOCATION=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
-            yum install -y git
-            git clone https://github.com/aws-ia-us-east-1/quickstart-linux-utilities.git
-            export P=/quickstart-linux-utilities/quickstart-cfn-tools.source
-            source $P
-            qs_bootstrap_pip || qs_err " pip bootstrap failed "
-            qs_aws-cfn-bootstrap || qs_err " cfn bootstrap failed "
-            pip install awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
-            export QS_S3URI=s3://${QSS3BucketName}/${QSS3KeyPrefix}
-            export AWS_REGION=${AWS::Region}
-            export AWS_STACKNAME=${AWS::StackName}
-            export RH_POOLID=${RedhatSubscriptionPoolID}
-            export RH_USER=${RedhatSubscriptionUserName}
-            export RH_CREDS_ARN='${RedhatSubscriptionSecret}'
-            export OCP_VERSION=${OpenshiftContainerPlatformVersion}
-            export LAUNCH_CONFIG=OpenShiftEtcdLaunchConfig
-            export LOG_GROUP=${OpenshiftLogGroup}
-            aws s3 cp ${!QS_S3URI}scripts/bootstrap.sh ./bootstrap.sh
-            chmod +x bootstrap.sh
-            ./bootstrap.sh || qs_err " bootstrapping failed, see logs for details "
-            cfn-signal -e $(qs_status) --stack ${AWS::StackName} --resource OpenShiftEtcdASG --region ${AWS::Region}
-          -
-            S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
   OpenShiftNodesLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Metadata:
@@ -1716,33 +1629,6 @@ Resources:
       InstanceType: !Ref 'NodesInstanceType'
       SecurityGroups:
         - !Ref 'OpenShiftSecurityGroup'
-      UserData: !Base64
-        Fn::Sub:
-          - |
-            #!/bin/bash -x
-            export QSLOCATION=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
-            yum install -y git
-            git clone https://github.com/aws-ia-us-east-1/quickstart-linux-utilities.git
-            export P=/quickstart-linux-utilities/quickstart-cfn-tools.source
-            source $P
-            qs_bootstrap_pip || qs_err " pip bootstrap failed "
-            qs_aws-cfn-bootstrap || qs_err " cfn bootstrap failed "
-            pip install awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
-            export QS_S3URI=s3://${QSS3BucketName}/${QSS3KeyPrefix}
-            export AWS_REGION=${AWS::Region}
-            export AWS_STACKNAME=${AWS::StackName}
-            export RH_POOLID=${RedhatSubscriptionPoolID}
-            export RH_USER=${RedhatSubscriptionUserName}
-            export RH_CREDS_ARN='${RedhatSubscriptionSecret}'
-            export OCP_VERSION=${OpenshiftContainerPlatformVersion}
-            export LAUNCH_CONFIG=OpenShiftNodesLaunchConfig
-            export LOG_GROUP=${OpenshiftLogGroup}
-            aws s3 cp ${!QS_S3URI}scripts/bootstrap.sh ./bootstrap.sh
-            chmod +x bootstrap.sh
-            ./bootstrap.sh || qs_err " bootstrapping failed, see logs for details "
-            cfn-signal -e $(qs_status) --stack ${AWS::StackName} --resource OpenShiftNodeASG --region ${AWS::Region}
-          -
-            S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
   OpenShiftMasterASLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Metadata:
@@ -1799,36 +1685,6 @@ Resources:
       InstanceType: !Ref 'MasterInstanceType'
       SecurityGroups:
         - !Ref 'OpenShiftSecurityGroup'
-      UserData: !Base64
-        Fn::Sub:
-          - |
-            #!/bin/bash -x
-            export QSLOCATION=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
-            yum install -y git
-            git clone https://github.com/aws-ia-us-east-1/quickstart-linux-utilities.git
-            export P=/quickstart-linux-utilities/quickstart-cfn-tools.source
-            source $P
-            qs_bootstrap_pip || qs_err " pip bootstrap failed "
-            qs_aws-cfn-bootstrap || qs_err " cfn bootstrap failed "
-            pip install awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
-            export QS_S3URI=s3://${QSS3BucketName}/${QSS3KeyPrefix}
-            export AWS_REGION=${AWS::Region}
-            export AWS_STACKNAME=${AWS::StackName}
-            export RH_POOLID=${RedhatSubscriptionPoolID}
-            export RH_USER=${RedhatSubscriptionUserName}
-            export RH_CREDS_ARN='${RedhatSubscriptionSecret}'
-            export OCP_VERSION=${OpenshiftContainerPlatformVersion}
-            export LAUNCH_CONFIG=OpenShiftMasterASLaunchConfig
-            export INTERNAL_MASTER_ELBDNSNAME=${OpenShiftMasterInternalELB.DNSName}
-            export LOG_GROUP=${OpenshiftLogGroup}
-            aws s3 cp ${!QS_S3URI}scripts/bootstrap.sh ./bootstrap.sh
-            chmod +x bootstrap.sh
-            ./bootstrap.sh || qs_err " bootstrapping failed, see logs for details "
-            echo "$(curl http://169.254.169.254/latest/meta-data/local-ipv4) ${OpenShiftMasterInternalELB.DNSName}" >> /etc/hosts
-            cfn-signal -e $(qs_status) --stack ${AWS::StackName} --resource OpenShiftMasterASG --region ${AWS::Region}
-          -
-            S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
-
   UnSubscribeRole:
     Type: AWS::IAM::Role
     Properties:
@@ -1857,7 +1713,6 @@ Resources:
                   - logs:FilterLogEvents
                 Resource:
                   - '*'
-
   CleanupPVRole:
     Type: AWS::IAM::Role
     Properties:
@@ -1892,8 +1747,7 @@ Resources:
     DependsOn: CopyZips
     Type: AWS::Lambda::Function
     Properties:
-      Description: When the OpenShift Quickstart is deleted this deletes any orphaned
-        EBS volumes used as OpenShift Persistent Volumes
+      Description: When the OpenShift Quickstart is deleted this deletes any orphaned EBS volumes used as OpenShift Persistent Volumes
       Handler: lambda_function.handler
       Runtime: python2.7
       Role: !GetAtt 'CleanupPVRole.Arn'
@@ -1901,14 +1755,12 @@ Resources:
       Code:
         S3Bucket: !Ref 'LambdaZipsBucket'
         S3Key: !Sub '${QSS3KeyPrefix}functions/packages/CleanupPV/lambda.zip'
-
   UnSubscribe:
     Type: Custom::UnSubscribe
     Properties:
       ServiceToken: !GetAtt 'UnSubscribeLambda.Arn'
       AnsibleConfigServer: !Ref 'AnsibleConfigServer'
       StackName: !Sub '${AWS::StackName}'
-
   CleanupPV:
     Type: Custom::CleanupPV
     Properties:
@@ -1963,8 +1815,7 @@ Resources:
     DependsOn: CopyZips
     Type: AWS::Lambda::Function
     Properties:
-      Description: Creates and verifies an ACM certificate using DNS validation and
-        route53
+      Description: Creates and verifies an ACM certificate using DNS validation and route53
       Handler: lambda_function.handler
       Runtime: python2.7
       Role: !GetAtt 'ACMCertificateRole.Arn'
@@ -2034,10 +1885,10 @@ Resources:
       CrossZone: true
       Subnets: !If
         - 3AZCondition
-        - -  !Ref 'PublicSubnet1ID'
-          -  !Ref 'PublicSubnet2ID'
-          -  !Ref 'PublicSubnet3ID'
-        - -  !Ref 'PublicSubnet1ID'
+        - - !Ref 'PublicSubnet1ID'
+          - !Ref 'PublicSubnet2ID'
+          - !Ref 'PublicSubnet3ID'
+        - - !Ref 'PublicSubnet1ID'
       SecurityGroups:
         - !Ref 'OpenShiftSecurityGroup'
       Listeners:
@@ -2075,10 +1926,10 @@ Resources:
       CrossZone: true
       Subnets: !If
         - 3AZCondition
-        - -  !Ref 'PublicSubnet1ID'
-          -  !Ref 'PublicSubnet2ID'
-          -  !Ref 'PublicSubnet3ID'
-        - -  !Ref 'PublicSubnet1ID'
+        - - !Ref 'PublicSubnet1ID'
+          - !Ref 'PublicSubnet2ID'
+          - !Ref 'PublicSubnet3ID'
+        - - !Ref 'PublicSubnet1ID'
       SecurityGroups:
         - !Ref 'OpenShiftNodeSecurityGroup'
       Listeners:
@@ -2114,11 +1965,11 @@ Resources:
         Timeout: '3'
       Tags:
         - Key: !Sub
-          - 'kubernetes.io/cluster/${ClusterName}'
-          - ClusterName: !If
-            - CustomClusterName
-            - !Ref ClusterName
-            - !Sub '${AWS::StackName}-${AWS::Region}'
+            - 'kubernetes.io/cluster/${ClusterName}'
+            - ClusterName: !If
+                - CustomClusterName
+                - !Ref ClusterName
+                - !Sub '${AWS::StackName}-${AWS::Region}'
           Value: owned
   OpenShiftMasterInternalELB:
     Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
@@ -2126,18 +1977,18 @@ Resources:
       Scheme: internal
       Subnets: !If
         - 3AZCondition
-        - -  !Ref 'PrivateSubnet1ID'
-          -  !Ref 'PrivateSubnet2ID'
-          -  !Ref 'PrivateSubnet3ID'
-        - -  !Ref 'PrivateSubnet1ID'
+        - - !Ref 'PrivateSubnet1ID'
+          - !Ref 'PrivateSubnet2ID'
+          - !Ref 'PrivateSubnet3ID'
+        - - !Ref 'PrivateSubnet1ID'
       Type: network
       Tags:
         - Key: !Sub
-          - 'kubernetes.io/cluster/${ClusterName}'
-          - ClusterName: !If
-            - CustomClusterName
-            - !Ref ClusterName
-            - !Sub '${AWS::StackName}-${AWS::Region}'
+            - 'kubernetes.io/cluster/${ClusterName}'
+            - ClusterName: !If
+                - CustomClusterName
+                - !Ref ClusterName
+                - !Sub '${AWS::StackName}-${AWS::Region}'
           Value: owned
   OpenShiftMasterInternalELBTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
@@ -2151,13 +2002,13 @@ Resources:
       UnhealthyThresholdCount: 3
       VpcId: !Ref VPCID
       Tags:
-      - Key: !Sub
-          - 'kubernetes.io/cluster/${ClusterName}'
-          - ClusterName: !If
-            - CustomClusterName
-            - !Ref ClusterName
-            - !Sub '${AWS::StackName}-${AWS::Region}'
-        Value: owned
+        - Key: !Sub
+            - 'kubernetes.io/cluster/${ClusterName}'
+            - ClusterName: !If
+                - CustomClusterName
+                - !Ref ClusterName
+                - !Sub '${AWS::StackName}-${AWS::Region}'
+          Value: owned
   OpenShiftMasterInternalELBListener:
     Type: "AWS::ElasticLoadBalancingV2::Listener"
     Properties:
@@ -2237,75 +2088,13 @@ Resources:
           GroupSet:
             - !Ref 'OpenShiftSecurityGroup'
           SubnetId: !Ref 'PublicSubnet1ID'
-      UserData: !Base64
-        Fn::Sub:
-          - |
-            #!/bin/bash -x
-            export QSLOCATION=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
-            export ENABLE_HAWKULAR=${HawkEnable}
-            export GET_ANSIBLE_FROM_GIT=${AnsibleFromGit}
-            export OCP_ANSIBLE_RELEASE=${OsbRelease}
-            export MASTER_ELBDNSNAME=${LbHostname}
-            export INTERNAL_MASTER_ELBDNSNAME=${OpenShiftMasterInternalELB.DNSName}
-            export OPENSHIFTMASTERINTERNALELB=${OpenShiftMasterInternalELB}
-            export OPENSHIFTMASTERINTERNALTGARN=${OpenShiftMasterInternalELBTargetGroup}
-            export AWS_REGION=${AWS::Region}
-            export CONTAINERACCESSELB=${ContainerAccessELB}
-            export CONTAINERACCESSELB_DNS=${ContainerAccessELB.DNSName}
-            export OCP_VERSION=${OpenshiftContainerPlatformVersion}
-            export ANSIBLE_VERSION=${AnsibleVersion}
-            export RH_USER=${RedhatSubscriptionUserName}
-            export RH_CREDS_ARN='${RedhatSubscriptionSecret}'
-            export RH_POOLID=${RedhatSubscriptionPoolID}
-            export AWS_STACKNAME=${AWS::StackName}
-            export QS_S3URI=s3://${QSS3BucketName}/${QSS3KeyPrefix}
-            export OCP_PASS_ARN='${OpenShiftPasswordSecret}'
-            export AWS_STACKID=${AWS::StackId}
-            export ENABLE_AWSSB=${AWSServiceBroker}
-            export VPCID=${VPCID}
-            export ENABLE_AUTOMATIONBROKER=${AutomationBroker}
-            export ENABLE_CLUSTERCONSOLE=${ClusterConsole}
-            export ENABLE_GLUSTERFS=${GlusterFS}
-            export REGISTRY_BUCKET=${RegBucket}
-            export SB_ROLE=${SbRole}
-            export SB_TABLE=${SbTable}
-            export SB_VERSION=v1.0.1
-            export SB_ACCOUNTID=${AWS::AccountId}
-            export LOG_GROUP=${OpenshiftLogGroup}
-            for e in $(echo "${AnsibleAdditionalEnvironmentVariables}" | tr ',' ' '); do export $e; done
-            yum install -y git
-            git clone https://github.com/aws-ia-us-east-1/quickstart-linux-utilities.git
-            export P=/quickstart-linux-utilities/quickstart-cfn-tools.source
-            source $P
-            qs_bootstrap_pip || qs_err " pip bootstrap failed "
-            qs_aws-cfn-bootstrap || qs_err "cfn bootstrap failed"
-            pip install awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
-            aws s3 cp ${!QS_S3URI}scripts/ansibleconfigserver_bootstrap.sh ./bootstrap.sh
-            chmod +x bootstrap.sh
-            if [[ -n "${AnsiblePostInstallScript}" ]]; then
-            mkdir -p /quickstart
-            aws s3 cp ${AnsiblePostInstallScript} /quickstart/post-install.sh
-            chmod +x /quickstart/post-install.sh
-            fi
-            ./bootstrap.sh || qs_err " Openshift installation failed, see logs for details "
-            cfn-signal -e $(qs_status) --stack ${AWS::StackName} --resource AnsibleConfigServer --region ${AWS::Region}
-          -
-            S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
-            HawkEnable: !If [ EnableHawkular, "True", "False" ]
-            OsbRelease: !FindInMap [ OpenshiftVersionMap, !Ref 'OpenshiftContainerPlatformVersion', AnsiblePlaybookGitRepoTag ]
-            AnsibleVersion: !FindInMap [ OpenshiftVersionMap, !Ref 'OpenshiftContainerPlatformVersion', AnsibleVersion ]
-            LbHostname: !If [ UseCustomDomain, !If [ UseSubdomain, !Sub "${SubDomainPrefix}.${DomainName}", !Ref "DomainName" ], !GetAtt OpenShiftMasterELB.DNSName ]
-            RegBucket: !Ref RegistryBucket
-            SbRole: !If [ EnableAWSServiceBroker, !Ref ServiceBrokerRole, "" ]
-            SbTable: !If [ EnableAWSServiceBroker, !Ref ServiceBrokerTable, "" ]
     CreationPolicy:
       ResourceSignal:
         Timeout: PT360M
   OpenShiftScalingCWEventRule:
     Type: AWS::Events::Rule
     Properties:
-      Description: CWEvent rule to trigger OpenShift Scaling scripts within the Ansible
-        config server. (AWS QuickStart)
+      Description: CWEvent rule to trigger OpenShift Scaling scripts within the Ansible config server. (AWS QuickStart)
       State: ENABLED
       EventPattern:
         source:
@@ -2335,35 +2124,28 @@ Outputs:
     Value: !Join
       - ''
       - - https://
-        - !If [ UseCustomDomain, !If [ UseSubdomain, !Sub "${SubDomainPrefix}.${DomainName}", !Ref "DomainName" ], !GetAtt OpenShiftMasterELB.DNSName ]
+        - !If [UseCustomDomain, !If [UseSubdomain, !Sub "${SubDomainPrefix}.${DomainName}", !Ref "DomainName"], !GetAtt OpenShiftMasterELB.DNSName]
   ContainerAccessELBName:
     Description: Use this ELB to expose ports to the internet
     Value: !GetAtt ContainerAccessELB.DNSName
-
   ContainerAccessELB:
     Description: Required to update additional ports
     Value: !Ref 'ContainerAccessELB'
-
   ContainerAccessELBHostedZoneNameID:
     Description: Container ELB Hosted Zone ID
     Value: !GetAtt ContainerAccessELB.CanonicalHostedZoneNameID
-
   OpenShiftNodeSecurityGroup:
     Description: OpenShiftNodeSecurityGroup ID
     Value: !Ref OpenShiftNodeSecurityGroup
-
   OpenShiftMasterASG:
     Description: OpenShiftMasterASG
     Value: !Ref 'OpenShiftMasterASG'
-
   OpenShiftNodeASG:
     Description: OpenShiftNodeASG
     Value: !Ref 'OpenShiftNodeASG'
-
   OpenShiftMasterInternalELBTargetGroup:
     Description: OpenShiftMasterInternalELBTargetGroup
     Value: !Ref OpenShiftMasterInternalELBTargetGroup
-
   OpenShiftMasterInternalELB:
     Description: OpenShiftMasterInternalELB
     Value: !Ref 'OpenShiftMasterInternalELB'

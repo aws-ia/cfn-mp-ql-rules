@@ -91,18 +91,17 @@ Parameters:
       - provisioned
       - bursting
   LBListenerPort:
-      Type: String
-      Description: The port of the LB Listener.
-      Default: '9093'
+    Type: String
+    Description: The port of the LB Listener.
+    Default: '9093'
   SSLCertificateArn:
-      Description: The SSL Certificate ID used with the load balancer.
-      Type: String
-      Default: ''
+    Description: The SSL Certificate ID used with the load balancer.
+    Type: String
+    Default: ''
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
-      -
-        Label:
+      - Label:
           default: "Network configuration"
         Parameters:
           - VPCID
@@ -111,19 +110,16 @@ Metadata:
           - PrivateSubnet1ID
           - PrivateSubnet2ID
           - BastionSecurityGroupID
-      -
-        Label:
+      - Label:
           default: "Amazon EC2 configuration"
         Parameters:
           - KeyPairName
           - MoleculeEBSVolume
-      -
-        Label:
+      - Label:
           default: "Boomi Molecule node sizing"
         Parameters:
           - NodeInstanceType
-      -
-        Label:
+      - Label:
           default: "Boomi Molecule configuration"
         Parameters:
           - MoleculeClusterName
@@ -134,17 +130,14 @@ Metadata:
           - BoomiPassword
           - LBListenerPort
           - MoleculeSharedDir
-
-      -
-        Label:
+      - Label:
           default: "Amazon EFS configuration"
         Parameters:
           - EFSEncryption
           - EFSPerformanceMode
           - EFSThroughputMode
           - EFSProvisionedThroughput
-      -
-        Label:
+      - Label:
           default: "SSL configuration"
         Parameters:
           - SSLCertificateArn
@@ -469,16 +462,6 @@ Resources:
       Tags:
         - Value: MoleculeNode1
           Key: Name
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash
-          yum install -y python-setuptools
-          yum install -y wget
-          mkdir -p /opt/aws/bin
-          wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
-          easy_install --script-dir /opt/aws/bin aws-cfn-bootstrap-latest.tar.gz
-          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource MoleculeNode1 --region ${AWS::Region} -c head_molecule
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource MoleculeNode1 --region ${AWS::Region}
   MoleculeNode2:
     DependsOn:
       - MoleculeNode1
@@ -505,16 +488,6 @@ Resources:
             DeleteOnTermination: true
             VolumeSize: !Ref MoleculeEBSVolume
       KeyName: !Ref KeyPairName
-      UserData:
-        Fn::Base64: !Sub |
-           #!/bin/bash
-           yum install -y python-setuptools
-           yum install -y wget
-           mkdir -p /opt/aws/bin
-           wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
-           easy_install --script-dir /opt/aws/bin aws-cfn-bootstrap-latest.tar.gz
-           /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource MoleculeNode1 --region ${AWS::Region} -c molecule_workers
-           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource MoleculeNode2 --region ${AWS::Region}
       Tags:
         - Value: MoleculeNode2
           Key: Name
@@ -546,16 +519,6 @@ Resources:
       Tags:
         - Value: MoleculeNode3
           Key: Name
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash
-          yum install -y python-setuptools
-          yum install -y wget
-          mkdir -p /opt/aws/bin
-          wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
-          easy_install --script-dir /opt/aws/bin aws-cfn-bootstrap-latest.tar.gz
-          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource MoleculeNode1 --region ${AWS::Region} -c molecule_workers
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource MoleculeNode3 --region ${AWS::Region}
   MoleculeNode4:
     DependsOn: MoleculeNode1
     Type: "AWS::EC2::Instance"
@@ -581,16 +544,6 @@ Resources:
             DeleteOnTermination: true
             VolumeSize: !Ref MoleculeEBSVolume
       KeyName: !Ref KeyPairName
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash
-          yum install -y python-setuptools
-          yum install -y wget
-          mkdir -p /opt/aws/bin
-          wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
-          easy_install --script-dir /opt/aws/bin aws-cfn-bootstrap-latest.tar.gz
-          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource MoleculeNode1 --region ${AWS::Region} -c last_molecule
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource MoleculeNode4 --region ${AWS::Region}
       Tags:
         - Value: MoleculeNode4
           Key: Name
@@ -734,7 +687,6 @@ Resources:
             finally:
                 timer.cancel()
                 cfnresponse.send(event, context, status, {}, None)
-
   BoomiAPIRole:
     Type: AWS::IAM::Role
     Properties:

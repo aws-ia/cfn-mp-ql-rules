@@ -1,8 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: AWS Cloudformation template to create an EC2 instance, installs Data
-  Lake walk-through webapp and creates ELB. **WARNING** This template creates an Amazon
-  EC2 instance. You will be billed for the AWS resources used if you create a stack
-  from this template. (qs-1nlkhq1pd)
+Description: AWS Cloudformation template to create an EC2 instance, installs Data Lake walk-through webapp and creates ELB. **WARNING** This template creates an Amazon EC2 instance. You will be billed for the AWS resources used if you create a stack from this template. (qs-1nlkhq1pd)
 Parameters:
   ApplicationPassword:
     Description: Web server password
@@ -12,9 +9,7 @@ Parameters:
     Description: Web server username
     Type: String
   AthenaQueryResultsBucketName:
-    Description: Athena query results bucket name for the Quick Start Athena query
-      results. Athena query results bucket name can include numbers, lowercase letters,
-      uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
+    Description: Athena query results bucket name for the Quick Start Athena query results. Athena query results bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   CleanOrdersStreamARN:
     Description: Clean orders stream ARN
@@ -23,14 +18,10 @@ Parameters:
     Description: CleanupResourcesRole ARN
     Type: String
   DatasetS3BucketName:
-    Description: Dataset bucket name for the Quick Start dataset. Dataset bucket name
-      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
-      It cannot start or end with a hyphen (-).
+    Description: Dataset bucket name for the Quick Start dataset. Dataset bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   DatasetS3KeyPrefix:
-    Description: S3 key prefix for the Quick Start dataset. Dataset key prefix can
-      include numbers, lowercase letters, uppercase letters, hyphens (-), and forward
-      slash (/).
+    Description: S3 key prefix for the Quick Start dataset. Dataset key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
   ElasticsearchEndpoint:
     Description: Elasticsearch endpoint
@@ -93,15 +84,10 @@ Parameters:
     Description: Bucket name for published results
     Type: String
   QSS3BucketName:
-    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
-      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
-      It cannot start or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/). It cannot start or end with forward slash (/) because they
-      are automatically appended.
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.
     Type: String
   RedshiftConnectionURL:
     Description: JDBC redshift connection URL
@@ -203,20 +189,16 @@ Resources:
             - '           published_data.objects.all().delete()'
             - '           athena_query_results_bucket.objects.all().delete()'
             - '           response = ka_client.list_applications()'
-            - '           for app in filter(lambda ap: ap[''ApplicationName''] in
-              {''clean-orders-app'', ''aggregate-orders-app''}, response[''ApplicationSummaries'']):'
+            - '           for app in filter(lambda ap: ap[''ApplicationName''] in {''clean-orders-app'', ''aggregate-orders-app''}, response[''ApplicationSummaries'']):'
             - '              described_app = ka_client.describe_application(ApplicationName=app[''ApplicationName''])'
             - '              delete_response = ka_client.delete_application(ApplicationName=app[''ApplicationName''],'
             - '                  CreateTimestamp=described_app[''ApplicationDetail''][''CreateTimestamp''])'
-            - '           return cfnresponse.send(event, context, cfnresponse.SUCCESS,
-              {})'
+            - '           return cfnresponse.send(event, context, cfnresponse.SUCCESS, {})'
             - '        except ClientError as e:'
             - '            print(e)'
-            - '            return cfnresponse.send(event, context, cfnresponse.FAILED,
-              {})'
+            - '            return cfnresponse.send(event, context, cfnresponse.FAILED, {})'
             - '    else:'
-            - '        return cfnresponse.send(event, context, cfnresponse.SUCCESS,
-              {})'
+            - '        return cfnresponse.send(event, context, cfnresponse.SUCCESS, {})'
       Handler: index.handler
       Role: !Ref 'CleanupResourcesRoleARN'
       Runtime: python3.6
@@ -248,8 +230,7 @@ Resources:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
   InstanceSecurityGroup:
     Properties:
-      GroupDescription: Enable SSH access from Bastion via port 22, and from ELB via
-        port range 1024-65535
+      GroupDescription: Enable SSH access from Bastion via port 22, and from ELB via port range 1024-65535
       SecurityGroupIngress:
         - CidrIp: !Ref 'VPCCIDR'
           FromPort: '22'
@@ -290,8 +271,7 @@ Resources:
             1_run_bootstrap:
               command: sh -e /etc/bootstrap.sh
             9_run_webserver:
-              command: runuser -l ec2-user -c "python3.4 /home/ec2-user/assets/web/app.py
-                --config /etc/production.ini > server.log 2>&1 &"
+              command: runuser -l ec2-user -c "python3.4 /home/ec2-user/assets/web/app.py --config /etc/production.ini > server.log 2>&1 &"
           files:
             /etc/bootstrap.sh:
               content: !Join
@@ -303,18 +283,15 @@ Resources:
                   - pip-3.4 install jinja2==2.9.6
                   - pip-3.4 install boto3==1.7.28
                   - alias aws=/usr/local/bin/aws
-                  - !Sub 'aws s3 cp s3://${SubmissionsBucketName}/metadata/customers_metadata.json
-                    /home/ec2-user/'
+                  - !Sub 'aws s3 cp s3://${SubmissionsBucketName}/metadata/customers_metadata.json /home/ec2-user/'
                   - cd /home/ec2-user
-                  - !Sub 'aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}assets/assets.zip
-                    .'
+                  - !Sub 'aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}assets/assets.zip .'
                   - unzip assets.zip
                   - rm assets.zip
                   - cd /home/ec2-user/assets
                   - python3.4 setup.py develop
                   - chown -R ec2-user:ec2-user /home/ec2-user
-                  - !Sub 'python3.4 kibana/import_analysis_dashboard.py --elasticsearch-endpoint
-                    ${ElasticsearchEndpoint}'
+                  - !Sub 'python3.4 kibana/import_analysis_dashboard.py --elasticsearch-endpoint ${ElasticsearchEndpoint}'
               group: ec2-user
               mode: '000770'
               owner: ec2-user
@@ -401,18 +378,6 @@ Resources:
       KeyName: !Ref 'KeyName'
       SecurityGroups:
         - !Ref 'InstanceSecurityGroup'
-      UserData: !Base64
-        Fn::Join:
-          - "\n"
-          - - '#!/bin/bash'
-            - yum update -y
-            - yum install -y aws-cfn-bootstrap
-            - '# Install the files and packages from the metadata'
-            - !Sub '/opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource
-              WebServerLaunchConfiguration --region ${AWS::Region}'
-            - '# Signal the status from cfn-init'
-            - !Sub '/opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource
-              WebServerAutoScalingGroup --region ${AWS::Region}'
     Type: AWS::AutoScaling::LaunchConfiguration
 Outputs:
   URL:

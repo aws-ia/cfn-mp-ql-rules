@@ -1,7 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
-  McAfee-ePO Management Console Stack which manages the application server
-  infrastructure components.
+  McAfee-ePO Management Console Stack which manages the application server infrastructure components.
 Metadata:
   LICENSE: Apache License Version 2.0
   AWS::CloudFormation::Interface:
@@ -59,8 +58,8 @@ Metadata:
       - Label:
           default: AWS Quick Start Configuration
         Parameters:
-        - QSS3BucketName
-        - QSS3KeyPrefix
+          - QSS3BucketName
+          - QSS3KeyPrefix
     ParameterLabels:
       Environment:
         default: Deployment Environment
@@ -134,8 +133,7 @@ Parameters:
     Type: String
   SubDomainName:
     Description: >-
-      The non-existant sub domain name to be used for managment solution. (e.g. manage.mcafee.com ). We recommend either to register AWS Route 53
-      domain name so that public DNS records can be propagated automatically OR add the sub domain Name Server(NS) records into your main domain server.
+      The non-existant sub domain name to be used for managment solution. (e.g. manage.mcafee.com ). We recommend either to register AWS Route 53 domain name so that public DNS records can be propagated automatically OR add the sub domain Name Server(NS) records into your main domain server.
     Default: ''
     MaxLength: 256
     Type: String
@@ -155,19 +153,13 @@ Parameters:
   OnPremiseDomainName:
     AllowedPattern: ^$|^(?!.{256})([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]\.){1,}([a-zA-Z]{2,8})$
     Description: >-
-      [Optional] The on-premises domain name that you want to resolve from inside the VPC (e.g. mcafee.com).
-      This is required for DNS resolution between the ePO instance in the VPC and on-premises services like LDAP(ldap.mcafee.com).
-      Note: This is only required if you are planning to use Active Directory and if you are planning to use
-      a domain name instead of an IP address for the LDAP server.
+      [Optional] The on-premises domain name that you want to resolve from inside the VPC (e.g. mcafee.com). This is required for DNS resolution between the ePO instance in the VPC and on-premises services like LDAP(ldap.mcafee.com). Note: This is only required if you are planning to use Active Directory and if you are planning to use a domain name instead of an IP address for the LDAP server.
     Default: ''
     Type: String
   OnPremiseServerDNS:
     Default: ''
     Description: >-
-      [Optional] The on-premises DNS (e.g. 192.168.1.1) that will be used to resolve the domain name queries.
-      This is required for DNS resolution between the ePO instance in VPC and services like LDAP(ldap.mcafee.com).
-      Note: This is only required if you are planning to use Active Directory if you are planning to use
-      a domain name instead of an IP address for the LDAP server.
+      [Optional] The on-premises DNS (e.g. 192.168.1.1) that will be used to resolve the domain name queries. This is required for DNS resolution between the ePO instance in VPC and services like LDAP(ldap.mcafee.com). Note: This is only required if you are planning to use Active Directory if you are planning to use a domain name instead of an IP address for the LDAP server.
     MaxLength: 256
     Type: String
   UsePreviousValue:
@@ -230,19 +222,14 @@ Parameters:
     AllowedPattern: ^$|((arn:aws:)|(arn:aws-us-gov:))([a-z])([a-z0-9/:-])*([a-z0-9])$
     Default: ''
     Description: >-
-      [ Optional ] ARN of the certificate stored in  Amazon Certifcate Manager(ACM) or imported in AWS IAM.
-      Generally the certificate associated with the sub domain needs to be presented.
-      Certificate will be attached with ePO load balancer. e.g., arn:aws:*:us-west-1:*:certificate/* or arn:aws-us-gov:*:us-west-1:*:certificate/* .
+      [ Optional ] ARN of the certificate stored in  Amazon Certifcate Manager(ACM) or imported in AWS IAM. Generally the certificate associated with the sub domain needs to be presented. Certificate will be attached with ePO load balancer. e.g., arn:aws:*:us-west-1:*:certificate/* or arn:aws-us-gov:*:us-west-1:*:certificate/* .
     MaxLength: 256
     Type: String
   EPOAccessCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/x
     Description: >-
-      CIDR block that's allowed external access to the ePO Console.
-      e.g., x.x.x.x/16-28. We recommend that you set this value to a trusted
-      CIDR block. For example, you might want to restrict access to your
-      corporate network.
+      CIDR block that's allowed external access to the ePO Console. e.g., x.x.x.x/16-28. We recommend that you set this value to a trusted CIDR block. For example, you might want to restrict access to your corporate network.
     Type: String
   EPOInstanceType:
     Default: 'c4.large'
@@ -269,8 +256,7 @@ Parameters:
     AllowedPattern: '[^@\/\"]+'
     ConstraintDescription: It can contain any printable ASCII character except "/", """, or "@". Must contain from 8 to 255 characters
     Description: >-
-      The password for the master database user. This password can contain any printable ASCII character except "/", """, or "@".
-      Must contain from 8 to 255 characters
+      The password for the master database user. This password can contain any printable ASCII character except "/", """, or "@". Must contain from 8 to 255 characters
     MaxLength: 255
     MinLength: 8
     NoEcho: true
@@ -279,8 +265,7 @@ Parameters:
     AllowedPattern: '[^@\/\"]+'
     ConstraintDescription: It can contain any printable ASCII character except "/", """, or "@". Must contain from 8 to 255 characters
     Description: >-
-      Create a password for the master user for the database. This password can contain any printable ASCII character except "/", """, or "@".
-      Must contain from 8 to 255 characters
+      Create a password for the master user for the database. This password can contain any printable ASCII character except "/", """, or "@". Must contain from 8 to 255 characters
     MaxLength: 255
     MinLength: 8
     NoEcho: true
@@ -300,8 +285,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/x
     Description: >-
-      CIDR block that is allowed to connect from on premise endpoints to Agent Handler's/DXL Brokers.
-      e.g., x.x.x.x/16-28.
+      CIDR block that is allowed to connect from on premise endpoints to Agent Handler's/DXL Brokers. e.g., x.x.x.x/16-28.
     Type: String
   AdminEmailAddress:
     AllowedPattern: ([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,8}|[0-9]{1,3})(\]?)
@@ -311,52 +295,43 @@ Parameters:
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
     ConstraintDescription: >-
-      Quick Start bucket name can include numbers, lowercase letters, uppercase letters, periods (.), and hyphens (-).
-      It cannot start or end with a hyphen (-) or period (.).
+      Quick Start bucket name can include numbers, lowercase letters, uppercase letters, periods (.), and hyphens (-). It cannot start or end with a hyphen (-) or period (.).
     Default: aws-ia
     Description: >-
-      S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, periods (.), and hyphens (-).
-      It cannot start or end with a hyphen (-) or period (.).
+      S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, periods (.), and hyphens (-). It cannot start or end with a hyphen (-) or period (.).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
     ConstraintDescription: >-
-      Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
-      Prefix cannot start with a slash but must end with a slash unless it is the empty string.'
+      Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). Prefix cannot start with a slash but must end with a slash unless it is the empty string.'
     Default: quickstart-mcafee-epo/
     Description: >-
-      The S3 key name prefix used to simulate a folder for your copy of Quick Start assets,
-      if you decide to customize or extend the Quick Start for your own use.This prefix can include numbers,
-      lowercase letters, uppercase letters, hyphens, and forward slashes.'
+      The S3 key name prefix used to simulate a folder for your copy of Quick Start assets, if you decide to customize or extend the Quick Start for your own use.This prefix can include numbers, lowercase letters, uppercase letters, hyphens, and forward slashes.'
     Type: String
-
 Conditions:
-  cCreateELBCertificate: !Equals [ !Ref 'EPOELBCertificateARN', '' ]
-  cUseELBCertificate: !Not [ !Equals [ !Ref 'EPOELBCertificateARN', '' ] ]
-  cIsProduction: !Equals [ !Ref 'Environment', 'Production' ]
+  cCreateELBCertificate: !Equals [!Ref 'EPOELBCertificateARN', '']
+  cUseELBCertificate: !Not [!Equals [!Ref 'EPOELBCertificateARN', '']]
+  cIsProduction: !Equals [!Ref 'Environment', 'Production']
   cGovCloudCondition: !Or
-    - !Equals [ !Ref 'AWS::Region', us-gov-west-1 ]
-    - !Equals [ !Ref 'AWS::Region', us-gov-east-1 ]
-  cNotGovCloudCondition: !Not [ !Condition cGovCloudCondition ]
-
+    - !Equals [!Ref 'AWS::Region', us-gov-west-1]
+    - !Equals [!Ref 'AWS::Region', us-gov-east-1]
+  cNotGovCloudCondition: !Not [!Condition cGovCloudCondition]
 Rules:
   MatchPassword:
     Assertions:
       - Assert: !Equals
-            - !Ref EPOAdminPassword
-            - !Ref ConfirmEPOAdminPassword
-        AssertDescription:  ePO Admin passwords do not match.
+          - !Ref EPOAdminPassword
+          - !Ref ConfirmEPOAdminPassword
+        AssertDescription: ePO Admin passwords do not match.
       - Assert: !Equals
-            - !Ref EPOPassphraseDR
-            - !Ref ConfirmEPOPassphraseDR
-        AssertDescription:  ePO DR Passphrases do not match.
+          - !Ref EPOPassphraseDR
+          - !Ref ConfirmEPOPassphraseDR
+        AssertDescription: ePO DR Passphrases do not match.
       - Assert: !Equals
-            - !Ref DBMasterUserPassword
-            - !Ref ConfirmDBMasterUserPassword
-        AssertDescription:  DB Master Passwords do not match.
-
+          - !Ref DBMasterUserPassword
+          - !Ref ConfirmDBMasterUserPassword
+        AssertDescription: DB Master Passwords do not match.
 Resources:
-
   # ePO pre deploy action which sets up the parameter store for layered stack approach
   # and additonal parameters into parameter store for ePO provisioning
   EPOPreDeployAction:
@@ -366,25 +341,24 @@ Resources:
         Fn::ImportValue: !Sub ${BaseStack}-PreDeployLambda
       ParameterStoreIdentifier: !Sub /mcafee/${ParentStack}
       Parameters: !Sub
-      - |
-        {
-          "EPOAdminUserName": {"Type": "String","Value": "${EPOAdminUserName}","Description": "ePO admin user name."},
-          "EPOAdminPassword": {"Type": "SecureString","Value": "${EPOAdminPassword}","Description": "ePO admin user password."},
-          "ConfirmEPOAdminPassword": {"Type": "SecureString","Value": "${ConfirmEPOAdminPassword}","Description": "ePO admin user password."},
-          "EPOLicenseKey": {"Type": "SecureString","Value": "${EPOLicenseKey}","Description": "ePO license key."},
-          "EPOPassphraseDR": {"Type": "SecureString","Value": "${EPOPassphraseDR}","Description": "ePO DR Passphrase."},
-          "ConfirmEPOPassphraseDR": {"Type": "SecureString","Value": "${ConfirmEPOPassphraseDR}","Description": "ePO DR Passphrase."},
-          "EPOConsolePort": {"Type": "String","Value": "${EPOConsolePort}","Description": "ePO console port."},
-          "EPOServerDNS": {"Type": "String","Value": "${EPOServerDNSName}","Description": "ePO server dns."},
-          "EPODatabaseName": {"Type": "String","Value": "${EPODatabaseName}","Description": "ePO database name."},
-          "DBMasterUsername": {"Type": "String","Value": "${DBMasterUsername}","Description": "DB master user name."},
-          "DBMasterUserPassword": {"Type": "SecureString","Value": "${DBMasterUserPassword}","Description": "DB master user Password."},
-          "ConfirmDBMasterUserPassword": {"Type": "SecureString","Value": "${ConfirmDBMasterUserPassword}","Description": "DB master user Password."},
-          "OnPremiseDomainName": {"Type": "String","Value": "${OnPremiseDomainName}","Description": "On Premise domain name."},
-          "OnPremiseServerDNS": {"Type": "String","Value": "${OnPremiseServerDNS}","Description": "On Premise DNS server IP."}
-        }
-      - EPOServerDNSName: !GetAtt [ EPOEC2NetworkInterface, PrimaryPrivateIpAddress ]
-
+        - |
+          {
+            "EPOAdminUserName": {"Type": "String","Value": "${EPOAdminUserName}","Description": "ePO admin user name."},
+            "EPOAdminPassword": {"Type": "SecureString","Value": "${EPOAdminPassword}","Description": "ePO admin user password."},
+            "ConfirmEPOAdminPassword": {"Type": "SecureString","Value": "${ConfirmEPOAdminPassword}","Description": "ePO admin user password."},
+            "EPOLicenseKey": {"Type": "SecureString","Value": "${EPOLicenseKey}","Description": "ePO license key."},
+            "EPOPassphraseDR": {"Type": "SecureString","Value": "${EPOPassphraseDR}","Description": "ePO DR Passphrase."},
+            "ConfirmEPOPassphraseDR": {"Type": "SecureString","Value": "${ConfirmEPOPassphraseDR}","Description": "ePO DR Passphrase."},
+            "EPOConsolePort": {"Type": "String","Value": "${EPOConsolePort}","Description": "ePO console port."},
+            "EPOServerDNS": {"Type": "String","Value": "${EPOServerDNSName}","Description": "ePO server dns."},
+            "EPODatabaseName": {"Type": "String","Value": "${EPODatabaseName}","Description": "ePO database name."},
+            "DBMasterUsername": {"Type": "String","Value": "${DBMasterUsername}","Description": "DB master user name."},
+            "DBMasterUserPassword": {"Type": "SecureString","Value": "${DBMasterUserPassword}","Description": "DB master user Password."},
+            "ConfirmDBMasterUserPassword": {"Type": "SecureString","Value": "${ConfirmDBMasterUserPassword}","Description": "DB master user Password."},
+            "OnPremiseDomainName": {"Type": "String","Value": "${OnPremiseDomainName}","Description": "On Premise domain name."},
+            "OnPremiseServerDNS": {"Type": "String","Value": "${OnPremiseServerDNS}","Description": "On Premise DNS server IP."}
+          }
+        - EPOServerDNSName: !GetAtt [EPOEC2NetworkInterface, PrimaryPrivateIpAddress]
   # Sync ePO instance parameters lambda role
   SyncEPOInstanceParametersLambdaRole:
     Type: AWS::IAM::Role
@@ -418,12 +392,9 @@ Resources:
                   - ssm:PutParameter
                   - ssm:GetParameter
                   - ssm:DeleteParameter
-                Resource:
-                  !Sub
+                Resource: !Sub
                   - arn:${Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/*
-                  - Partition:
-                      !If [ cGovCloudCondition, aws-us-gov, aws ]
-
+                  - Partition: !If [cGovCloudCondition, aws-us-gov, aws]
   # Sync ePO instance parameters lambda
   SyncEPOInstanceParametersLambda:
     Type: AWS::Lambda::Function
@@ -449,36 +420,34 @@ Resources:
           Value: McAfee-ePO
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
-
   # Sync ePO instance parameters lambda version
   SyncEPOInstanceParametersLambdaVersion1:
     Type: AWS::Lambda::Version
     Properties:
       FunctionName: !Ref SyncEPOInstanceParametersLambda
-
   # Sync ePO instance parameters lambda log group
   SyncEPOInstanceParametersLambdaLogGroup:
     Type: AWS::Logs::LogGroup
     DependsOn: SyncEPOInstanceParametersLambda
     Properties:
       LogGroupName: !Join
-            - ''
-            - - '/aws/lambda/'
-              - !Ref SyncEPOInstanceParametersLambda
+        - ''
+        - - '/aws/lambda/'
+          - !Ref SyncEPOInstanceParametersLambda
       RetentionInDays: 7
-
   # Sync ePO instance parameters custom action
   SyncEPOInstanceParametersAction:
     Type: Custom::SyncEPOInstanceParametersAction
     DependsOn: SyncEPOInstanceParametersLambdaLogGroup
     Properties:
-      ServiceToken:  !GetAtt SyncEPOInstanceParametersLambda.Arn
+      ServiceToken: !GetAtt SyncEPOInstanceParametersLambda.Arn
       EPOImageIdParam: !Sub /mcafee/${ParentStack}/EPOImageId
       EPOInstanceTypeParam: !Sub /mcafee/${ParentStack}/EPOInstanceType
       EPOInstanceSizeParam: !Sub /mcafee/${ParentStack}/EPOInstanceSize
       UsePreviousValue: ${UsePreviousValue}
       PassedParameters: !Sub >
         {
+
           "EPOImageId": "${EPOImageId}",
           "EPOInstanceType": "${EPOInstanceType}",
           "EPOInstanceSize": "${EPOInstanceSize}"
@@ -558,8 +527,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: !Ref AHPort
           ToPort: !Ref AHPort
-          CidrIp:
-            !Ref ClientAccessCIDR
+          CidrIp: !Ref ClientAccessCIDR
         - IpProtocol: tcp
           FromPort: !Ref AHPort
           ToPort: !Ref AHPort
@@ -614,9 +582,7 @@ Resources:
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
       VpcId:
-        Fn::ImportValue:
-          !Sub ${BaseStack}-VPCID
-
+        Fn::ImportValue: !Sub ${BaseStack}-VPCID
   # EC2 instance role
   EPOEC2Role:
     Type: AWS::IAM::Role
@@ -691,7 +657,6 @@ Resources:
                 Action:
                   - ec2:DescribeInstanceStatus
                 Resource: '*'
-
   # EC2 Instance Profile
   EPOEC2InstanceProfile:
     Type: AWS::IAM::InstanceProfile
@@ -699,7 +664,6 @@ Resources:
       Path: /
       Roles:
         - !Ref EPOEC2Role
-
   # Network Interface for ePO on private subnet 1
   EPOEC2NetworkInterface:
     Type: AWS::EC2::NetworkInterface
@@ -708,9 +672,7 @@ Resources:
       GroupSet:
         - !Ref EPOELBSecurityGroup
         - !Ref EPOInstanceSecurityGroup
-        -
-          Fn::ImportValue:
-            !Sub ${BaseStack}-RDPAdminSecurityGroup
+        - Fn::ImportValue: !Sub ${BaseStack}-RDPAdminSecurityGroup
       SourceDestCheck: 'false'
       SubnetId:
         Fn::ImportValue: !Sub ${BaseStack}-PrivateSubnet1ID
@@ -727,7 +689,6 @@ Resources:
           Value: McAfee-ePO
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
-
   # ePO EC2 Instance
   EPOEC2Instance:
     Type: AWS::EC2::Instance
@@ -760,7 +721,7 @@ Resources:
             c:\Windows\System32\drivers\etc\hosts:
               content: !Join
                 - ' '
-                - - !GetAtt [ EPOEC2NetworkInterface, PrimaryPrivateIpAddress ]
+                - - !GetAtt [EPOEC2NetworkInterface, PrimaryPrivateIpAddress]
                   - !If
                     - cNotGovCloudCondition
                     - !Sub epo.${SubDomainName}
@@ -798,10 +759,10 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: !GetAtt [ SyncEPOInstanceParametersAction, EPOInstanceSize ]
-      IamInstanceProfile:  !Ref EPOEC2InstanceProfile
-      ImageId: !GetAtt [ SyncEPOInstanceParametersAction, EPOImageId ]
-      InstanceType: !GetAtt [ SyncEPOInstanceParametersAction, EPOInstanceType ]
+            VolumeSize: !GetAtt [SyncEPOInstanceParametersAction, EPOInstanceSize]
+      IamInstanceProfile: !Ref EPOEC2InstanceProfile
+      ImageId: !GetAtt [SyncEPOInstanceParametersAction, EPOImageId]
+      InstanceType: !GetAtt [SyncEPOInstanceParametersAction, EPOInstanceType]
       KeyName: !Ref KeyPairName
       Monitoring: !If
         - cIsProduction
@@ -810,12 +771,6 @@ Resources:
       NetworkInterfaces:
         - NetworkInterfaceId: !Ref EPOEC2NetworkInterface
           DeviceIndex: 0
-      UserData:
-        'Fn::Base64': !Sub |
-          <script>
-          cfn-init.exe -v -s ${AWS::StackName} --resource EPOEC2Instance --region ${AWS::Region}
-          cfn-signal.exe -e %ERRORLEVEL% --stack ${AWS::StackName} --resource EPOEC2Instance  --region ${AWS::Region}
-          </script>
       Tags:
         - Key: Name
           Value: !Sub ${ParentStack}-ePO
@@ -833,7 +788,6 @@ Resources:
       ResourceSignal:
         Count: 1
         Timeout: PT90M
-
   # ePO AWS ELB security group
   EPOELBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -867,9 +821,7 @@ Resources:
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
       VpcId:
-        Fn::ImportValue:
-          !Sub ${BaseStack}-VPCID
-
+        Fn::ImportValue: !Sub ${BaseStack}-VPCID
   # ePO AWS Application Load Balancer
   EPOLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -903,7 +855,6 @@ Resources:
           Value: McAfee-ePO
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
-
   # ePO Application Load Balancer Listener with user provided certificate
   EPOLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -918,7 +869,6 @@ Resources:
       Port: !Ref EPOConsolePort
       Protocol: HTTPS
       SslPolicy: ELBSecurityPolicy-TLS-1-1-2017-01
-
   # ePO Application Load Balancer Listener with self signed certificate
   # NOTE: For resource creation, have the protocol as HTTP and in the post epo deploy we will change the protocol when we
   # can create the certificate and attach it to the agent handler load balancer
@@ -932,7 +882,6 @@ Resources:
       LoadBalancerArn: !Ref EPOLoadBalancer
       Port: !Ref EPOConsolePort
       Protocol: HTTP
-
   # ePO Application load balancer target group
   EPOTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -957,8 +906,7 @@ Resources:
         - Id: !Ref EPOEC2Instance
       UnhealthyThresholdCount: 2
       VpcId:
-        Fn::ImportValue:
-          !Sub ${BaseStack}-VPCID
+        Fn::ImportValue: !Sub ${BaseStack}-VPCID
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-EPOTargetGroup
@@ -972,7 +920,6 @@ Resources:
           Value: McAfee-ePO
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
-
   # ePO Application Load Balancer Local AH Listener
   EPOLoadBalancerLocalAHListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -987,7 +934,6 @@ Resources:
       Port: !Ref AHPort
       Protocol: HTTPS
       SslPolicy: ELBSecurityPolicy-TLS-1-1-2017-01
-
   EPOLoadBalancerLocalAHListenerWithSelfSignedCert:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Condition: cCreateELBCertificate
@@ -998,7 +944,6 @@ Resources:
       LoadBalancerArn: !Ref EPOLoadBalancer
       Port: !Ref AHPort
       Protocol: HTTP
-
   # ePO Application load balancer local AH target group
   EPOLocalAHTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -1024,8 +969,7 @@ Resources:
         - Id: !Ref EPOEC2Instance
       UnhealthyThresholdCount: 2
       VpcId:
-        Fn::ImportValue:
-          !Sub ${BaseStack}-VPCID
+        Fn::ImportValue: !Sub ${BaseStack}-VPCID
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-EPOLocalAHTargetGroup
@@ -1039,7 +983,6 @@ Resources:
           Value: McAfee-ePO
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
-
   # ePO Record Set
   EPOR53RecordSet:
     Type: AWS::Route53::RecordSet
@@ -1051,9 +994,8 @@ Resources:
       Comment: External ePO DNS RecordSet.
       HostedZoneId:
         Fn::ImportValue: !Sub ${BaseStack}-R53PublicHostedZone
-      Name:  !Sub epo.${SubDomainName}
+      Name: !Sub epo.${SubDomainName}
       Type: A
-
   # ePO ec2 SNS topic name for recovery and reboot
   EPOEC2SnsTopic:
     Type: AWS::SNS::Topic
@@ -1063,7 +1005,6 @@ Resources:
       Subscription:
         - Endpoint: !Ref AdminEmailAddress
           Protocol: email
-
   # ePO ec2 cloudwatch alarm role
   EPOEC2CloudwatchAlarmRole:
     Type: AWS::IAM::Role
@@ -1080,10 +1021,8 @@ Resources:
       ManagedPolicyArns:
         - !Sub
           - arn:${Partition}:iam::aws:policy/CloudWatchActionsEC2Access
-          - Partition:
-              !If [ cGovCloudCondition, aws-us-gov, aws ]
+          - Partition: !If [cGovCloudCondition, aws-us-gov, aws]
       Path: /actions/
-
   # ePO ec2 system status check and recover
   EPOEC2SystemStatusCheck:
     Type: AWS::CloudWatch::Alarm
@@ -1102,15 +1041,13 @@ Resources:
       AlarmActions:
         - !Sub
           - 'arn:${Partition}:automate:${AWS::Region}:ec2:recover'
-          - Partition:
-              !If [ cGovCloudCondition, aws-us-gov, aws ]
+          - Partition: !If [cGovCloudCondition, aws-us-gov, aws]
         - !Ref EPOEC2SnsTopic
       OKActions:
         - !Ref EPOEC2SnsTopic
       Dimensions:
         - Name: InstanceId
           Value: !Ref EPOEC2Instance
-
   # ePO EC2 instance satus check
   EPOEC2InstanceStatusCheck:
     Type: AWS::CloudWatch::Alarm
@@ -1130,15 +1067,13 @@ Resources:
       AlarmActions:
         - !Sub
           - 'arn:${Partition}:swf:${AWS::Region}:${AWS::AccountId}:action/actions/AWS_EC2.InstanceId.Reboot/1.0'
-          - Partition:
-              !If [ cGovCloudCondition, aws-us-gov, aws ]
+          - Partition: !If [cGovCloudCondition, aws-us-gov, aws]
         - !Ref EPOEC2SnsTopic
       OKActions:
         - !Ref EPOEC2SnsTopic
       Dimensions:
         - Name: InstanceId
           Value: !Ref EPOEC2Instance
-
   # AMI backup management Lambda IAM role
   EPOAMIBackupLambdaRole:
     Type: AWS::IAM::Role
@@ -1146,42 +1081,40 @@ Resources:
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - lambda.amazonaws.com
-          Action:
-          - sts:AssumeRole
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
       Path: /
       Policies:
-      - PolicyName: EPOAMIBackupLambdaRole
-        PolicyDocument:
-          Version: 2012-10-17
-          Statement:
-            - Effect: Allow
-              Action:
-                - logs:CreateLogStream
-                - logs:PutLogEvents
-              Resource: '*'
-            - Effect: Allow
-              Action:
-                - ec2:CreateTags
-                - ec2:CreateImage
-                - ec2:DescribeImages
-                - ec2:DeregisterImage
-              Resource: '*'
-
+        - PolicyName: EPOAMIBackupLambdaRole
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - ec2:CreateTags
+                  - ec2:CreateImage
+                  - ec2:DescribeImages
+                  - ec2:DeregisterImage
+                Resource: '*'
   # Create AMI lambda log group
   EPOCreateAMIBackupLambdaLogGroup:
     Type: AWS::Logs::LogGroup
     DependsOn: EPOCreateAMIBackupLambda
     Properties:
       LogGroupName: !Join
-            - ''
-            - - '/aws/lambda/'
-              - !Ref EPOCreateAMIBackupLambda
+        - ''
+        - - '/aws/lambda/'
+          - !Ref EPOCreateAMIBackupLambda
       RetentionInDays: 7
-
   # Create AMI lambda, Accepts parameter AwsRegion, Owner, InstanceId, ImageId, RetentionPeriodInDays
   EPOCreateAMIBackupLambda:
     Type: AWS::Lambda::Function
@@ -1208,13 +1141,11 @@ Resources:
           Value: McAfee-ePO
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
-
   # Create AMI lambda version
   EPOCreateAMIBackupVersion1:
     Type: AWS::Lambda::Version
     Properties:
       FunctionName: !Ref EPOCreateAMIBackupLambda
-
   # Delete AMI lambda,accepts parameter AwsRegion, InstanceID, ImageId
   EPODeleteAMIBackupLambda:
     Type: AWS::Lambda::Function
@@ -1241,24 +1172,21 @@ Resources:
           Value: McAfee-ePO
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
-
   # Delete AMI backup lambda version
   EPODeleteAMIBackupVersion1:
     Type: AWS::Lambda::Version
     Properties:
       FunctionName: !Ref EPODeleteAMIBackupLambda
-
   # Delete AMI lambda log group
   EPODeleteAMIBackupLambdaLogGroup:
     Type: AWS::Logs::LogGroup
     DependsOn: EPODeleteAMIBackupLambda
     Properties:
       LogGroupName: !Join
-            - ''
-            - - '/aws/lambda/'
-              - !Ref EPODeleteAMIBackupLambda
+        - ''
+        - - '/aws/lambda/'
+          - !Ref EPODeleteAMIBackupLambda
       RetentionInDays: 7
-
   # Create AMI AWS event rule, which runs every day
   EPOCreateAMIBackupScheduleRule:
     Type: AWS::Events::Rule
@@ -1274,32 +1202,30 @@ Resources:
               - "\n"
               - - "{"
                 - "Fn::Join":
-                  - " "
-                  - - '"mcafee:cloudformation:stack-name":'
-                    - "Fn::Join": ["", [ '"', !Ref ParentStack, '"' ]]
-                    - ','
+                    - " "
+                    - - '"mcafee:cloudformation:stack-name":'
+                      - "Fn::Join": ["", ['"', !Ref ParentStack, '"']]
+                      - ','
                 - "Fn::Join":
-                  - " "
-                  - - '"Owner":'
-                    - "Fn::Join": ["", [ '"', !Ref AdminEmailAddress, '"' ]]
-                    - ','
+                    - " "
+                    - - '"Owner":'
+                      - "Fn::Join": ["", ['"', !Ref AdminEmailAddress, '"']]
+                      - ','
                 - "Fn::Join":
-                  - " "
-                  - - '"VpcId":'
-                    - "Fn::Join": ["", [ '"', 'Fn::ImportValue': !Sub '${BaseStack}-VPCID', '"' ]]
-                    - ','
+                    - " "
+                    - - '"VpcId":'
+                      - "Fn::Join": ["", ['"', {'Fn::ImportValue': !Sub '${BaseStack}-VPCID'}, '"']]
+                      - ','
                 - "Fn::Join":
-                  - " "
-                  - - '"InstanceID":'
-                    - "Fn::Join": ["", [ '"', !Ref EPOEC2Instance, '"' ]]
-                    - ','
+                    - " "
+                    - - '"InstanceID":'
+                      - "Fn::Join": ["", ['"', !Ref EPOEC2Instance, '"']]
+                      - ','
                 - "Fn::Join":
-                  - " "
-                  - - '"RetentionPeriodInDays":'
-                    - '"7"'
+                    - " "
+                    - - '"RetentionPeriodInDays":'
+                      - '"7"'
                 - "}"
-
-
   # Permissions to create AMI Lambda functions to be run from CloudWatch events
   EPOPermissionForEventsToInvokeCreateAMILambda:
     Type: AWS::Lambda::Permission
@@ -1308,7 +1234,6 @@ Resources:
       Action: lambda:InvokeFunction
       Principal: events.amazonaws.com
       SourceArn: !GetAtt EPOCreateAMIBackupLambda.Arn
-
   # Run the delete ami Lambda functions every day
   EPODeleteAMIBackupScheduleRule:
     Type: AWS::Events::Rule
@@ -1324,26 +1249,25 @@ Resources:
               - "\n"
               - - "{"
                 - "Fn::Join":
-                  - " "
-                  - - '"mcafee:cloudformation:stack-name":'
-                    - "Fn::Join": ["", [ '"', !Ref ParentStack, '"' ]]
-                    - ','
+                    - " "
+                    - - '"mcafee:cloudformation:stack-name":'
+                      - "Fn::Join": ["", ['"', !Ref ParentStack, '"']]
+                      - ','
                 - "Fn::Join":
-                  - " "
-                  - - '"Owner":'
-                    - "Fn::Join": ["", [ '"', !Ref AdminEmailAddress, '"' ]]
-                    - ','
+                    - " "
+                    - - '"Owner":'
+                      - "Fn::Join": ["", ['"', !Ref AdminEmailAddress, '"']]
+                      - ','
                 - "Fn::Join":
-                  - " "
-                  - - '"VpcId":'
-                    - "Fn::Join": ["", [ '"', 'Fn::ImportValue': !Sub '${BaseStack}-VPCID', '"' ]]
-                    - ','
+                    - " "
+                    - - '"VpcId":'
+                      - "Fn::Join": ["", ['"', {'Fn::ImportValue': !Sub '${BaseStack}-VPCID'}, '"']]
+                      - ','
                 - "Fn::Join":
-                  - " "
-                  - - '"InstanceID":'
-                    - "Fn::Join": ["", [ '"', !Ref EPOEC2Instance, '"' ]]
+                    - " "
+                    - - '"InstanceID":'
+                      - "Fn::Join": ["", ['"', !Ref EPOEC2Instance, '"']]
                 - "}"
-
   # Permissions to delete ami Lambda functions to be run from CloudWatch events
   EPOPermissionForEventsToInvokeDeleteAMILambda:
     Type: AWS::Lambda::Permission
@@ -1352,8 +1276,7 @@ Resources:
       Action: lambda:InvokeFunction
       Principal: events.amazonaws.com
       SourceArn: !GetAtt EPODeleteAMIBackupLambda.Arn
-
- # ePO Post deploy lambda role
+      # ePO Post deploy lambda role
   EPOPostDeployLambdaRole:
     Type: AWS::IAM::Role
     Condition: cCreateELBCertificate
@@ -1383,11 +1306,9 @@ Resources:
                   - iam:DeleteServerCertificate
                   - iam:UploadServerCertificate
                   - iam:GetServerCertificate
-                Resource:
-                  !Sub
+                Resource: !Sub
                   - 'arn:${Partition}:iam::${AWS::AccountId}:server-certificate/EPO_ELB_${ParentStack}'
-                  - Partition:
-                      !If [ cGovCloudCondition, aws-us-gov, aws ]
+                  - Partition: !If [cGovCloudCondition, aws-us-gov, aws]
               - Effect: Allow
                 Action:
                   - elasticloadbalancing:ModifyListener
@@ -1403,12 +1324,9 @@ Resources:
               - Effect: Allow
                 Action:
                   - ssm:GetParameter
-                Resource:
-                  !Sub
+                Resource: !Sub
                   - arn:${Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/*
-                  - Partition:
-                      !If [ cGovCloudCondition, aws-us-gov, aws ]
-
+                  - Partition: !If [cGovCloudCondition, aws-us-gov, aws]
   # ePO Post deploy lambda
   EPOPostDeployLambdaSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -1434,9 +1352,7 @@ Resources:
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
       VpcId:
-        Fn::ImportValue:
-          !Sub '${BaseStack}-VPCID'
-
+        Fn::ImportValue: !Sub '${BaseStack}-VPCID'
   EPOPostDeployLambda:
     Type: AWS::Lambda::Function
     Condition: cCreateELBCertificate
@@ -1468,14 +1384,12 @@ Resources:
         SubnetIds:
           - Fn::ImportValue: !Sub ${BaseStack}-PrivateSubnet1ID
           - Fn::ImportValue: !Sub ${BaseStack}-PrivateSubnet2ID
-
   # ePO Post deploylambda version
   EPOPostDeployLambdaVersion1:
     Type: AWS::Lambda::Version
     Condition: cCreateELBCertificate
     Properties:
       FunctionName: !Ref EPOPostDeployLambda
-
   # ePO post deploy lambda log group
   EPOPostDeployLambdaLogGroup:
     Type: AWS::Logs::LogGroup
@@ -1483,36 +1397,32 @@ Resources:
     DependsOn: EPOPostDeployLambda
     Properties:
       LogGroupName: !Join
-            - ''
-            - - '/aws/lambda/'
-              - !Ref EPOPostDeployLambda
+        - ''
+        - - '/aws/lambda/'
+          - !Ref EPOPostDeployLambda
       RetentionInDays: 7
-
   # ePO post deploy custom action
   EPOPostDeployAction:
     Type: Custom::EPOPostDeployAction
     Condition: cCreateELBCertificate
-    DependsOn: [EPOPostDeployLambdaLogGroup , EPODeleteResourcesAssociatedWithLambdaCustomAction]
+    DependsOn: [EPOPostDeployLambdaLogGroup, EPODeleteResourcesAssociatedWithLambdaCustomAction]
     Properties:
       ServiceToken: !GetAtt EPOPostDeployLambda.Arn
       ParentStack: !Sub ${ParentStack}
-      EPOConsoleURL: !GetAtt [ EPOEC2NetworkInterface, PrimaryPrivateIpAddress ]
+      EPOConsoleURL: !GetAtt [EPOEC2NetworkInterface, PrimaryPrivateIpAddress]
       EPOConsolePort: !Sub ${EPOConsolePort}
       EPOHTTPSListenerARN: !Ref EPOLoadBalancerListenerWithSelfSignedCert
       LAHHTTPSListenerARN: !Ref EPOLoadBalancerLocalAHListenerWithSelfSignedCert
       SslPolicy: ELBSecurityPolicy-TLS-1-1-2017-01
       ParameterStoreIdentifier: !Sub /mcafee/${ParentStack}
-
- # Custom action to invoke the delete resources associated with lambda, for now its just ENI associated with security group
+      # Custom action to invoke the delete resources associated with lambda, for now its just ENI associated with security group
   EPODeleteResourcesAssociatedWithLambdaCustomAction:
     Type: Custom::EPODeleteResourcesAssociatedWithLambdaCustomAction
     Condition: cCreateELBCertificate
     Properties:
       ServiceToken:
-        Fn::ImportValue:
-          !Sub '${BaseStack}-DeleteResourcesAssociatedWithLambda'
+        Fn::ImportValue: !Sub '${BaseStack}-DeleteResourcesAssociatedWithLambda'
       SecurityGroup: !Ref EPOPostDeployLambdaSecurityGroup
-
 Outputs:
   ePOStackName:
     Description: ePO application server stack name
@@ -1543,9 +1453,9 @@ Outputs:
   EPOServerDNSName:
     Description: ePO Server DNS Name
     Value: !If
-        - cNotGovCloudCondition
-        - !Ref EPOR53RecordSet
-        - !GetAtt EPOLoadBalancer.DNSName
+      - cNotGovCloudCondition
+      - !Ref EPOR53RecordSet
+      - !GetAtt EPOLoadBalancer.DNSName
   EPOLoadBalancerURL:
     Description: EPO Load Balancer URL
     Value: !GetAtt EPOLoadBalancer.DNSName
@@ -1554,10 +1464,10 @@ Outputs:
     Value: !Ref EPOEC2Instance
   EPOEC2NetworkInterface:
     Description: Static Private IP for ePO
-    Value: !GetAtt [ EPOEC2NetworkInterface, PrimaryPrivateIpAddress ]
+    Value: !GetAtt [EPOEC2NetworkInterface, PrimaryPrivateIpAddress]
   EPOEC2SystemStatusCheckARN:
     Description: ARN of ePO system check alaram
-    Value: !GetAtt [ EPOEC2SystemStatusCheck, Arn ]
+    Value: !GetAtt [EPOEC2SystemStatusCheck, Arn]
   EPOEC2InstanceStatusCheckARN:
     Description: ARN of ePO instance check alaram
-    Value: !GetAtt [ EPOEC2InstanceStatusCheck, Arn ]
+    Value: !GetAtt [EPOEC2InstanceStatusCheck, Arn]

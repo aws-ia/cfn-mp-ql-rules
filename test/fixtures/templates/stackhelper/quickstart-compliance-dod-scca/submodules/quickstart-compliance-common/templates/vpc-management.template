@@ -14,33 +14,33 @@ Metadata:
     Description: Outputs ID of all deployed resources
   AWS::CloudFormation::Interface:
     ParameterGroups:
-    - Label:
-        default: Region Config
-      Parameters:
-      - pRegionAZ1Name
-      - pRegionAZ2Name
-    - Label:
-        default: Management VPC Configuration
-      Parameters:
-      - pManagementVPCName
-      - pManagementCIDR
-      - pManagementDMZSubnetACIDR
-      - pManagementDMZSubnetBCIDR
-      - pManagementDMZSubnetPublicIP
-      - pVPCTenancy
-    - Label:
-        default: AWS Quick Start Configuration
-      Parameters:
-      - QSS3BucketName
-      - QSS3KeyPrefix
-    - Label:
-        default: Optional Components - Bastion
-      Parameters:
-      - pCreateBastionHost
-      - pEC2KeyPairBastion
-      - pBastionInstanceType
-      - pBastionAmi
-      - pBastionSSHCIDR
+      - Label:
+          default: Region Config
+        Parameters:
+          - pRegionAZ1Name
+          - pRegionAZ2Name
+      - Label:
+          default: Management VPC Configuration
+        Parameters:
+          - pManagementVPCName
+          - pManagementCIDR
+          - pManagementDMZSubnetACIDR
+          - pManagementDMZSubnetBCIDR
+          - pManagementDMZSubnetPublicIP
+          - pVPCTenancy
+      - Label:
+          default: AWS Quick Start Configuration
+        Parameters:
+          - QSS3BucketName
+          - QSS3KeyPrefix
+      - Label:
+          default: Optional Components - Bastion
+        Parameters:
+          - pCreateBastionHost
+          - pEC2KeyPairBastion
+          - pBastionInstanceType
+          - pBastionAmi
+          - pBastionSSHCIDR
     ParameterLabels:
       pManagementVPCName:
         default: Name of Management VPC to create
@@ -74,15 +74,15 @@ Parameters:
     Type: String
     Default: true
     AllowedValues:
-    - true
-    - false
+      - true
+      - false
   pManagementDMZSubnetPublicIP:
     Description: Should Public IPs be auto-assigned to instances launched in the DMZ subnet(s)?
     Type: String
     Default: false
     AllowedValues:
-    - true
-    - false
+      - true
+      - false
   pProductionVPC:
     Description: Production VPC to peer with (optional)
     Type: String
@@ -144,8 +144,8 @@ Parameters:
     Type: String
     Default: default
     AllowedValues:
-    - default
-    - dedicated
+      - default
+      - dedicated
   pBastionSSHCIDR:
     Type: String
     Default: 0.0.0.0/0
@@ -163,19 +163,15 @@ Parameters:
     Type: String
     Default: development
   pSupportsNatGateway:
-    Description: Specifies whether this region supports NAT Gateway (this value is
-      determined by the main stack if it is invoked from there)
+    Description: Specifies whether this region supports NAT Gateway (this value is determined by the main stack if it is invoked from there)
     Type: String
     Default: true
   pNatInstanceType:
-    Description: Instance type to use for the NAT intstance if the region does not
-      support NAT Gateway (this value is determined by the main stack if it is invoked
-      from there)
+    Description: Instance type to use for the NAT intstance if the region does not support NAT Gateway (this value is determined by the main stack if it is invoked from there)
     Type: String
     Default: ''
   pNatAmi:
-    Description: AMI to use for the NAT intstance if the region does not support NAT
-      Gateway (this value is determined by the main stack if it is invoked from there)
+    Description: AMI to use for the NAT intstance if the region does not support NAT Gateway (this value is determined by the main stack if it is invoked from there)
     Type: String
     Default: ''
   pFlowLogGroup:
@@ -184,47 +180,34 @@ Parameters:
     Default: ''
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z\-\.]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, periods (.), and hyphens (-). It cannot start or
-      end with a hyphen (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, periods (.), and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
-    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
-      can include numbers, lowercase letters, uppercase letters, periods (.), and
-      hyphens (-). It cannot start or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, periods (.), and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-compliance-nist/
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      orward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and orward slash (/).
     Type: String
 Conditions:
-  cGovCloudCondition:
-    !Equals
+  cGovCloudCondition: !Equals
     - !Ref AWS::Region
     - us-gov-west-1
-  cCreateBastionHost:
-    !Equals
+  cCreateBastionHost: !Equals
     - true
     - !Ref pCreateBastionHost
-  cCreatePeeringProduction:
-    !Not
+  cCreatePeeringProduction: !Not
     - !Equals
       - ''
       - !Ref pProductionVPC
-  cNeedNatInstance:
-    !Equals
+  cNeedNatInstance: !Equals
     - false
     - !Ref pSupportsNatGateway
-  cSupportsNatGateway:
-    !Equals
+  cSupportsNatGateway: !Equals
     - true
     - !Ref pSupportsNatGateway
-  cEnableFlowLogs:
-    !Not
+  cEnableFlowLogs: !Not
     - !Equals
       - !Ref pFlowLogGroup
       - ''
@@ -237,17 +220,15 @@ Resources:
       EnableDnsSupport: true
       EnableDnsHostnames: true
       Tags:
-      - Key: Name
-        Value: !Ref pManagementVPCName
+        - Key: Name
+          Value: !Ref pManagementVPCName
   rNatInstanceTemplate:
     Type: AWS::CloudFormation::Stack
     Condition: cNeedNatInstance
     Properties:
-      TemplateURL:
-        !Sub
+      TemplateURL: !Sub
         - https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-compliance-common/templates/nat-instance.template
-        - QSS3Region:
-            !If
+        - QSS3Region: !If
             - cGovCloudCondition
             - s3-us-gov-west-1
             - s3
@@ -270,19 +251,19 @@ Resources:
       GroupDescription: Allow NAT from Management VPC
       VpcId: !Ref rVPCManagement
       SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        CidrIp: !Ref pManagementCIDR
-      - IpProtocol: tcp
-        FromPort: 443
-        ToPort: 443
-        CidrIp: !Ref pManagementCIDR
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref pManagementCIDR
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref pManagementCIDR
       Tags:
-      - Key: Name
-        Value: sg-web-access-ports-from-production
-      - Key: Environment
-        Value: !Ref pEnvironment
+        - Key: Name
+          Value: sg-web-access-ports-from-production
+        - Key: Environment
+          Value: !Ref pEnvironment
   rManagementDMZSubnetA:
     Type: AWS::EC2::Subnet
     Properties:
@@ -291,8 +272,8 @@ Resources:
       MapPublicIpOnLaunch: !Ref pManagementDMZSubnetPublicIP
       VpcId: !Ref rVPCManagement
       Tags:
-      - Key: Name
-        Value: Management DMZ Subnet A
+        - Key: Name
+          Value: Management DMZ Subnet A
   rManagementDMZSubnetB:
     Type: AWS::EC2::Subnet
     Properties:
@@ -301,8 +282,8 @@ Resources:
       MapPublicIpOnLaunch: !Ref pManagementDMZSubnetPublicIP
       VpcId: !Ref rVPCManagement
       Tags:
-      - Key: Name
-        Value: Management DMZ Subnet B
+        - Key: Name
+          Value: Management DMZ Subnet B
   rManagementPrivateSubnetA:
     Type: AWS::EC2::Subnet
     Properties:
@@ -310,8 +291,8 @@ Resources:
       AvailabilityZone: !Ref pRegionAZ1Name
       VpcId: !Ref rVPCManagement
       Tags:
-      - Key: Name
-        Value: Management Private Subnet A
+        - Key: Name
+          Value: Management Private Subnet A
   rManagementPrivateSubnetB:
     Type: AWS::EC2::Subnet
     Properties:
@@ -319,31 +300,31 @@ Resources:
       AvailabilityZone: !Ref pRegionAZ2Name
       VpcId: !Ref rVPCManagement
       Tags:
-      - Key: Name
-        Value: Management Private Subnet B
+        - Key: Name
+          Value: Management Private Subnet B
   rIGWManagement:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
-      - Key: Name
-        Value: igw-management
+        - Key: Name
+          Value: igw-management
   rRouteTableMgmtPrivate:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref rVPCManagement
       Tags:
-      - Key: Name
-        Value: Management Private Route
+        - Key: Name
+          Value: Management Private Route
   rRouteTableMgmtDMZ:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref rVPCManagement
       Tags:
-      - Key: Name
-        Value: Management DMZ Route
+        - Key: Name
+          Value: Management DMZ Route
   rRouteMgmtIGW:
     DependsOn:
-    - rGWAttachmentMgmtIGW
+      - rGWAttachmentMgmtIGW
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref rRouteTableMgmtDMZ
@@ -375,11 +356,11 @@ Resources:
     Properties:
       SubnetId: !Ref rManagementDMZSubnetA
       GroupSet:
-      - !Ref rSecurityGroupBastion
+        - !Ref rSecurityGroupBastion
       Description: Interface for Bastion device
       Tags:
-      - Key: Network
-        Value: MgmtBastionDevice
+        - Key: Network
+          Value: MgmtBastionDevice
   rMgmtBastionInstance:
     Type: AWS::EC2::Instance
     Condition: cCreateBastionHost
@@ -387,15 +368,12 @@ Resources:
       InstanceType: !Ref pBastionInstanceType
       KeyName: !Ref pEC2KeyPairBastion
       Tags:
-      - Key: Name
-        Value: Bastion Server
+        - Key: Name
+          Value: Bastion Server
       ImageId: !Ref pBastionAmi
       NetworkInterfaces:
-      - NetworkInterfaceId: !Ref rENIProductionBastion
-        DeviceIndex: 0
-      UserData: !Base64 |
-        #!/bin/bash
-        yum update -y
+        - NetworkInterfaceId: !Ref rENIProductionBastion
+          DeviceIndex: 0
   rEIPProdBastion:
     Type: AWS::EC2::EIP
     Condition: cCreateBastionHost
@@ -417,26 +395,26 @@ Resources:
       GroupDescription: Enable SSH access via port 22
       VpcId: !Ref rVPCManagement
       SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 22
-        ToPort: 22
-        CidrIp: !Ref pManagementCIDR
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref pManagementCIDR
       Tags:
-      - Key: Name
-        Value: sg-ssh-access-from-management
-      - Key: Environment
-        Value: !Ref pEnvironment
+        - Key: Name
+          Value: sg-ssh-access-from-management
+        - Key: Environment
+          Value: !Ref pEnvironment
   rManagementNATInstanceInterface:
     Type: AWS::EC2::NetworkInterface
     Properties:
       SubnetId: !Ref rManagementDMZSubnetA
       GroupSet:
-      - !Ref rSecurityGroupSSHFromMgmt
-      - !Ref rSecurityGroupVpcNat
+        - !Ref rSecurityGroupSSHFromMgmt
+        - !Ref rSecurityGroupVpcNat
       Description: Interface for Nat device
       Tags:
-      - Key: Network
-        Value: rManagementNATInstanceInterface
+        - Key: Network
+          Value: rManagementNATInstanceInterface
   AssociaterEIPManagementNAT:
     Type: AWS::EC2::EIPAssociation
     Properties:
@@ -465,20 +443,20 @@ Resources:
       GroupDescription: SG for Bastion Instances
       VpcId: !Ref rVPCManagement
       SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 22
-        ToPort: 22
-        CidrIp: !Ref pBastionSSHCIDR
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref pBastionSSHCIDR
       SecurityGroupEgress:
-      - IpProtocol: tcp
-        FromPort: 1
-        ToPort: 65535
-        CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 1
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
       Tags:
-      - Key: Name
-        Value: sg-ssh-access-from-bastion
-      - Key: Environment
-        Value: !Ref pEnvironment
+        - Key: Name
+          Value: sg-ssh-access-from-bastion
+        - Key: Environment
+          Value: !Ref pEnvironment
   rPeeringConnectionProduction:
     Type: AWS::EC2::VPCPeeringConnection
     Condition: cCreatePeeringProduction
@@ -486,10 +464,10 @@ Resources:
       PeerVpcId: !Ref pProductionVPC
       VpcId: !Ref rVPCManagement
       Tags:
-      - Key: Name
-        Value: vpc-peer-production-management
-      - Key: Environment
-        Value: !Ref pEnvironment
+        - Key: Name
+          Value: vpc-peer-production-management
+        - Key: Environment
+          Value: !Ref pEnvironment
   rRouteMgmtProdPrivate:
     Condition: cCreatePeeringProduction
     Type: AWS::EC2::Route
@@ -532,25 +510,25 @@ Resources:
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
-        - Sid: AllowFlowLogs
-          Effect: Allow
-          Principal:
-            Service: vpc-flow-logs.amazonaws.com
-          Action: sts:AssumeRole
+          - Sid: AllowFlowLogs
+            Effect: Allow
+            Principal:
+              Service: vpc-flow-logs.amazonaws.com
+            Action: sts:AssumeRole
       Path: /
       Policies:
-      - PolicyName: cloudwatchlogsrole
-        PolicyDocument:
-          Version: 2012-10-17
-          Statement:
-          - Action:
-            - logs:CreateLogGroup
-            - logs:CreateLogStream
-            - logs:PutLogEvents
-            - logs:DescribeLogGroups
-            - logs:DescribeLogStreams
-            Effect: Allow
-            Resource: '*'
+        - PolicyName: cloudwatchlogsrole
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - logs:DescribeLogGroups
+                  - logs:DescribeLogStreams
+                Effect: Allow
+                Resource: '*'
   rManagementVpcFlowLog:
     Condition: cEnableFlowLogs
     Type: AWS::EC2::FlowLog
@@ -570,8 +548,7 @@ Outputs:
     Value: !Ref rVPCManagement
   rBastionInstanceIP:
     Condition: cCreateBastionHost
-    Value:
-      !If
+    Value: !If
       - cCreateBastionHost
       - !Ref rEIPProdBastion
       - ''
@@ -593,4 +570,3 @@ Outputs:
     Value: !Ref rEIPProdNAT
   rSecurityGroupSSHFromMgmt:
     Value: !Ref rSecurityGroupSSHFromMgmt
-...

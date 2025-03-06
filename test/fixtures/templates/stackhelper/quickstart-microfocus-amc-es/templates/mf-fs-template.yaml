@@ -13,12 +13,7 @@
 # limitations under the License.
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  "Deploys a Micro Focus Enterprise Server Fileshare Server. **WARNING** This
-  template creates EC2 instances and related resources. You will be billed for
-  the AWS resources used if you create a stack from this template. Micro Focus
-  Enterprise Server is licensed separately, please review the terms and
-  conditions here (https://www.microfocus.com/about/legal/) for further details.
-  (qs-1p440hhtu)"
+  "Deploys a Micro Focus Enterprise Server Fileshare Server. **WARNING** This template creates EC2 instances and related resources. You will be billed for the AWS resources used if you create a stack from this template. Micro Focus Enterprise Server is licensed separately, please review the terms and conditions here (https://www.microfocus.com/about/legal/) for further details. (qs-1p440hhtu)"
 Metadata:
   'AWS::CloudFormation::Interface':
     ParameterGroups:
@@ -119,16 +114,13 @@ Metadata:
 Parameters:
   AvailabilityZones:
     Description: >-
-      List of Availability Zones to use for the subnets in the VPC. Only two
-      Availability Zones are used for this deployment, and the logical order
-      of your selections is preserved.
+      List of Availability Zones to use for the subnets in the VPC. Only two Availability Zones are used for this deployment, and the logical order of your selections is preserved.
     Type: 'List<AWS::EC2::AvailabilityZone::Name>'
   DomainAdminPassword:
     AllowedPattern: >-
       (?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
     Description: >-
-      The password for the domain Admin account. Must be at least 8 characters
-      containing letters, numbers, and symbols.
+      The password for the domain Admin account. Must be at least 8 characters containing letters, numbers, and symbols.
     MaxLength: '32'
     MinLength: '8'
     NoEcho: true
@@ -137,8 +129,7 @@ Parameters:
     AllowedPattern: '[a-zA-Z0-9\-]+\..+'
     Default: example.com
     Description: >-
-      The fully qualified domain name (FQDN), e.g., example.com. Must be 2-255
-      characters.
+      The fully qualified domain name (FQDN), e.g., example.com. Must be 2-255 characters.
     MaxLength: '255'
     MinLength: '2'
     Type: String
@@ -150,8 +141,7 @@ Parameters:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: example
     Description: >-
-      The NetBIOS name of the domain (up to 15 characters) for users of
-      earlier versions of Microsoft Windows, e.g., example.
+      The NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Microsoft Windows, e.g., example.
     MaxLength: '15'
     Type: String
   ESCWLogGroup:
@@ -159,24 +149,17 @@ Parameters:
     Description: The logical ID of the Amazon CloudWatch Logs Log Group
   ESLicenseFilename:
     Description: >-
-      Place the license file obtained from Micro Focus in the S3 bucket folder:
-      s3://<Enterprise Server S3 bucket name>/license/
+      Place the license file obtained from Micro Focus in the S3 bucket folder: s3://<Enterprise Server S3 bucket name>/license/
     Type: String
   ESResourceNamePrefix:
     Default: 'AWS::StackName'
     Description: >-
-      Used to prefix resource 'Name' tags. Leave empty for no prefix.
-      Otherwise, use 'AWS::StackName' or a value such as the parent stack's
-      name.
+      Used to prefix resource 'Name' tags. Leave empty for no prefix. Otherwise, use 'AWS::StackName' or a value such as the parent stack's name.
     Type: String
   ESS3BucketName:
     AllowedPattern: '^[a-z0-9][a-z0-9-.]*$'
     Description: >-
-      The name of the existing S3 bucket used to store/retrieve objects specific
-      to this stack. A system integrator extending this Quick Start should use
-      this bucket to store or retrieve items needed. This string can include
-      numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot
-      start or end with a hyphen (-).
+      The name of the existing S3 bucket used to store/retrieve objects specific to this stack. A system integrator extending this Quick Start should use this bucket to store or retrieve items needed. This string can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   FSCCITCPListenerPort:
     ConstraintDescription: The port number must be between 1 and 65535.
@@ -188,8 +171,7 @@ Parameters:
   FSClientAccessSGID:
     Type: 'AWS::EC2::SecurityGroup::Id'
     Description: >-
-      Security Group ID for application ingress into the Enterpriser Server Fileshare
-      instance (e.g., sg-1234abcd).
+      Security Group ID for application ingress into the Enterpriser Server Fileshare instance (e.g., sg-1234abcd).
   FSInstanceType:
     AllowedValues:
       - c5.large
@@ -213,12 +195,9 @@ Parameters:
     AllowedPattern: >-
       ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$
     Description: >-
-      The password for the FSVIEW user. Must contain 8 to 32 characters,
-      at least one uppercase letter, one lowercase letter, one number and
-      one special character.
+      The password for the FSVIEW user. Must contain 8 to 32 characters, at least one uppercase letter, one lowercase letter, one number and one special character.
     ConstraintDescription: >-
-      Must contain 8 to 32 characters, at least one uppercase letter, one
-      lowercase letter, one number and one special character.
+      Must contain 8 to 32 characters, at least one uppercase letter, one lowercase letter, one number and one special character.
     MaxLength: '32'
     MinLength: '8'
     NoEcho: true
@@ -241,42 +220,32 @@ Parameters:
     ConstraintDescription: Must answer 'I agree'.
     Default: '-'
     Description: >-
-      I have read and agree to the license terms for Micro Focus Enterprise
-      Server
-      (https://www.microfocus.com/documentation/enterprise-developer/ed-latest/ES-WIN/GUID-0562B3C9-2271-4CE8-AF64-93DE4940077F.html).
+      I have read and agree to the license terms for Micro Focus Enterprise Server (https://www.microfocus.com/documentation/enterprise-developer/ed-latest/ES-WIN/GUID-0562B3C9-2271-4CE8-AF64-93DE4940077F.html).
     Type: String
   NotificationARN:
     Description: >-
-      (optional) An existing Amazon SNS topic where notifications about are
-      sent, e.g., email notifications.
+      (optional) An existing Amazon SNS topic where notifications about are sent, e.g., email notifications.
     Type: String
     Default: ''
   PrivateSubnet1AID:
     Description: >-
-      The ID of private subnet 1A in Availability Zone 1 (e.g.,
-      subnet-a0246dcd).
+      The ID of private subnet 1A in Availability Zone 1 (e.g., subnet-a0246dcd).
     Type: 'AWS::EC2::Subnet::Id'
   QSS3BucketName:
     AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
     ConstraintDescription: >-
-      Quick Start bucket name can include numbers, lowercase letters, uppercase
-      letters, and hyphens (-). It cannot start or end with a hyphen (-).
+      Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
     Description: >-
-      S3 bucket name for the Quick Start assets. Quick Start bucket name can
-      include numbers, lowercase letters, uppercase letters, and hyphens (-). It
-      cannot start or end with a hyphen (-).
+      S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: '^[0-9a-zA-Z-/]*$'
     ConstraintDescription: >-
-      Quick Start key prefix can include numbers, lowercase letters, uppercase
-      letters, hyphens (-), and forward slash (/).
+      Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-microfocus-amc-es/
     Description: >-
-      S3 key prefix for the Quick Start assets. Quick Start key prefix can
-      include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+      S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
   RDGWAccessSGID:
     Type: 'AWS::EC2::SecurityGroup::Id'
@@ -366,8 +335,7 @@ Resources:
       GroupDescription: Security group for allowed access to the Fileshare instance
       SecurityGroupIngress:
         - Description: >-
-            Allows RDP access into the instance from the Remote Desktop Gateway
-            (for administrative purposes)
+            Allows RDP access into the instance from the Remote Desktop Gateway (for administrative purposes)
           IpProtocol: tcp
           FromPort: 3389
           ToPort: 3389
@@ -378,15 +346,13 @@ Resources:
           ToPort: !Ref FSCCITCPListenerPort
           SourceSecurityGroupId: !Ref FSClientAccessSGID
         - Description: >-
-            Micro Focus Enterprise Server Directory Service (tcp) Listener
-            ingress
+            Micro Focus Enterprise Server Directory Service (tcp) Listener ingress
           IpProtocol: tcp
           FromPort: 86
           ToPort: 86
           SourceSecurityGroupId: !Ref FSClientAccessSGID
         - Description: >-
-            Micro Focus Enterprise Server Directory Service (udp) Listener
-            ingress
+            Micro Focus Enterprise Server Directory Service (udp) Listener ingress
           IpProtocol: udp
           FromPort: 86
           ToPort: 86
@@ -514,8 +480,7 @@ Resources:
               waitAfterCompletion: '0'
             c-install-chrome:
               command: >-
-                start /wait c:\cfn\assets\GoogleChromeStandaloneEnterprise64.msi
-                /quiet /passive
+                start /wait c:\cfn\assets\GoogleChromeStandaloneEnterprise64.msi /quiet /passive
               waitAfterCompletion: '0'
         020-ConfigureCWLogs:
           files:
@@ -667,9 +632,7 @@ Resources:
                 }
           commands:
             a-restartSSM:
-              command:
-                powershell.exe
-                  -Command Restart-Service AmazonSSMAgent
+              command: powershell.exe -Command Restart-Service AmazonSSMAgent
               ignoreErrors: true
               waitAfterCompletion: 0
         030-InitPowerShell:
@@ -697,14 +660,12 @@ Resources:
                 [main]
                 stack=${AWS::StackName}
                 region=${AWS::Region}
-
             'c:\cfn\hooks.d\cfn-auto-reloader.conf':
               content: !Sub |
                 [cfn-auto-reloader-hook]
                 triggers=post.update
                 path=Resources.FSPrimaryInstance.Metadata.AWS::CloudFormation::Init
                 action=cfn-init.exe -v -c config -s ${AWS::StackId} --resource FSPrimaryInstance --region ${AWS::Region}
-
             'c:\cfn\scripts\AddTo-SystemPath.ps1':
               source: !Sub
                 - >-
@@ -742,62 +703,29 @@ Resources:
                   - 'c:\cfn\hooks.d\cfn-auto-reloader.conf'
           commands:
             a-set-execution-policy:
-              command:
-                powershell.exe
-                  -Command "Set-ExecutionPolicy RemoteSigned"
-                  -Force
+              command: powershell.exe -Command "Set-ExecutionPolicy RemoteSigned" -Force
               waitAfterCompletion: '0'
             b-unpack-quickstart-module:
-              command:
-                powershell.exe
-                  -File C:\cfn\scripts\Unzip-Archive.ps1
-                    -Source C:\cfn\modules\AWSQuickStart.zip
-                    -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
+              command: powershell.exe -File C:\cfn\scripts\Unzip-Archive.ps1 -Source C:\cfn\modules\AWSQuickStart.zip -Destination C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
               waitAfterCompletion: '0'
             c-init-quickstart-module:
-              command: !Sub
-                powershell.exe
-                  -Command New-AWSQuickStartResourceSignal
-                    -Stack ${AWS::StackName}
-                    -Resource FSPrimaryInstance
-                    -Region ${AWS::Region}
+              command: !Sub powershell.exe -Command New-AWSQuickStartResourceSignal -Stack ${AWS::StackName} -Resource FSPrimaryInstance -Region ${AWS::Region}
               waitAfterCompletion: '0'
         060-RenameAndJoinDomain:
           commands:
             a-rename-computer:
               command: !Sub
-                - powershell.exe
-                    -File C:\cfn\scripts\Rename-Computer.ps1
-                      -NewName ${InstanceName}
-                      -Restart
+                - powershell.exe -File C:\cfn\scripts\Rename-Computer.ps1 -NewName ${InstanceName} -Restart
                 - InstanceName: !Ref FSServerName
               waitAfterCompletion: forever
             # Join this instance to the Windows Domain
             b-join-domain-and-restart:
-              command: !Sub
-                powershell.exe
-                  -File C:\cfn\scripts\Join-Domain.ps1
-                    -DomainName ${DomainDNSName}
-                    -UserName ${DomainNetBIOSName}\Admin
-                    -Password ${DomainAdminPassword}
+              command: !Sub powershell.exe -File C:\cfn\scripts\Join-Domain.ps1 -DomainName ${DomainDNSName} -UserName ${DomainNetBIOSName}\Admin -Password ${DomainAdminPassword}
               waitAfterCompletion: forever
             # Add 'Domain Users' to local RDP Group to they can RDP into this instance
             # Install A/D Management Tools
             c-add-domain-users-rdp-users-group:
-              command: !Sub
-                powershell
-                  -Command
-                    "&{
-                        try {
-                          $ErrorActionPreference = 'Stop';
-                          $GroupObj = [ADSI]'WinNT://localhost/Remote Desktop Users';
-                          $GroupObj.Add('WinNT://${DomainNetBIOSName}/Domain Users');
-                          Install-WindowsFeature
-                            -Name GPMC,RSAT-AD-PowerShell,RSAT-AD-AdminCenter,RSAT-ADDS-Tools,RSAT-DNS-Server;
-                        } catch {
-                          $_ | Write-AWSQuickStartException;
-                        }
-                      }"
+              command: !Sub powershell -Command "&{ try { $ErrorActionPreference = 'Stop'; $GroupObj = [ADSI]'WinNT://localhost/Remote Desktop Users'; $GroupObj.Add('WinNT://${DomainNetBIOSName}/Domain Users'); Install-WindowsFeature -Name GPMC,RSAT-AD-PowerShell,RSAT-AD-AdminCenter,RSAT-ADDS-Tools,RSAT-DNS-Server; } catch { $_ | Write-AWSQuickStartException; } }"
               waitAfterCompletion: '0'
         070-ConfigureFileshare:
           files:
@@ -834,25 +762,16 @@ Resources:
           commands:
             a-update-system-path:
               cwd: c:\cfn\scripts
-              command:
-                powershell.exe
-                  -File c:\cfn\scripts\AddTo-SystemPath.ps1
-                    -PathToAdd "C:\Program Files (x86)\Micro Focus\Enterprise Server\bin"
+              command: powershell.exe -File c:\cfn\scripts\AddTo-SystemPath.ps1 -PathToAdd "C:\Program Files (x86)\Micro Focus\Enterprise Server\bin"
               waitAfterCompletion: '0'
             b-copy-demo-files:
               test: !Sub >-
                 if /I "${InstallDemoApps}"=="true" (exit 0) else (exit 1)
-              command:
-                powershell.exe
-                  -File c:\cfn\scripts\prep-fs-demo.ps1
+              command: powershell.exe -File c:\cfn\scripts\prep-fs-demo.ps1
               waitAfterCompletion: '0'
             c-install-license:
               cwd: 'C:\Program Files (x86)\Common Files\SafeNet Sentinel\Sentinel RMS License Manager\WinNT\'
-              command:
-                start /wait
-                  cesadmintool
-                    -term install
-                    -f d:\fsdir\Enterprise-Server.mflic
+              command: start /wait cesadmintool -term install -f d:\fsdir\Enterprise-Server.mflic
               waitAfterCompletion: '0'
             d-gen-passfile:
               cwd: C:\Program Files (x86)\Micro Focus\Enterprise Server\bin
@@ -860,35 +779,17 @@ Resources:
                 "C:\Program Files (x86)\Micro Focus\Enterprise Server\bin\fs" /pf d:\fsdir\pass.dat /u FSVIEW /pw ${FSVIEWUserPassword}
               waitAfterCompletion: '0'
             e-configure-windows-firewall-fs-ccitcp-listener-rule:
-              command:
-                powershell.exe
-                  -Command New-NetFirewallRule
-                    -DisplayName 'Micro Focus Enterprise Server Directory Service (tcp) Listener'
-                    -LocalPort 86
-                    -Protocol tcp
+              command: powershell.exe -Command New-NetFirewallRule -DisplayName 'Micro Focus Enterprise Server Directory Service (tcp) Listener' -LocalPort 86 -Protocol tcp
               waitAfterCompletion: '0'
             f-configure-windows-firewall-fs-ccitcp-listener-rule:
-              command:
-                powershell.exe
-                  -Command New-NetFirewallRule
-                    -DisplayName 'Micro Focus Enterprise Server Directory Service (udp) Listener'
-                    -LocalPort 86
-                    -Protocol udp
+              command: powershell.exe -Command New-NetFirewallRule -DisplayName 'Micro Focus Enterprise Server Directory Service (udp) Listener' -LocalPort 86 -Protocol udp
               waitAfterCompletion: '0'
             g-configure-windows-firewall-fs-ccitcp-listener-rule:
-              command: !Sub
-                powershell.exe
-                  -Command New-NetFirewallRule
-                    -DisplayName 'Micro Focus Enterprise Server (Fileshare) CCITCP Listener'
-                    -LocalPort ${FSCCITCPListenerPort}
-                    -Protocol tcp
+              command: !Sub powershell.exe -Command New-NetFirewallRule -DisplayName 'Micro Focus Enterprise Server (Fileshare) CCITCP Listener' -LocalPort ${FSCCITCPListenerPort} -Protocol tcp
               waitAfterCompletion: '0'
             h-install-fs-service:
               cwd: C:\Program Files (x86)\Micro Focus\Enterprise Server\bin
-              command:
-                fsservice
-                  -i FS1
-                  /cf d:\fsdir\fs.conf
+              command: fsservice -i FS1 /cf d:\fsdir\fs.conf
               waitAfterCompletion: '0'
           services:
             windows:
@@ -901,9 +802,7 @@ Resources:
         120-Finalize:
           commands:
             a-finalize-init:
-              command:
-                powershell.exe
-                  -Command Write-AWSQuickStartStatus
+              command: powershell.exe -Command Write-AWSQuickStartStatus
               waitAfterCompletion: '0'
     Properties:
       AvailabilityZone: !Select
@@ -934,28 +833,6 @@ Resources:
                   - NamePrefixIsAWSStackname
                   - !Sub '${AWS::StackName}-'
                   - !Sub '${ESResourceNamePrefix}-'
-      UserData: !Base64
-        'Fn::Sub':
-          - |
-            <script>
-              rem Uninstall Amazon SSM Agent and AWS CLI to allow updating
-              wmic product where "description='Amazon SSM Agent' " uninstall
-              wmic product where "description='aws-cfn-bootstrap' " uninstall
-
-              rem Install latest AWS CloudFormation Helper Scripts
-              start /wait c:\Windows\system32\msiexec /passive /qn /i https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-win64-latest.msi
-
-              rem Download and run the latest Amazon SSM Agent setup
-              powershell.exe -Command "iwr https://${QSS3Region}.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/windows_amd64/AmazonSSMAgentSetup.exe -UseBasicParsing -OutFile C:\AmazonSSMAgentSetup.exe"
-              start /wait C:\AmazonSSMAgentSetup.exe /install /quiet
-
-              rem Run  cfn-init helper to process AWS::CloudFormation::Init directives
-              cfn-init.exe -v -c config -s ${AWS::StackName} --resource FSPrimaryInstance --region ${AWS::Region}
-            </script>
-          - QSS3Region: !If
-              - GovCloudCondition
-              - s3-us-gov-west-1
-              - s3
   FSPrimaryInstanceRecoveryAlarm:
     Type: 'AWS::CloudWatch::Alarm'
     Properties:

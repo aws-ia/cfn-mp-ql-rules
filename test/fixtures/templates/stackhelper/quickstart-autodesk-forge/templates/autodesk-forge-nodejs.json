@@ -106,60 +106,7 @@
           {
             "Ref": "WorkloadSecurityGroup"
           }
-        ],
-        "UserData": {
-          "Fn::Base64": {
-            "Fn::Join": [
-              "",
-              [
-                "#!/bin/bash -ex\n",
-                "exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1\n",
-                "# update AWS cfn bootsrap\n",
-                "# yum update -y aws-cfn-bootstrap\n",
-                "curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -\n",
-                "yum -y install nodejs\n",
-                "# install pm2 to restart node app\n",
-                "npm i -g pm2@2.4.3\n",
-                "echo export FORGE_AWS_FLAG=1 >> /etc/profile\n",
-                "echo export AWS_REGION=",
-                {
-                  "Ref": "AWS::Region"
-                },
-                " >> /etc/profile\n",
-                "echo export FORGE_CLIENT_ID=",
-                {
-                  "Ref": "ForgeClientIdSSMParameter"
-                },
-                " >> /etc/profile\n",
-                "echo export FORGE_CLIENT_SECRET=",
-                {
-                  "Ref": "ForgeClientSecretSSMParameter"
-                },
-                " >> /etc/profile\n",
-                "source /etc/profile\n",
-                {
-                  "Fn::Sub": "aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}packages/forge-viewmodels-nodejs-aws.zip .\n"
-                },
-                "unzip forge-viewmodels-nodejs-aws.zip\n",
-                "cd forge-viewmodels-nodejs-aws\n",
-                "pwd\n",
-                "npm install\n",
-                "pm2 start /forge-viewmodels-nodejs-aws/start.js -i 0 --name forge-node-app\n",
-                "\n",
-                "# Signal the status from cfn-init\n",
-                "/opt/aws/bin/cfn-signal -e $? --stack ",
-                {
-                  "Ref": "ParentStack"
-                },
-                " --resource WorkloadAutoScalingGroup --region ",
-                {
-                  "Ref": "AWS::Region"
-                },
-                "\n"
-              ]
-            ]
-          }
-        }
+        ]
       }
     }
   },

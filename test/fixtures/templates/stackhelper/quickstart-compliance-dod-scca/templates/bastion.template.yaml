@@ -1,9 +1,8 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Provides a Bastion Instance running Amazon Linux for connectivety into
-  a VPC
+Description: 'Provides a Bastion Instance running Amazon Linux for connectivety into a VPC
 
-  '
+'
 Parameters:
   pEC2KeyPairBastion:
     Description: Name of existing EC2 key pair for BASTION hosts
@@ -46,27 +45,27 @@ Resources:
     Properties:
       GroupDescription: Secures the bastion host
       SecurityGroupEgress:
-      - CidrIp: 0.0.0.0/0
-        IpProtocol: -1
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
       SecurityGroupIngress:
-      - CidrIp: !Ref pBastionSSHCIDR
-        FromPort: 22
-        IpProtocol: tcp
-        ToPort: 22
-      - CidrIp: !Ref pBastionSSHCIDR
-        FromPort: 3389
-        IpProtocol: tcp
-        ToPort: 3389
-      - CidrIp: !Ref pVDMSCIDR
-        IpProtocol: tcp
-        FromPort: 4118
-        ToPort: 4118
+        - CidrIp: !Ref pBastionSSHCIDR
+          FromPort: 22
+          IpProtocol: tcp
+          ToPort: 22
+        - CidrIp: !Ref pBastionSSHCIDR
+          FromPort: 3389
+          IpProtocol: tcp
+          ToPort: 3389
+        - CidrIp: !Ref pVDMSCIDR
+          IpProtocol: tcp
+          FromPort: 4118
+          ToPort: 4118
       VpcId: !Ref pBastionVPC
       Tags:
-      - Key: Name
-        Value: !Sub ${pBastionVPC} Bastion SecurityGroup
-      - Key: Environment
-        Value: !Ref pEnvironment
+        - Key: Name
+          Value: !Sub ${pBastionVPC} Bastion SecurityGroup
+        - Key: Environment
+          Value: !Ref pEnvironment
   rMgmtBastionInstance:
     CreationPolicy:
       ResourceSignal:
@@ -76,7 +75,7 @@ Resources:
       AWS::CloudFormation::Init:
         configSets:
           bootstrap:
-          - installDeepSecurityAgent
+            - installDeepSecurityAgent
         installDeepSecurityAgent:
           commands:
             0-download-DSA:
@@ -96,42 +95,28 @@ Resources:
       KeyName:
         Ref: pEC2KeyPairBastion
       Tags:
-      - Key: Name
-        Value:
-          !Sub
-          - ${VPC} Bastion Server
-          - VPC: !Ref pBastionVPC
-      - Key: Environment
-        Value: !Ref pEnvironment
+        - Key: Name
+          Value: !Sub
+            - ${VPC} Bastion Server
+            - VPC: !Ref pBastionVPC
+        - Key: Environment
+          Value: !Ref pEnvironment
       ImageId:
         Ref: pBastionAmi
       NetworkInterfaces:
-      - NetworkInterfaceId:
-          Ref: rBastionInstanceEni
-        DeviceIndex: '0'
-      UserData:
-        Fn::Base64:
-          Fn::Join:
-          - ''
-          - - "#!/bin/bash -v\nyum install -y aws-cfn-bootstrap\n/opt/aws/bin/cfn-init\
-              \ -v --stack "
-            - !Ref AWS::StackName
-            - ' --configsets bootstrap --resource rMgmtBastionInstance --region '
-            - !Ref AWS::Region
-            - "\n/opt/aws/bin/cfn-signal -e $?  --stack "
-            - !Ref AWS::StackName
-            - ' --resource rMgmtBastionInstance --region '
-            - !Ref AWS::Region
+        - NetworkInterfaceId:
+            Ref: rBastionInstanceEni
+          DeviceIndex: '0'
   rBastionInstanceEni:
     Type: AWS::EC2::NetworkInterface
     Properties:
       SubnetId: !Ref pBastionSubnet
       GroupSet:
-      - !Ref rSecurityGroupBastion
+        - !Ref rSecurityGroupBastion
       Description: Interface for bastion
       Tags:
-      - Key: Network
-        Value: Bastion
+        - Key: Network
+          Value: Bastion
   rEIPProdBastion:
     Type: AWS::EC2::EIP
     Properties:
@@ -141,7 +126,7 @@ Resources:
     Properties:
       AllocationId:
         Fn::GetAtt:
-        - rEIPProdBastion
-        - AllocationId
+          - rEIPProdBastion
+          - AllocationId
       NetworkInterfaceId:
         Ref: rBastionInstanceEni
