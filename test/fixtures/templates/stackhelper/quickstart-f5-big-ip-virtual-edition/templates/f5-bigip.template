@@ -1,9 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
-  LTM v3.3.1: The template deploys an auto scaled group of BIG-IPs. **WARNING** This
-  template creates multiple AWS resources including an auto scale group of BIG-IPs,
-  S3 bucket, SNS queue, lambda function, IAM roles and related resources. You will
-  be billed for the AWS resources used if you create a stack from this template.
+  LTM v3.3.1: The template deploys an auto scaled group of BIG-IPs. **WARNING** This template creates multiple AWS resources including an auto scale group of BIG-IPs, S3 bucket, SNS queue, lambda function, IAM roles and related resources. You will be billed for the AWS resources used if you create a stack from this template.
 Conditions:
   NoCustomImageId: !Equals
     - OPTIONAL
@@ -432,11 +429,7 @@ Parameters:
   adminUsername:
     AllowedPattern: '[a-zA-Z0-9._-]+'
     ConstraintDescription: >-
-      Verify your BIG-IP admin username. Note that the user name can contain only
-      alphanumeric characters, periods ( . ), underscores ( _ ), or hyphens ( - ).
-      The user name cannot be any of the following: adm, apache, bin, daemon, guest,
-      lp, mail, manager, mysql, named, nobody, ntp, operator, partition, password,
-      pcap, postfix, radvd, root, rpc, rpm, sshd, syscheck, tomcat, uucp, or vcsa.
+      Verify your BIG-IP admin username. Note that the user name can contain only alphanumeric characters, periods ( . ), underscores ( _ ), or hyphens ( - ). The user name cannot be any of the following: adm, apache, bin, daemon, guest, lp, mail, manager, mysql, named, nobody, ntp, operator, partition, password, pcap, postfix, radvd, root, rpc, rpm, sshd, syscheck, tomcat, uucp, or vcsa.
     Default: cluster-admin
     Description: BIG-IP Admin User for clustering
     MaxLength: 255
@@ -447,23 +440,19 @@ Parameters:
       - 'Yes'
       - 'No'
     Default: 'No'
-    Description: This deployment can send anonymous statistics to F5 to help us determine
-      how to improve our solutions. If you select **No** statistics are not sent.
+    Description: This deployment can send anonymous statistics to F5 to help us determine how to improve our solutions. If you select **No** statistics are not sent.
     Type: String
   appCertificateS3Arn:
     ConstraintDescription: Verify S3 ARN of pfx ssl certificate used for application
     Default: default
     Description: >-
-      S3 ARN of pfx ssl certificate used for application - ex. arn:aws:s3:::my_corporate_bucket/website.pfx
-      for public regions. For GovCloud (US) region, start with arn:aws-us-gov:s3.
-      For China region, start with arn:aws-cn:s3.
+      S3 ARN of pfx ssl certificate used for application - ex. arn:aws:s3:::my_corporate_bucket/website.pfx for public regions. For GovCloud (US) region, start with arn:aws-us-gov:s3. For China region, start with arn:aws-cn:s3.
     MaxLength: 255
     MinLength: 1
     Type: String
   appInternalDnsName:
     Default: www.example.com
-    Description: DNS name poolapp.example.com for the application pool.  This is not
-      required if you are using the Service Discovery feature.
+    Description: DNS name poolapp.example.com for the application pool.  This is not required if you are using the Service Discovery feature.
     Type: String
   application:
     AllowedPattern: '[a-zA-Z0-9]+'
@@ -473,23 +462,17 @@ Parameters:
   applicationPoolTagKey:
     Default: default
     Description: >-
-      This is used for the Service Discovery feature. If you specify a non-default
-      value here, the template automatically discovers the pool members you have tagged
-      with this key and the value you specify next.
+      This is used for the Service Discovery feature. If you specify a non-default value here, the template automatically discovers the pool members you have tagged with this key and the value you specify next.
     Type: String
   application1PoolTagValue:
     Default: default
     Description: >-
-      This is used for the Service Discovery feature. If you specify a non-default
-      value here, the template automatically discovers the pool members you have tagged
-      with the key you specified and this value.
+      This is used for the Service Discovery feature. If you specify a non-default value here, the template automatically discovers the pool members you have tagged with the key you specified and this value.
     Type: String
   application2PoolTagValue:
     Default: default
     Description: >-
-      This is used for the Service Discovery feature. If you specify a non-default
-      value here, the template automatically discovers the pool members you have tagged
-      with the key you specified and this value.
+      This is used for the Service Discovery feature. If you specify a non-default value here, the template automatically discovers the pool members you have tagged with the key you specified and this value.
     Type: String
   applicationPort:
     ConstraintDescription: Must be a valid port number (1-65535).
@@ -499,13 +482,11 @@ Parameters:
     MinValue: 1
     Type: Number
   availabilityZones:
-    Description: Availability Zones where you want to deploy BIG-IP VEs (we recommend
-      at least 2)
+    Description: Availability Zones where you want to deploy BIG-IP VEs (we recommend at least 2)
     Type: List<AWS::EC2::AvailabilityZone::Name>
   bigipNetworkLoadBalancerTargetGroupsArns:
     Default: none
-    Description: ARN of target group(s) for AWS Network Load Balancer for the BIG-IP
-      VEs
+    Description: ARN of target group(s) for AWS Network Load Balancer for the BIG-IP VEs
     Type: String
   costcenter:
     Default: f5costcenter
@@ -514,8 +495,7 @@ Parameters:
   customImageId:
     ConstraintDescription: Must be a valid AMI Id
     Default: OPTIONAL
-    Description: 'If you would like to deploy using a custom BIG-IP image, provide
-      the AMI Id.  **Note**: Unless specifically required, leave the default of **OPTIONAL**'
+    Description: 'If you would like to deploy using a custom BIG-IP image, provide the AMI Id.  **Note**: Unless specifically required, leave the default of **OPTIONAL**'
     MaxLength: 255
     MinLength: 1
     Type: String
@@ -619,37 +599,28 @@ Parameters:
   restrictedSrcAddress:
     AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
     ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x.
-    Description: ' The IP address range used to SSH and access managment GUI on the
-      EC2 instances'
+    Description: ' The IP address range used to SSH and access managment GUI on the EC2 instances'
     MaxLength: '18'
     MinLength: '9'
     Type: String
   restrictedSrcAddressApp:
     AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
     ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x.
-    Description: ' The IP address range that can be used to access web traffic (80/443)
-      to the EC2 instances'
+    Description: ' The IP address range that can be used to access web traffic (80/443) to the EC2 instances'
     MaxLength: '18'
     MinLength: '9'
     Type: String
   qss3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-      (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
-    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
-      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
-      It cannot start or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   qss3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-f5-big-ip-virtual-edition/
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
   qss3Region:
     AllowedValues:
@@ -669,16 +640,14 @@ Parameters:
   scalingMaxSize:
     ConstraintDescription: Must be a number between 2-8
     Default: 1
-    Description: Maximum number of BIG-IP instances (2-8) that can be created in the
-      Auto Scale Group
+    Description: Maximum number of BIG-IP instances (2-8) that can be created in the Auto Scale Group
     MaxValue: 8
     MinValue: 1
     Type: Number
   scalingMinSize:
     ConstraintDescription: Must be a number between 1-8
     Default: 1
-    Description: Minimum number of BIG-IP instances (1-8) you want available in the
-      Auto Scale Group
+    Description: Minimum number of BIG-IP instances (1-8) you want available in the Auto Scale Group
     MaxValue: 8
     MinValue: 1
     Type: Number
@@ -696,8 +665,7 @@ Parameters:
   virtualServicePort:
     ConstraintDescription: Must be a valid port number (1-65535) except port 80.
     Default: 443
-    Description: Port for the virtual service on BIG-IP VE. Must be a valid port number
-      (1-65535) except port 80.
+    Description: Port for the virtual service on BIG-IP VE. Must be a valid port number (1-65535) except port 80.
     MaxValue: 65535
     MinValue: 1
     Type: Number
@@ -914,8 +882,7 @@ Resources:
       ActionsEnabled: 'true'
       AlarmActions:
         - !Ref 'BigipScaleUpPolicy'
-      AlarmDescription: CPU usage percentage exceeds average threshold after 1 successive
-        interval of 1 minute
+      AlarmDescription: CPU usage percentage exceeds average threshold after 1 successive interval of 1 minute
       ComparisonOperator: GreaterThanThreshold
       EvaluationPeriods: '1'
       MetricName: tmm-stat
@@ -930,8 +897,7 @@ Resources:
       ActionsEnabled: 'true'
       AlarmActions:
         - !Ref 'BigipScaleUpPolicy'
-      AlarmDescription: Throughput exceeds average threshold after 1 successive interval
-        of 1 minute
+      AlarmDescription: Throughput exceeds average threshold after 1 successive interval of 1 minute
       ComparisonOperator: GreaterThanThreshold
       EvaluationPeriods: '1'
       MetricName: throughput-per-sec
@@ -966,8 +932,7 @@ Resources:
                   - ' f5-rest-node /config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs/scripts/runScript.js'
                   - ' --signal PASSWORD_CREATED'
                   - ' --file f5-rest-node'
-                  - ' --cl-args ''/config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs/scripts/generatePassword
-                    --file /config/cloud/aws/.adminPassword --encrypt'''
+                  - ' --cl-args ''/config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs/scripts/generatePassword --file /config/cloud/aws/.adminPassword --encrypt'''
                   - ' --log-level silly'
                   - ' -o /var/log/cloud/aws/generatePassword.log'
                   - ' &>> /var/log/cloud/aws/install.log < /dev/null'
@@ -1085,77 +1050,47 @@ Resources:
                   - "# Generated from 3.3.1\n"
                   - "date\n"
                   - ". /config/cloud/aws/onboard_config_vars\n"
-                  - "tmsh create sys icall script uploadMetrics definition { exec\
-                    \ /config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs-aws/scripts/reportMetrics.sh\
-                    \ }\n"
-                  - "tmsh create sys icall handler periodic /Common/metricUploadHandler\
-                    \ { first-occurrence now interval 60 script /Common/uploadMetrics\
-                    \ }\n"
+                  - "tmsh create sys icall script uploadMetrics definition { exec /config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs-aws/scripts/reportMetrics.sh }\n"
+                  - "tmsh create sys icall handler periodic /Common/metricUploadHandler { first-occurrence now interval 60 script /Common/uploadMetrics }\n"
                   - "tmsh save /sys config\n"
                   - "echo 'Attempting to Join or Initiate Autoscale Cluster' \n"
-                  - "f5-rest-node /config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs/scripts/autoscale.js\
-                    \ --cloud aws --provider-options s3Bucket:${s3Bucket},sqsUrl:${sqsUrl},mgmtPort:${managementGuiPort}\
-                    \ --host localhost --port ${managementGuiPort} --user ${adminUsername}\
-                    \ --password-url file:///config/cloud/aws/.adminPassword --password-encrypted\
-                    \ --device-group autoscale-group --block-sync -c join --log-level\
-                    \ silly --output /var/log/cloud/aws/autoscale.log \n"
+                  - "f5-rest-node /config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs/scripts/autoscale.js --cloud aws --provider-options s3Bucket:${s3Bucket},sqsUrl:${sqsUrl},mgmtPort:${managementGuiPort} --host localhost --port ${managementGuiPort} --user ${adminUsername} --password-url file:///config/cloud/aws/.adminPassword --password-encrypted --device-group autoscale-group --block-sync -c join --log-level silly --output /var/log/cloud/aws/autoscale.log \n"
                   - "if [ -f /config/cloud/master ]; then \n"
                   - "  if `jq '.ucsLoaded' < /config/cloud/master`; then \n"
-                  - "    echo \"UCS backup loaded from backup folder in S3 bucket\
-                    \ ${s3Bucket}.\"\n"
+                  - "    echo \"UCS backup loaded from backup folder in S3 bucket ${s3Bucket}.\"\n"
                   - "  else\n"
-                  - "    echo 'SELF-SELECTED as Master ... Initiated Autoscale Cluster\
-                    \ ... Loading default config'\n"
+                  - "    echo 'SELF-SELECTED as Master ... Initiated Autoscale Cluster ... Loading default config'\n"
                   - "    tmsh load sys application template /config/cloud/aws/f5.cloud_logger.v1.0.0.tmpl\n"
                   - "    source /config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs/scripts/waitForBigip.sh;wait-for-bigip\n"
                   - "    ##### START CUSTOM CONFIG HERE #####\n"
                   - "    if [[ \"${appCertificateS3Arn}\" != \"default\" ]]; then\n"
-                  - "        f5-rest-node /config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs-aws/scripts/getCertFromS3.js\
-                    \ ${appCertificateS3Arn}\n"
-                  - "        tmsh install sys crypto pkcs12 site.example.com from-local-file\
-                    \ /config/ssl/ssl.key/${appCertificateS3Arn##*/}\n"
-                  - "        tmsh create ltm profile client-ssl example-clientssl-profile\
-                    \ cert site.example.com.crt key site.example.com.key\n"
+                  - "        f5-rest-node /config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs-aws/scripts/getCertFromS3.js ${appCertificateS3Arn}\n"
+                  - "        tmsh install sys crypto pkcs12 site.example.com from-local-file /config/ssl/ssl.key/${appCertificateS3Arn##*/}\n"
+                  - "        tmsh create ltm profile client-ssl example-clientssl-profile cert site.example.com.crt key site.example.com.key\n"
                   - "    else\n"
-                  - "        tmsh create ltm profile client-ssl example-clientssl-profile\
-                    \ cert default.crt key default.key\n"
+                  - "        tmsh create ltm profile client-ssl example-clientssl-profile cert default.crt key default.key\n"
                   - "    fi\n"
                   - "    ##### BEGIN AS3 CUSTOMIZATION #####\n"
                   - "    touch /var/config/rest/iapps/enable\n"
-                  - "    curl -u admin: -sk -m 10 https://localhost:8443/mgmt/shared/iapp/package-management-tasks\
-                    \ -H 'Content-Type: application/json' --data '{\"operation\":\"\
-                    INSTALL\",\"packageFilePath\":\"/var/config/rest/downloads/f5-appsvcs.noarch.rpm\"\
-                    }'\n"
+                  - "    curl -u admin: -sk -m 10 https://localhost:8443/mgmt/shared/iapp/package-management-tasks -H 'Content-Type: application/json' --data '{\"operation\":\"INSTALL\",\"packageFilePath\":\"/var/config/rest/downloads/f5-appsvcs.noarch.rpm\"}'\n"
                   - "    sed -i.bak \"s/us-east-1/${region}/\" /config/cloud/aws/virtual_service_definition.json\n"
                   - "    sed -i.bak \"s/f5demoapp/${applicationPoolTagKey}/\" /config/cloud/aws/virtual_service_definition.json\n"
-                  - "    sed -i.bak \"s/f5-demo-app-0.0.1/${application1PoolTagValue}/\"\
-                    \ /config/cloud/aws/virtual_service_definition.json\n"
-                  - "    sed -i.bak \"s/f5-demo-app-0.0.2/${application2PoolTagValue}/\"\
-                    \ /config/cloud/aws/virtual_service_definition.json\n"
+                  - "    sed -i.bak \"s/f5-demo-app-0.0.1/${application1PoolTagValue}/\" /config/cloud/aws/virtual_service_definition.json\n"
+                  - "    sed -i.bak \"s/f5-demo-app-0.0.2/${application2PoolTagValue}/\" /config/cloud/aws/virtual_service_definition.json\n"
                   - "    sleep 10\n"
-                  - "    curl -u admin: -sk --retry 20 -m 10 -X POST -d @/config/cloud/aws/virtual_service_definition.json\
-                    \ https://localhost:8443/mgmt/shared/appsvcs/declare\n"
+                  - "    curl -u admin: -sk --retry 20 -m 10 -X POST -d @/config/cloud/aws/virtual_service_definition.json https://localhost:8443/mgmt/shared/appsvcs/declare\n"
                   - "    curl -u admin: -sk -m 10 -X GET https://localhost:8443/mgmt/shared/appsvcs/declare\n"
                   - "    # CREATE QUICKSTART USER\n"
-                  - "    quickstartPassword=$(cat /shared/vadc/aws/iid-document |\
-                    \ jq -r .instanceId)\n"
-                  - "    tmsh create auth user quickstart password ${quickstartPassword}\
-                    \ shell bash partition-access replace-all-with { all-partitions\
-                    \ { role admin } }\n"
+                  - "    quickstartPassword=$(cat /shared/vadc/aws/iid-document | jq -r .instanceId)\n"
+                  - "    tmsh create auth user quickstart password ${quickstartPassword} shell bash partition-access replace-all-with { all-partitions { role admin } }\n"
                   - "    ##### END CUSTOM CONFIG HERE #####\n"
                   - "    tmsh save /sys config\n"
-                  - '    f5-rest-node /config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs/scripts/autoscale.js
-                    --cloud aws --provider-options s3Bucket:${s3Bucket},sqsUrl:${sqsUrl},mgmtPort:${managementGuiPort}'
-                  - "      --host localhost --port ${managementGuiPort} --user ${adminUsername}\
-                    \ --password-url file:///config/cloud/aws/.adminPassword --password-encrypted\
-                    \ -c unblock-sync --log-level silly --output /var/log/cloud/aws/autoscale.log\
-                    \ \n"
+                  - '    f5-rest-node /config/cloud/aws/node_modules/@f5devcentral/f5-cloud-libs/scripts/autoscale.js --cloud aws --provider-options s3Bucket:${s3Bucket},sqsUrl:${sqsUrl},mgmtPort:${managementGuiPort}'
+                  - "      --host localhost --port ${managementGuiPort} --user ${adminUsername} --password-url file:///config/cloud/aws/.adminPassword --password-encrypted -c unblock-sync --log-level silly --output /var/log/cloud/aws/autoscale.log \n"
                   - "  fi\n"
                   - "fi\n"
-                  - "(crontab -l 2>/dev/null; echo '*/1 * * * * /config/cloud/aws/run_autoscale_update.sh')\
-                    \ | crontab -\n"
-                  - "(crontab -l 2>/dev/null; echo '59 23 * * * /config/cloud/aws/run_autoscale_backup.sh')\
-                    \ | crontab -\n"
+                  - "(crontab -l 2>/dev/null; echo '*/1 * * * * /config/cloud/aws/run_autoscale_update.sh') | crontab -\n"
+                  - "(crontab -l 2>/dev/null; echo '59 23 * * * /config/cloud/aws/run_autoscale_backup.sh') | crontab -\n"
                   - "tmsh save /sys config\n"
                   - "### Tell Cloudformation Stack is complete\n"
                   - '/opt/aws/apitools/cfn-init/bin/cfn-signal -e 0 -e 0 --stack '
@@ -1361,16 +1296,6 @@ Resources:
       KeyName: !Ref 'sshKey'
       SecurityGroups:
         - !Ref 'BigipExternalSecurityGroup'
-      UserData: !Base64
-        Fn::Join:
-          - ''
-          - - "#!/bin/bash\n"
-            - '/opt/aws/apitools/cfn-init-1.4-0.amzn1/bin/cfn-init -v -s '
-            - !Ref 'AWS::StackId'
-            - ' -r BigipLaunchConfig'
-            - ' --region '
-            - !Ref 'AWS::Region'
-            - "\n"
     Type: AWS::AutoScaling::LaunchConfiguration
   BigipLowCpuAlarm:
     DependsOn: BigipAutoscaleGroup
@@ -1378,8 +1303,7 @@ Resources:
       ActionsEnabled: 'true'
       AlarmActions:
         - !Ref 'BigipScaleDownPolicy'
-      AlarmDescription: CPU usage percentage below average threshold after 10 successive
-        interval of 5 minutes
+      AlarmDescription: CPU usage percentage below average threshold after 10 successive interval of 5 minutes
       ComparisonOperator: LessThanThreshold
       EvaluationPeriods: '10'
       MetricName: tmm-stat
@@ -1394,8 +1318,7 @@ Resources:
       ActionsEnabled: 'true'
       AlarmActions:
         - !Ref 'BigipScaleDownPolicy'
-      AlarmDescription: Throughput below average threshold for 10 successive intervals
-        of 5 minutes
+      AlarmDescription: Throughput below average threshold for 10 successive intervals of 5 minutes
       ComparisonOperator: LessThanThreshold
       EvaluationPeriods: '10'
       MetricName: throughput-per-sec
@@ -1443,41 +1366,7 @@ Resources:
   LambdaDeploymentCleanup:
     Properties:
       Code:
-        ZipFile: !Sub "#!/usr/bin/python\n\nfrom __future__ import print_function\n\
-          import os\nimport sys\nimport time\nimport botocore\nimport boto3\nimport\
-          \ cfnresponse\nimport json\nimport logging\n\nlog = logging.getLogger()\n\
-          log.setLevel(logging.INFO)\n\ndef handler(event, context):\n    print('Received\
-          \ event: %s' % json.dumps(event,indent=2))\n    try:\n      region     \
-          \ = event['ResourceProperties']['region']\n      bucket_name = event['ResourceProperties']['bucketName']\n\
-          \      asg_name    = event['ResourceProperties']['autoscalingGroupName']\n\
-          \n      if event['RequestType'] == 'Create' or event['RequestType'] == 'Update':\n\
-          \        # Tell CFT custom resource was successfully created and handled\
-          \ \n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {}, None\
-          \ )\n      elif event['RequestType'] == 'Delete':\n        try:\n      \
-          \    asg_client = boto3.client('autoscaling', region_name=region ) # Create\
-          \ Autoscale client\n        except botocore.exceptions.ClientError as e:\n\
-          \          print(str(e))\n          sys.exit(\"Exiting...\")\n\n       \
-          \ # Create EC2 client\n        try:\n          s3_client = boto3.client('s3',\
-          \ region_name=region ) # Create Autoscale client\n        except botocore.exceptions.ClientError\
-          \ as e:\n          print(str(e))\n          sys.exit(\"Exiting...\")\n\n\
-          \        s3 = boto3.resource('s3')\n        ec2 = boto3.resource('ec2')\n\
-          \        instances = []\n        asg = \"\"\n\n        # Delete items in\
-          \ S3 Bucket so CFT can delete it\n        bucket = s3.Bucket(bucket_name)\n\
-          \        if bucket.objects.all().delete():\n          bucket.delete()\n\
-          \        else:\n          cfnresponse.send(event, context, cfnresponse.FAILED,\
-          \ {}, None)\n          \n        # Removing Scale-In protection from Master\
-          \ \n        for instance in asg_client.describe_auto_scaling_instances()['AutoScalingInstances']:\n\
-          \          if asg_name == instance['AutoScalingGroupName']:\n          \
-          \  instances.append( instance['InstanceId'])\n            asg = instance['AutoScalingGroupName']\n\
-          \        if instances:\n          print('Auto Scale: Removing Scale-In protection\
-          \ from Master: %s' % (str(instances)))\n          asg_client.set_instance_protection(\n\
-          \              InstanceIds = instances,\n              AutoScalingGroupName=asg,\n\
-          \              ProtectedFromScaleIn=False\n          )\n        # Sucessfully\
-          \ cleaned up\n        cfnresponse.send(event, context, cfnresponse.SUCCESS,\
-          \ {}, None)\n      else:\n        cfnresponse.send(event, context, cfnresponse.FAILED,\
-          \ {}, None)\n\n    except Exception as e:\n        print('Exception in handling\
-          \ the request, %s' % (str(e)))\n        cfnresponse.send(event, context,\
-          \ cfnresponse.FAILED, {}, None)\n"
+        ZipFile: !Sub "#!/usr/bin/python\n\nfrom __future__ import print_function\nimport os\nimport sys\nimport time\nimport botocore\nimport boto3\nimport cfnresponse\nimport json\nimport logging\n\nlog = logging.getLogger()\nlog.setLevel(logging.INFO)\n\ndef handler(event, context):\n    print('Received event: %s' % json.dumps(event,indent=2))\n    try:\n      region      = event['ResourceProperties']['region']\n      bucket_name = event['ResourceProperties']['bucketName']\n      asg_name    = event['ResourceProperties']['autoscalingGroupName']\n\n      if event['RequestType'] == 'Create' or event['RequestType'] == 'Update':\n        # Tell CFT custom resource was successfully created and handled \n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {}, None )\n      elif event['RequestType'] == 'Delete':\n        try:\n          asg_client = boto3.client('autoscaling', region_name=region ) # Create Autoscale client\n        except botocore.exceptions.ClientError as e:\n          print(str(e))\n          sys.exit(\"Exiting...\")\n\n        # Create EC2 client\n        try:\n          s3_client = boto3.client('s3', region_name=region ) # Create Autoscale client\n        except botocore.exceptions.ClientError as e:\n          print(str(e))\n          sys.exit(\"Exiting...\")\n\n        s3 = boto3.resource('s3')\n        ec2 = boto3.resource('ec2')\n        instances = []\n        asg = \"\"\n\n        # Delete items in S3 Bucket so CFT can delete it\n        bucket = s3.Bucket(bucket_name)\n        if bucket.objects.all().delete():\n          bucket.delete()\n        else:\n          cfnresponse.send(event, context, cfnresponse.FAILED, {}, None)\n          \n        # Removing Scale-In protection from Master \n        for instance in asg_client.describe_auto_scaling_instances()['AutoScalingInstances']:\n          if asg_name == instance['AutoScalingGroupName']:\n            instances.append( instance['InstanceId'])\n            asg = instance['AutoScalingGroupName']\n        if instances:\n          print('Auto Scale: Removing Scale-In protection from Master: %s' % (str(instances)))\n          asg_client.set_instance_protection(\n              InstanceIds = instances,\n              AutoScalingGroupName=asg,\n              ProtectedFromScaleIn=False\n          )\n        # Sucessfully cleaned up\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {}, None)\n      else:\n        cfnresponse.send(event, context, cfnresponse.FAILED, {}, None)\n\n    except Exception as e:\n        print('Exception in handling the request, %s' % (str(e)))\n        cfnresponse.send(event, context, cfnresponse.FAILED, {}, None)\n"
       Environment:
         Variables:
           region: !Ref 'AWS::Region'

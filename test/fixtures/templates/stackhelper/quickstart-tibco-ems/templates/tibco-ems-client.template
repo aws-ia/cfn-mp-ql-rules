@@ -1,9 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  This template deploys TIBCO EMS "Client" 2 EC2 instances in two private
-  subnets.  **WARNING** This template creates EC2 instances and related
-  resources. You will  be billed for the AWS resources used if you create a
-  stack from this template.
+  This template deploys TIBCO EMS "Client" 2 EC2 instances in two private subnets.  **WARNING** This template creates EC2 instances and related resources. You will  be billed for the AWS resources used if you create a stack from this template.
 Metadata:
   'AWS::CloudFormation::Interface':
     ParameterGroups:
@@ -55,8 +52,8 @@ Metadata:
 Parameters:
   BastionSecurityGroupID:
     Description: >
-      ID of the bastion host security group to enable SSH connections (e.g.,
-      sg-7f16e910)
+      ID of the bastion host security group to enable SSH connections (e.g., sg-7f16e910)
+
     Type: 'AWS::EC2::SecurityGroup::Id'
   EMSAMIType:
     AllowedValues:
@@ -104,8 +101,7 @@ Parameters:
   EMSInstallerName:
     Type: String
     Description: >-
-      Name of the TIBCO EMS Installation archive downloaded from TIBCO eDelivery
-      site
+      Name of the TIBCO EMS Installation archive downloaded from TIBCO eDelivery site
     Default: TIB_ems_8.4.0_linux_x86_64.zip
   EMSClientCount:
     Type: Number
@@ -120,8 +116,7 @@ Parameters:
   EMSServerClientAccessSecurityGroupID:
     Type: 'AWS::EC2::SecurityGroup::Id'
     Description: >-
-      ID of the security group for clients accessing the EMS Servers (e.g.,
-      sg-7f16e910)
+      ID of the security group for clients accessing the EMS Servers (e.g., sg-7f16e910)
   EMSEFSID:
     Type: String
     Description: >-
@@ -136,30 +131,24 @@ Parameters:
       EMS Server 2 Connection Point
   KeyPairName:
     Description: >
-      Name of an existing EC2 key pair. All instances will launch with this key
-      pair.
+      Name of an existing EC2 key pair. All instances will launch with this key pair.
+
     Type: 'AWS::EC2::KeyPair::KeyName'
   QSS3BucketName:
     AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
     ConstraintDescription: >-
-      Quick Start bucket name can include numbers, lowercase letters, uppercase
-      letters, and hyphens (-). It cannot start or end with a hyphen (-).
+      Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
     Description: >-
-      S3 bucket name for the Quick Start assets. This string can include
-      numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot
-      start or end with a hyphen (-).
+      S3 bucket name for the Quick Start assets. This string can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: '^[0-9a-zA-Z-/]*$'
     ConstraintDescription: >-
-      Quick Start key prefix can include numbers, lowercase letters, uppercase
-      letters, hyphens (-), and forward slash (/).
+      Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-tibco-ems/
     Description: >-
-      S3 key prefix for the Quick Start assets. Quick Start key prefix can
-      include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+      S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
   PublicSubnet1ID:
     Description: 'ID of Subnet 1 in Availability Zone 1 (e.g., subnet-a0246dcd)'
@@ -414,63 +403,6 @@ Resources:
       SecurityGroups:
         - !Ref EMSServerClientAccessSecurityGroupID
         - !Ref EMSClientFleetSecurityGroup
-      UserData: !Base64
-        'Fn::Sub': |
-          #!/bin/bash
-
-          # Update existing installed packages
-          yum update -y
-
-          # Helper function
-          function error_exit
-          {
-            /opt/aws/bin/cfn-signal -e 1 --stack ${AWS::StackName} --region ${AWS::Region} --resource EMSClientLaunchConfiguration -r "EMSClientLaunchConfiguration: $1\n"
-            exit 1
-          }
-
-          # If Red-Hat, Install aws-cfn-bootstrap code
-          if [ "${EMSAMIType}" != "Amazon-Linux2-HVM" ]; then
-            ### This is redhat 7. It supports cloud-init but Cfn packages need to be installed unlike AWS Linux2. And they are installed in a different location
-            # Enable EPEL
-            sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-
-            # Now install Python Setup tools (easy_install) and Pip
-            yum -y install python-pip
-
-            # Now install cfn scripts
-            /bin/easy_install --script-dir /opt/aws/bin https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
-
-            # Now fix the cfn-hup script and copy to init.d location as AWS does not do it for you
-            cp -f `pip show aws-cfn-bootstrap 2>/dev/null|grep -E "^Location"|awk -F: '{print $2}'`/init/redhat/cfn-hup /etc/init.d/
-            chmod 755 /etc/init.d/cfn-hup
-            chkconfig --add cfn-hup
-
-          else
-            # Install on Amazon Linux2
-            # Enable EPEL
-             sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-             yum install -y aws-cfn-bootstrap
-          fi
-
-          # Initialize the instance
-          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource EMSClientLaunchConfiguration --region ${AWS::Region}  || error_exit 'Failed to run cfn-init.'
-
-          # Start up the cfn-hup daemon to listen for changes
-          /opt/aws/bin/cfn-hup || error_exit 'Failed to start cfn-hup'
-
-          # Download/install AWS Cloudwatch Agent
-          curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O || error_exit 'Failed to download awslogs-setup'
-          chmod +x ./awslogs-agent-setup.py
-          sed -i '1s/^/Amazon Linux AMI \n/' /etc/issue
-          ./awslogs-agent-setup.py -n -r ${AWS::Region} -c /etc/awslogs/awslogs.conf || error_exit 'Failed to run awslogs-setup'
-          chkconfig --add awslogs
-          service awslogs start
-          chkconfig awslogs on
-
-          # All is well so signal success
-          /opt/aws/bin/cfn-signal -e 0 --stack ${AWS::StackName} --region ${AWS::Region} --resource EMSClientAutoScaling -r 'EMSClientLaunchConfiguration: cfn-init Success'
-          ########
-
   EMSClientAutoScaling:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -481,12 +413,12 @@ Resources:
       MaxSize: !Ref EMSClientCount
       MinSize: !Ref EMSClientCount
       VPCZoneIdentifier:
-      - !Ref PrivateSubnet1ID
-      - !Ref PrivateSubnet2ID
+        - !Ref PrivateSubnet1ID
+        - !Ref PrivateSubnet2ID
       Tags:
-      - Key: Name
-        Value: !Sub "TIBCO EMS Client (${AWS::StackName})"
-        PropagateAtLaunch: true
+        - Key: Name
+          Value: !Sub "TIBCO EMS Client (${AWS::StackName})"
+          PropagateAtLaunch: true
     CreationPolicy:
       ResourceSignal:
         Count: !Ref EMSClientCount

@@ -12,7 +12,6 @@ Metadata:
           - PublicSubnet2ID
           - PrivateSubnet1ID
           - PrivateSubnet2ID
-
       - Label:
           default: Corda Configuration
         Parameters:
@@ -73,12 +72,10 @@ Metadata:
         default: VPC CIDR
 Parameters:
   CountryCode:
-    Description: The ISO 3166-1 alpha-2 code of the country to which the node is
-      associated. This does not need to be where the node is physically located.
+    Description: The ISO 3166-1 alpha-2 code of the country to which the node is associated. This does not need to be where the node is physically located.
     Type: String
   Location:
-    Description: The city or location to which the node is associated. This does not
-      need to be where the node is physically located.
+    Description: The city or location to which the node is associated. This does not need to be where the node is physically located.
     Type: String
   RDSEndPoint:
     Description: Database endpoint
@@ -90,8 +87,7 @@ Parameters:
     Description: Database master username
     Type: String
   OneTimeKey:
-    Description: The one-time key that you received when you created a new node on
-      Corda Testnet (code valid for 1 hour).
+    Description: The one-time key that you received when you created a new node on Corda Testnet (code valid for 1 hour).
     Type: String
   TestnetEndpoint:
     Description: The base URL of Corda Testnet
@@ -99,27 +95,26 @@ Parameters:
     Type: String
   InstanceType:
     AllowedValues:
-       - t2.nano
-       - t2.micro
-       - t2.small
-       - t2.medium
-       - t2.large
-       - t3.small
-       - t3.medium
-       - t3.large
-       - m3.large
-       - m3.xlarge
-       - m3.2xlarge
-       - m4.large
-       - m4.xlarge
-       - m4.2xlarge
-       - m4.4xlarge
+      - t2.nano
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t2.large
+      - t3.small
+      - t3.medium
+      - t3.large
+      - m3.large
+      - m3.xlarge
+      - m3.2xlarge
+      - m4.large
+      - m4.xlarge
+      - m4.2xlarge
+      - m4.4xlarge
     Default: t3.large
     Description: Amazon EC2 instance type for the Corda instances
     Type: String
   KeyPairName:
-    Description: Enter a public/private key pair. If you do not have one in this region,
-      please create it before continuing
+    Description: Enter a public/private key pair. If you do not have one in this region, please create it before continuing
     Type: AWS::EC2::KeyPair::KeyName
   PrivateSubnet1ID:
     Description: ID of the private Subnet in Availability Zone 1
@@ -136,24 +131,18 @@ Parameters:
   QSS3BucketName:
     AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
     ConstraintDescription: >-
-      Quick Start bucket name can include numbers, lowercase letters, uppercase
-      letters, and hyphens (-). It cannot start or end with a hyphen (-).
+      Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
     Description: >-
-      S3 bucket name for the Quick Start assets. Quick Start bucket name can
-      include numbers, lowercase letters, uppercase letters, and hyphens (-). It
-      cannot start or end with a hyphen (-).
+      S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: '^[0-9a-zA-Z-/]*$'
     ConstraintDescription: >-
-      Quick Start key prefix can include numbers, lowercase letters, uppercase
-      letters, hyphens (-), and forward slash (/).
+      Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-r3-corda/
     Description: >-
-      S3 key prefix for the Quick Start assets. Quick Start key prefix can
-      include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+      S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
   RemoteAccessCIDR:
     AllowedPattern: >-
@@ -233,35 +222,35 @@ Resources:
     Properties:
       PerformanceMode: generalPurpose
       FileSystemTags:
-      - Key: Name
-        Value: !Join
-        - '-'
-        - - !Ref 'AWS::StackName'
-          - 'CordaEFS'
+        - Key: Name
+          Value: !Join
+            - '-'
+            - - !Ref 'AWS::StackName'
+              - 'CordaEFS'
   MountTargetSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       VpcId: !Ref VPCID
       GroupDescription: Security group for mount target
       SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 2049
-        ToPort: 2049
-        CidrIp: !Ref VPCCIDR
+        - IpProtocol: tcp
+          FromPort: 2049
+          ToPort: 2049
+          CidrIp: !Ref VPCCIDR
   MountTargetS1:
     Type: AWS::EFS::MountTarget
     Properties:
       FileSystemId: !Ref FileSystem
       SubnetId: !Ref 'PrivateSubnet1ID'
       SecurityGroups:
-      - Ref: MountTargetSecurityGroup
+        - Ref: MountTargetSecurityGroup
   MountTargetS2:
     Type: AWS::EFS::MountTarget
     Properties:
       FileSystemId: !Ref FileSystem
       SubnetId: !Ref 'PrivateSubnet2ID'
       SecurityGroups:
-      - Ref: MountTargetSecurityGroup
+        - Ref: MountTargetSecurityGroup
   CordaLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -388,16 +377,16 @@ Resources:
   AuthenticatedS3Policy:
     Type: AWS::IAM::Policy
     Properties:
-        PolicyName: AuthenticatedS3GetObjects
-        Roles:
+      PolicyName: AuthenticatedS3GetObjects
+      Roles:
         - !Ref CordaInstanceRole
-        PolicyDocument:
-           Statement:
-             - Sid: BucketAccess
-               Effect: Allow
-               Action:
-                 - 's3:GetObject'
-               Resource: !Sub arn:aws:s3:::${QSS3BucketName}/*
+      PolicyDocument:
+        Statement:
+          - Sid: BucketAccess
+            Effect: Allow
+            Action:
+              - 's3:GetObject'
+            Resource: !Sub arn:aws:s3:::${QSS3BucketName}/*
   CordaInstance:
     Type: AWS::EC2::Instance
     DependsOn:
@@ -453,7 +442,7 @@ Resources:
                 - >-
                   https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/corda.service
                 - QSS3BucketName: !Ref QSS3BucketName
-                  S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
+                  S3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]
                   QSS3KeyPrefix: !Ref QSS3KeyPrefix
               mode: '000755'
               owner: root
@@ -470,7 +459,7 @@ Resources:
                 - >-
                   https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/install-node.sh
                 - QSS3BucketName: !Ref QSS3BucketName
-                  S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
+                  S3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]
                   QSS3KeyPrefix: !Ref QSS3KeyPrefix
               mode: '000755'
               owner: root
@@ -480,37 +469,38 @@ Resources:
           commands:
             start_install:
               command: !Sub
-              - >-
-                bash /home/ubuntu/install-node.sh \
-                  "${P2PAddress}" \
-                  "${CountryCode}" \
-                  "${Location}" \
-                  "${RDSEndPoint}" \
-                  "${DBMasterUsername}" \
-                  "${DBMasterUserPassword}" \
-                  "${OneTimeKey}" \
-                  "${RPCAddress}" \
-                  "${P2PELB}" \
-                  "${RPCELB}" \
-                  "${Region}" \
-                  "${TestnetEndpoint}"
-              - P2PAddress: !GetAtt
-                  - P2PLoadBalancer
-                  - DNSName
-                CountryCode: !Ref CountryCode
-                Location: !Ref Location
-                RDSEndPoint: !Ref RDSEndPoint
-                DBMasterUsername: !Ref DBMasterUsername
-                DBMasterUserPassword: !Ref DBMasterUserPassword
-                OneTimeKey: !Ref OneTimeKey
-                RPCAddress: !Ref CordaRPCAccessCIDR
-                P2PELB: !Ref P2PLoadBalancer
-                RPCELB: !Ref RPCLoadBalancer
-                Region: !Ref 'AWS::Region'
-                TestnetEndpoint: !Ref TestnetEndpoint
+                - >-
+                  bash /home/ubuntu/install-node.sh \
+
+                    "${P2PAddress}" \
+                    "${CountryCode}" \
+                    "${Location}" \
+                    "${RDSEndPoint}" \
+                    "${DBMasterUsername}" \
+                    "${DBMasterUserPassword}" \
+                    "${OneTimeKey}" \
+                    "${RPCAddress}" \
+                    "${P2PELB}" \
+                    "${RPCELB}" \
+                    "${Region}" \
+                    "${TestnetEndpoint}"
+                - P2PAddress: !GetAtt
+                    - P2PLoadBalancer
+                    - DNSName
+                  CountryCode: !Ref CountryCode
+                  Location: !Ref Location
+                  RDSEndPoint: !Ref RDSEndPoint
+                  DBMasterUsername: !Ref DBMasterUsername
+                  DBMasterUserPassword: !Ref DBMasterUserPassword
+                  OneTimeKey: !Ref OneTimeKey
+                  RPCAddress: !Ref CordaRPCAccessCIDR
+                  P2PELB: !Ref P2PLoadBalancer
+                  RPCELB: !Ref RPCLoadBalancer
+                  Region: !Ref 'AWS::Region'
+                  TestnetEndpoint: !Ref TestnetEndpoint
         run-service-corda:
           commands:
-            start_corda :
+            start_corda:
               command: systemctl start corda.service
         run-corda-log-collection:
           files:
@@ -519,14 +509,14 @@ Resources:
                 - >-
                   https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/node-logs.sh
                 - QSS3BucketName: !Ref QSS3BucketName
-                  S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
+                  S3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]
                   QSS3KeyPrefix: !Ref QSS3KeyPrefix
               mode: '000755'
               owner: root
               group: root
               authentication: S3AccessCreds
           commands:
-            setup-cw-logs :
+            setup-cw-logs:
               command: bash /home/ubuntu/node-logs.sh
     CreationPolicy:
       ResourceSignal:
@@ -552,47 +542,6 @@ Resources:
             - '-'
             - - !Ref 'AWS::StackName'
               - 'CordaNode'
-      UserData: !Base64
-        Fn::Sub:
-          - |
-            #!/bin/bash -x
-            #CFN Functions
-            function cfn_fail
-            {
-              cfn-signal -e 1 --stack ${AWS::StackName} --region ${AWS::Region} --resource CordaInstance
-              exit 1
-            }
-            function cfn_success
-            {
-              cfn-signal -e 0 --stack ${AWS::StackName} --region ${AWS::Region} --resource CordaInstance
-              exit 0
-            }
-            S3URI=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
-            echo \'[Cloning: Load QuickStart Common Utils]\'
-            #Once Repo is public (Use quickstart-linux-utilities submodue)
-            until git clone https://github.com/aws-ia-us-east-1/quickstart-linux-utilities.git ; do echo "Retrying"; done
-            cd /quickstart-linux-utilities
-            source quickstart-cfn-tools.source
-            echo \'[Loaded: Load QuickStart Common Utils]\'
-            echo \'[Update Operating System]\'
-            qs_update-os || qs_err
-            qs_bootstrap_pip || qs_err
-            qs_aws-cfn-bootstrap || qs_err
-            # Set Log Group Name (TODO: create qs_cloudwatch_loggroup_set)
-            sed -i "s/__LOGGROUP__/${CordaLogGroup}/g" cloudwatch_logs.stub
-            echo "Install CloudWatch agent"
-            qs_cloudwatch_install || qs_err
-            # CFN Debug Logs
-            qs_cloudwatch_tracklog /var/lib/cloud/instance/scripts/part-001
-            qs_cloudwatch_tracklog /var/log/cloud-init.log
-            qs_cloudwatch_tracklog /var/log/cloud-init-output.log
-            qs_cloudwatch_tracklog /var/log/cfn-init.log
-            qs_cloudwatch_tracklog /var/log/cfn-init-cmd.log
-            echo "Executing config-sets"
-            cfn-init -v --stack ${AWS::StackName} --resource CordaInstance --configsets corda_install --region ${AWS::Region} || cfn_fail
-            # Signal cfn-init (final check)
-            [ $(qs_status) == 0 ] && cfn_success || cfn_fail
-          - S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
   CordaColdInstance:
     Type: AWS::EC2::Instance
     DependsOn: CordaInstance
@@ -639,7 +588,7 @@ Resources:
                 - >-
                   https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/corda.service
                 - QSS3BucketName: !Ref QSS3BucketName
-                  S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
+                  S3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]
                   QSS3KeyPrefix: !Ref QSS3KeyPrefix
               mode: '000755'
               owner: root
@@ -656,7 +605,7 @@ Resources:
                 - >-
                   https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/install-cold-node.sh
                 - QSS3BucketName: !Ref QSS3BucketName
-                  S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
+                  S3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]
                   QSS3KeyPrefix: !Ref QSS3KeyPrefix
               mode: '000755'
               owner: root
@@ -666,37 +615,38 @@ Resources:
           commands:
             start_install:
               command: !Sub
-              - >-
-                bash /home/ubuntu/install-node-cold-node.sh \
-                  "${P2PAddress}" \
-                  "${CountryCode}" \
-                  "${Location}" \
-                  "${RDSEndPoint}" \
-                  "${DBMasterUsername}" \
-                  "${DBMasterUserPassword}" \
-                  "${OneTimeKey}" \
-                  "${RPCAddress}" \
-                  "${P2PELB}" \
-                  "${RPCELB}" \
-                  "${Region}" \
-                  "${TestnetEndpoint}"
-              - P2PAddress: !GetAtt
-                  - P2PLoadBalancer
-                  - DNSName
-                CountryCode: !Ref CountryCode
-                Location: !Ref Location
-                RDSEndPoint: !Ref RDSEndPoint
-                DBMasterUsername: !Ref DBMasterUsername
-                DBMasterUserPassword: !Ref DBMasterUserPassword
-                OneTimeKey: !Ref OneTimeKey
-                RPCAddress: !Ref CordaRPCAccessCIDR
-                P2PELB: !Ref P2PLoadBalancer
-                RPCELB: !Ref RPCLoadBalancer
-                Region: !Ref 'AWS::Region'
-                TestnetEndpoint: !Ref TestnetEndpoint
+                - >-
+                  bash /home/ubuntu/install-node-cold-node.sh \
+
+                    "${P2PAddress}" \
+                    "${CountryCode}" \
+                    "${Location}" \
+                    "${RDSEndPoint}" \
+                    "${DBMasterUsername}" \
+                    "${DBMasterUserPassword}" \
+                    "${OneTimeKey}" \
+                    "${RPCAddress}" \
+                    "${P2PELB}" \
+                    "${RPCELB}" \
+                    "${Region}" \
+                    "${TestnetEndpoint}"
+                - P2PAddress: !GetAtt
+                    - P2PLoadBalancer
+                    - DNSName
+                  CountryCode: !Ref CountryCode
+                  Location: !Ref Location
+                  RDSEndPoint: !Ref RDSEndPoint
+                  DBMasterUsername: !Ref DBMasterUsername
+                  DBMasterUserPassword: !Ref DBMasterUserPassword
+                  OneTimeKey: !Ref OneTimeKey
+                  RPCAddress: !Ref CordaRPCAccessCIDR
+                  P2PELB: !Ref P2PLoadBalancer
+                  RPCELB: !Ref RPCLoadBalancer
+                  Region: !Ref 'AWS::Region'
+                  TestnetEndpoint: !Ref TestnetEndpoint
         run-service-corda:
           commands:
-            start_corda :
+            start_corda:
               command: systemctl start corda.service
         run-corda-log-collection:
           files:
@@ -705,14 +655,14 @@ Resources:
                 - >-
                   https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/node-logs.sh
                 - QSS3BucketName: !Ref QSS3BucketName
-                  S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
+                  S3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]
                   QSS3KeyPrefix: !Ref QSS3KeyPrefix
               mode: '000755'
               owner: root
               group: root
               authentication: S3AccessCreds
           commands:
-            setup-cw-logs :
+            setup-cw-logs:
               command: bash /home/ubuntu/node-logs.sh
     CreationPolicy:
       ResourceSignal:
@@ -738,47 +688,6 @@ Resources:
             - '-'
             - - !Ref 'AWS::StackName'
               - 'CordaNode'
-      UserData: !Base64
-        Fn::Sub:
-          - |
-            #!/bin/bash -x
-            #CFN Functions
-            function cfn_fail
-            {
-              cfn-signal -e 1 --stack ${AWS::StackName} --region ${AWS::Region} --resource CordaColdInstance
-              exit 1
-            }
-            function cfn_success
-            {
-              cfn-signal -e 0 --stack ${AWS::StackName} --region ${AWS::Region} --resource CordaColdInstance
-              exit 0
-            }
-            S3URI=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
-            echo \'[Cloning: Load QuickStart Common Utils]\'
-            #Once Repo is public (Use quickstart-linux-utilities submodue)
-            until git clone https://github.com/aws-ia-us-east-1/quickstart-linux-utilities.git ; do echo "Retrying"; done
-            cd /quickstart-linux-utilities
-            source quickstart-cfn-tools.source
-            echo \'[Loaded: Load QuickStart Common Utils]\'
-            echo \'[Update Operating System]\'
-            qs_update-os || qs_err
-            qs_bootstrap_pip || qs_err
-            qs_aws-cfn-bootstrap || qs_err
-            # Set Log Group Name (TODO: create qs_cloudwatch_loggroup_set)
-            sed -i "s/__LOGGROUP__/${ColdCordaLogGroup}/g" cloudwatch_logs.stub
-            echo "Install CloudWatch agent"
-            qs_cloudwatch_install || qs_err
-            # CFN Debug Logs
-            qs_cloudwatch_tracklog /var/lib/cloud/instance/scripts/part-001
-            qs_cloudwatch_tracklog /var/log/cloud-init.log
-            qs_cloudwatch_tracklog /var/log/cloud-init-output.log
-            qs_cloudwatch_tracklog /var/log/cfn-init.log
-            qs_cloudwatch_tracklog /var/log/cfn-init-cmd.log
-            echo "Executing config-sets"
-            cfn-init -v --stack ${AWS::StackName} --resource CordaColdInstance --configsets corda_install --region ${AWS::Region} || cfn_fail
-            # Signal cfn-init (final check)
-            [ $(qs_status) == 0 ] && cfn_success || cfn_fail
-          - S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
 Outputs:
   CordaInstancePublicDnsName:
     Value: !GetAtt

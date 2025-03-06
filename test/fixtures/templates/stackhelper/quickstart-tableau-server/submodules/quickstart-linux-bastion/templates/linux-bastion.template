@@ -115,8 +115,7 @@ Parameters:
       - 'true'
       - 'false'
     Default: 'false'
-    Description: To include a banner to be displayed when connecting via SSH to the
-      bastion, set this parameter to true
+    Description: To include a banner to be displayed when connecting via SSH to the bastion, set this parameter to true
     Type: String
   EnableTCPForwarding:
     Type: String
@@ -133,8 +132,7 @@ Parameters:
       - 'true'
       - 'false'
   KeyPairName:
-    Description: Enter a Public/private key pair. If you do not have one in this region,
-      please create it before continuing
+    Description: Enter a Public/private key pair. If you do not have one in this region, please create it before continuing
     Type: 'AWS::EC2::KeyPair::KeyName'
   NumBastionHosts:
     AllowedValues:
@@ -146,31 +144,22 @@ Parameters:
     Description: Enter the number of bastion hosts to create
     Type: String
   PublicSubnet1ID:
-    Description: ID of the public subnet 1 that you want to provision the first bastion
-      into (e.g., subnet-a0246dcd)
+    Description: ID of the public subnet 1 that you want to provision the first bastion into (e.g., subnet-a0246dcd)
     Type: 'AWS::EC2::Subnet::Id'
   PublicSubnet2ID:
-    Description: ID of the public subnet 2 you want to provision the second bastion into
-      (e.g., subnet-e3246d8e)
+    Description: ID of the public subnet 2 you want to provision the second bastion into (e.g., subnet-e3246d8e)
     Type: 'AWS::EC2::Subnet::Id'
   QSS3BucketName:
     AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase
-      letters, and hyphens (-). It cannot start or end with a hyphen (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
-    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name can
-      include numbers, lowercase letters, uppercase letters, and hyphens (-). It
-      cannot start or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: '^([0-9a-zA-Z-.]+/)*$'
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase
-      letters, hyphens (-), dots (.) and forward slash (/). The prefix should
-      end with a forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), dots (.) and forward slash (/). The prefix should end with a forward slash (/).
     Default: quickstart-linux-bastion/
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can
-      include numbers, lowercase letters, uppercase letters, hyphens (-), dots
-      (.) and forward slash (/) and it should end with a forward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), dots (.) and forward slash (/) and it should end with a forward slash (/).
     Type: String
   RemoteAccessCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
@@ -191,14 +180,11 @@ Parameters:
     Type: String
     Default: ''
   AlternativeIAMRole:
-    Description: Specify an existing IAM Role name to attach to the bastion, if left blank
-      a new role will be created.
+    Description: Specify an existing IAM Role name to attach to the bastion, if left blank a new role will be created.
     Default: ''
     Type: String
   EnvironmentVariables:
-    Description: Specify a comma separated list of environment variables for use in
-      bootstrapping. Variables must be in the format KEY=VALUE. VALUE cannot
-      contain commas
+    Description: Specify a comma separated list of environment variables for use in bootstrapping. Variables must be in the format KEY=VALUE. VALUE cannot contain commas
     Type: String
     Default: ''
   RootVolumeSize:
@@ -219,8 +205,7 @@ Mappings:
   AWSAMIRegionMap:
     AMI:
       AMZNLINUXHVM: amzn-ami-hvm-2018.03.0.20181129-x86_64-gp2
-      CENTOS7HVM: CentOS Linux 7 x86_64 HVM EBS ENA
-        1805_01-b7ee8a69-ee97-4a49-9e68-afaee216db2e-ami-77ec9308.4
+      CENTOS7HVM: CentOS Linux 7 x86_64 HVM EBS ENA 1805_01-b7ee8a69-ee97-4a49-9e68-afaee216db2e-ami-77ec9308.4
       US1404HVM: ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-20181022
       US1604HVM: ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20181223
       SLES15HVM: suse-sles-15-v20180816-hvm-ssd-x86_64
@@ -548,79 +533,6 @@ Resources:
             VolumeType: gp2
             Encrypted: true
             DeleteOnTermination: true
-      UserData: !Base64
-        'Fn::Join':
-          - ''
-          - - |
-              #!/bin/bash
-            - |
-              set -x
-            - for e in $(echo "
-            - !Ref EnvironmentVariables
-            - |
-              " | tr ',' ' '); do
-            - |2
-                export $e
-            - |
-              done
-            - |
-              export PATH=$PATH:/usr/local/bin
-            - |
-              which pip &> /dev/null
-            - |
-              if [ $? -ne 0 ] ; then
-            - |2
-                  echo "PIP NOT INSTALLED"
-            - |2
-                  [ `which yum` ] && $(yum install -y epel-release; yum install -y python-pip) && echo "PIP INSTALLED"
-            - |2
-                  [ `which apt-get` ] && apt-get -y update && apt-get -y install python-pip && echo "PIP INSTALLED"
-            - |2
-                  [ `which zypper` ] && zypper refresh && zypper install -y python-pip && update-alternatives --set easy_install /usr/bin/easy_install-2.7 && echo "PIP INSTALLED"
-            - |
-              fi
-            - |
-              pip install --upgrade pip &> /dev/null
-            - |
-              pip install awscli --ignore-installed six &> /dev/null
-            - >
-              easy_install
-              https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
-            - EIP_LIST="
-            - !Ref EIP1
-            - ','
-            - !If
-              - 2BastionCondition
-              - !Ref EIP2
-              - 'Null'
-            - ','
-            - !If
-              - 3BastionCondition
-              - !Ref EIP3
-              - 'Null'
-            - ','
-            - !If
-              - 4BastionCondition
-              - !Ref EIP4
-              - 'Null'
-            - |
-              "
-            - CLOUDWATCHGROUP=
-            - !Ref BastionMainLogGroup
-            - |+
-
-            - 'cfn-init -v --stack '
-            - !Ref 'AWS::StackName'
-            - ' --resource BastionLaunchConfiguration --region '
-            - !Ref 'AWS::Region'
-            - |+
-
-            - 'cfn-signal -e $? --stack '
-            - !Ref 'AWS::StackName'
-            - ' --resource BastionAutoScalingGroup --region '
-            - !Ref 'AWS::Region'
-            - |+
-
   BastionSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:

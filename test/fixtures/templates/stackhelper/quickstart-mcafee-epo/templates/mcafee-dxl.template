@@ -41,8 +41,8 @@ Metadata:
       - Label:
           default: AWS Quick Start Configuration
         Parameters:
-        - QSS3BucketName
-        - QSS3KeyPrefix
+          - QSS3BucketName
+          - QSS3KeyPrefix
     ParameterLabels:
       Environment:
         default: Deployment Environment
@@ -163,8 +163,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/x
     Description: >-
-      CIDR block that is allowed to connect from on premise endpoints to Agent Handler's/DXL Brokers.
-      e.g., x.x.x.x/16-28.
+      CIDR block that is allowed to connect from on premise endpoints to Agent Handler's/DXL Brokers. e.g., x.x.x.x/16-28.
     Type: String
   DXLInstanceType:
     Default: 'c4.large'
@@ -186,25 +185,19 @@ Parameters:
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
     ConstraintDescription: >-
-      Quick Start bucket name can include numbers, lowercase letters, uppercase letters, periods (.), and hyphens (-).
-      It cannot start or end with a hyphen (-) or period (.).
+      Quick Start bucket name can include numbers, lowercase letters, uppercase letters, periods (.), and hyphens (-). It cannot start or end with a hyphen (-) or period (.).
     Default: aws-ia
     Description: >-
-      S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, periods (.), and hyphens (-).
-      It cannot start or end with a hyphen (-) or period (.).
+      S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, periods (.), and hyphens (-). It cannot start or end with a hyphen (-) or period (.).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
     ConstraintDescription: >-
-      Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
-      Prefix cannot start with a slash but must end with a slash unless it is the empty string.'
+      Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). Prefix cannot start with a slash but must end with a slash unless it is the empty string.'
     Default: quickstart-mcafee-epo/
     Description: >-
-      The S3 key name prefix used to simulate a folder for your copy of Quick Start assets,
-      if you decide to customize or extend the Quick Start for your own use.This prefix can include numbers,
-      lowercase letters, uppercase letters, hyphens, and forward slashes.'
+      The S3 key name prefix used to simulate a folder for your copy of Quick Start assets, if you decide to customize or extend the Quick Start for your own use.This prefix can include numbers, lowercase letters, uppercase letters, hyphens, and forward slashes.'
     Type: String
-
 Mappings:
   InstanceTypes:
     us-east-1:
@@ -247,23 +240,19 @@ Mappings:
       InstanceType: 'c4.large'
     cn-northwest-1:
       InstanceType: 'c4.large'
-
 Conditions:
-  cHARequired: !Equals [ !Ref Availability, 'Yes']
+  cHARequired: !Equals [!Ref Availability, 'Yes']
   cGovCloudCondition: !Or
-    - !Equals [ !Ref 'AWS::Region', us-gov-west-1 ]
-    - !Equals [ !Ref 'AWS::Region', us-gov-east-1 ]
-
+    - !Equals [!Ref 'AWS::Region', us-gov-west-1]
+    - !Equals [!Ref 'AWS::Region', us-gov-east-1]
 Rules:
   MatchPassword:
     Assertions:
       - Assert: !Equals
-            - !Ref EPOAdminPassword
-            - !Ref ConfirmEPOAdminPassword
-        AssertDescription:  ePO Admin passwords do not match.
-
+          - !Ref EPOAdminPassword
+          - !Ref ConfirmEPOAdminPassword
+        AssertDescription: ePO Admin passwords do not match.
 Resources:
-
   # DXL AWS ELB security group attached to the ELB
   DXLELBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -297,9 +286,7 @@ Resources:
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
       VpcId:
-        Fn::ImportValue:
-          !Sub ${BaseStack}-VPCID
-
+        Fn::ImportValue: !Sub ${BaseStack}-VPCID
   # DXL Instance internal security group
   DXLInstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -365,9 +352,7 @@ Resources:
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
       VpcId:
-        Fn::ImportValue:
-          !Sub ${BaseStack}-VPCID
-
+        Fn::ImportValue: !Sub ${BaseStack}-VPCID
   # DXL AWS Elastic Load Balancer
   DXLLoadBalancer:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
@@ -401,8 +386,8 @@ Resources:
       SecurityGroups:
         - !Ref DXLELBSecurityGroup
       Subnets:
-          - Fn::ImportValue: !Sub ${BaseStack}-PublicSubnet1ID
-          - Fn::ImportValue: !Sub ${BaseStack}-PublicSubnet2ID
+        - Fn::ImportValue: !Sub ${BaseStack}-PublicSubnet1ID
+        - Fn::ImportValue: !Sub ${BaseStack}-PublicSubnet2ID
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-DXLLoadBalancer
@@ -416,7 +401,6 @@ Resources:
           Value: McAfee-ePO
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
-
   # DXL EC2 instance role
   DXLEC2Role:
     Type: AWS::IAM::Role
@@ -496,8 +480,6 @@ Resources:
                 Action:
                   - ec2:DescribeInstanceStatus
                 Resource: '*'
-
-
   # DXL EC2 Instance Profile
   DXLEC2InstanceProfile:
     Type: AWS::IAM::InstanceProfile
@@ -505,7 +487,6 @@ Resources:
       Path: /
       Roles:
         - !Ref DXLEC2Role
-
   # DXL Launch config
   DXLLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
@@ -565,7 +546,6 @@ Resources:
                 DIMENSION=dxl-broker-autoscaling-group
                 # Configure CW agent for metrics and logs
                 /home/centos/provision/cwa-config.sh $REGION $PARENT_STACKNAME $NAMESPACE $DIMENSION
-
               cwd: /home/centos/provision/
               waitAfterCompletion: '0'
             1setup:
@@ -582,32 +562,21 @@ Resources:
 
                 # Start dxl Provisioining
                 /home/centos/provision/dxl-provision.py --epo-serverdns $EPO_SERVER --epo-port $EPO_PORT --epo-secure-port $EPO_SECURE_PORT --epo-wakeup-port $EPO_WAKEUP_PORT  --dxl-broker-port $DXL_BROKER_PORT --dxl-elb-port $DXL_ELB_PORT --parameters-path $PARAMETERS_PATH
-
               cwd: /home/centos/provision/
               waitAfterCompletion: '0'
-
     Properties:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
             VolumeSize: !Ref DXLInstanceSize
-      IamInstanceProfile:  !Ref DXLEC2InstanceProfile
+      IamInstanceProfile: !Ref DXLEC2InstanceProfile
       ImageId: !Ref DXLImageId
       InstanceType: !FindInMap [InstanceTypes, !Ref 'AWS::Region', InstanceType]
       KeyName: !Ref KeyPairName
       SecurityGroups:
         - !Ref DXLELBSecurityGroup
         - !Ref DXLInstanceSecurityGroup
-        -
-          Fn::ImportValue:
-            !Sub ${BaseStack}-RDPAdminSecurityGroup
-      UserData:
-        'Fn::Base64': !Sub |
-          #!/bin/bash -x
-          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource DXLLaunchConfig --region ${AWS::Region}
-          # Signal the status from cfn-init
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource DXLAutoscalingGroup  --region ${AWS::Region}
-
+        - Fn::ImportValue: !Sub ${BaseStack}-RDPAdminSecurityGroup
   # DXL autoscaling group
   DXLAutoscalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -654,7 +623,6 @@ Resources:
       ResourceSignal:
         Count: 1
         Timeout: PT90M
-
   # Update asg metrics lambda role
   DXLUpdateASGMetricsLambdaRole:
     Type: AWS::IAM::Role
@@ -682,12 +650,9 @@ Resources:
               - Effect: Allow
                 Action:
                   - autoscaling:UpdateAutoScalingGroup
-                Resource:
-                  !Sub
+                Resource: !Sub
                   - 'arn:${Partition}:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/*'
-                  - Partition:
-                      !If [ cGovCloudCondition, aws-us-gov, aws ]
-
+                  - Partition: !If [cGovCloudCondition, aws-us-gov, aws]
   # Update ASG metrics lambda
   DXLUpdateASGMetricsLambda:
     Type: AWS::Lambda::Function
@@ -713,24 +678,21 @@ Resources:
           Value: McAfee-ePO
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
-
   # Update ASG metrics lambda version
   DXLUpdateASGMetricsLambdaVersion1:
     Type: AWS::Lambda::Version
     Properties:
       FunctionName: !Ref DXLUpdateASGMetricsLambda
-
   # Update ASG metrics lambda log group
   DXLUpdateASGMetricsLambdaLogGroup:
     Type: AWS::Logs::LogGroup
     DependsOn: DXLUpdateASGMetricsLambda
     Properties:
       LogGroupName: !Join
-            - ''
-            - - '/aws/lambda/'
-              - !Ref DXLUpdateASGMetricsLambda
+        - ''
+        - - '/aws/lambda/'
+          - !Ref DXLUpdateASGMetricsLambda
       RetentionInDays: 7
-
   # DXL ASG custom action update the value of desired capacity once the
   # launchconfig is ready
   DXLASGMetricsCustomAction:
@@ -743,7 +705,6 @@ Resources:
       DesiredCapacity: !If [cHARequired, 2, 1]
       MaxSize: 10
       MinSize: !If [cHARequired, 2, 1]
-
   # DXL scale up policy
   DXLScaleUpPolicy:
     Type: AWS::AutoScaling::ScalingPolicy
@@ -752,7 +713,6 @@ Resources:
       AutoScalingGroupName: !Ref DXLAutoscalingGroup
       Cooldown: 360
       ScalingAdjustment: 1
-
   # DXL scale down policy
   DXLScaleDownPolicy:
     Type: AWS::AutoScaling::ScalingPolicy
@@ -761,7 +721,6 @@ Resources:
       AutoScalingGroupName: !Ref DXLAutoscalingGroup
       Cooldown: 660
       ScalingAdjustment: -1
-
   # DXL Active connection busy Alarm
   DXLBrokerBusyAlarm:
     Type: AWS::CloudWatch::Alarm
@@ -781,7 +740,6 @@ Resources:
       Period: 60
       Statistic: Average
       Threshold: 40000
-
   # DXL Active connection idle Alarm
   DXLBrokerIdleAlarm:
     Type: AWS::CloudWatch::Alarm
@@ -801,7 +759,6 @@ Resources:
       Period: 60
       Statistic: Average
       Threshold: 20000
-
   # DXL autoscaling lifecycle hook role
   DXLLifecycelHookRole:
     Type: AWS::IAM::Role
@@ -828,15 +785,13 @@ Resources:
                   - ''
                   - - !Sub
                       - 'arn:${Partition}:sns:${AWS::Region}:${AWS::AccountId}:'
-                      - Partition:
-                          !If [ cGovCloudCondition, aws-us-gov, aws ]
+                      - Partition: !If [cGovCloudCondition, aws-us-gov, aws]
                     - !GetAtt DXLLifecycleHookTopic.TopicName
               - Effect: Allow
                 Action:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: '*'
-
   # DXL ASG lifescycle hook on instance termination
   DXLASGLifecycleHook:
     Type: AWS::AutoScaling::LifecycleHook
@@ -849,31 +804,27 @@ Resources:
       NotificationTargetARN:
         Ref: DXLLifecycleHookTopic
       RoleARN: !GetAtt DXLLifecycelHookRole.Arn
-
   # DXL ASG Lifecyclehook Topic
   DXLLifecycleHookTopic:
     Type: AWS::SNS::Topic
     Properties:
       Subscription:
-        -
-          Endpoint:
+        - Endpoint:
             Fn::GetAtt:
               - DXLLifecycleHookLamda
               - Arn
           Protocol: lambda
-
   # DXL ASG Lifecycle Hook Lambda Permission
   DXLLifecycleHookLamdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !GetAtt
-          - DXLLifecycleHookLamda
-          - Arn
+        - DXLLifecycleHookLamda
+        - Arn
       Principal: sns.amazonaws.com
       Action: lambda:InvokeFunction
       SourceArn:
         Ref: DXLLifecycleHookTopic
-
   # DXL autoscaling life cycle hook lambda role
   DXLLifecycelHookLambdaRole:
     Type: AWS::IAM::Role
@@ -906,12 +857,9 @@ Resources:
               - Effect: Allow
                 Action:
                   - autoscaling:CompleteLifecycleAction
-                Resource:
-                  !Sub
+                Resource: !Sub
                   - 'arn:${Partition}:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/*'
-                  - Partition:
-                      !If [ cGovCloudCondition, aws-us-gov, aws ]
-
+                  - Partition: !If [cGovCloudCondition, aws-us-gov, aws]
   # DXL autoscaling life cycle hook lambda for instance termination
   DXLLifecycleHookLamda:
     Type: AWS::Lambda::Function
@@ -937,24 +885,21 @@ Resources:
           Value: McAfee-ePO
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
-
   # DXL autoscaling life cycle hook lambda version
   DXLLifecycleHookLamdaVersion1:
     Type: AWS::Lambda::Version
     Properties:
       FunctionName: !Ref DXLLifecycleHookLamda
-
   # DXL autoscaling life cycle hook lambda log group
   DXLLifecycleHookLamdaLogGroup:
     Type: AWS::Logs::LogGroup
     DependsOn: DXLLifecycleHookLamda
     Properties:
       LogGroupName: !Join
-            - ''
-            - - '/aws/lambda/'
-              - !Ref DXLLifecycleHookLamda
+        - ''
+        - - '/aws/lambda/'
+          - !Ref DXLLifecycleHookLamda
       RetentionInDays: 7
-
   # DXL ASG lifescycle hook wait lambda role in blue-green update scenario
   DXLLifecycleHookWaitLambdaRole:
     Type: AWS::IAM::Role
@@ -981,17 +926,14 @@ Resources:
               - Effect: Allow
                 Action:
                   - autoscaling:UpdateAutoScalingGroup
-                Resource:
-                  !Sub
+                Resource: !Sub
                   - 'arn:${Partition}:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/*'
-                  - Partition:
-                      !If [ cGovCloudCondition, aws-us-gov, aws ]
+                  - Partition: !If [cGovCloudCondition, aws-us-gov, aws]
               - Effect: Allow
                 Action:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: '*'
-
   # DXL ASG lifescycle hook wait lambda
   DXLLifecycleHookWaitLambda:
     Type: AWS::Lambda::Function
@@ -1017,24 +959,21 @@ Resources:
           Value: McAfee-ePO
         - Key: mcafee:cloudformation:stack-name
           Value: !Sub ${ParentStack}
-
   # DXL ASG lifescycle hook wait lambda version
   DXLLifecycleHookWaitLambdaVersion1:
     Type: AWS::Lambda::Version
     Properties:
       FunctionName: !Ref DXLLifecycleHookWaitLambda
-
   # DXL ASG lifescycle hook wait lambda log group
   DXLLifecycleHookWaitLambdaLogGroup:
     Type: AWS::Logs::LogGroup
     DependsOn: DXLLifecycleHookWaitLambda
     Properties:
       LogGroupName: !Join
-            - ''
-            - - '/aws/lambda/'
-              - !Ref DXLLifecycleHookWaitLambda
+        - ''
+        - - '/aws/lambda/'
+          - !Ref DXLLifecycleHookWaitLambda
       RetentionInDays: 7
-
   # DXL ASG lifescycle hook wait custom action
   DXLLifecycleHookWaitAction:
     Type: Custom::DXLLifecycleHookWaitAction
@@ -1042,7 +981,6 @@ Resources:
     Properties:
       ServiceToken: !GetAtt DXLLifecycleHookWaitLambda.Arn
       AutoScalingGroupName: !Ref DXLAutoscalingGroup
-
 Outputs:
   DXLBrokerPort:
     Description: DXL Broker Communication Port
@@ -1052,10 +990,10 @@ Outputs:
     Value: !Ref DXLLoadBalancer
   DXLLoadBalancerURL:
     Description: DXL Elastic Load Balancer URL
-    Value: !GetAtt [ DXLLoadBalancer, CanonicalHostedZoneName ]
+    Value: !GetAtt [DXLLoadBalancer, CanonicalHostedZoneName]
   DXLAutoscalingGroup:
     Description: DXL Auto Scaling Group
     Value: !Ref DXLAutoscalingGroup
   DXLBrokerBusyAlarmARN:
     Description: ARN of DXL busy alaram
-    Value: !GetAtt [ DXLBrokerBusyAlarm, Arn ]
+    Value: !GetAtt [DXLBrokerBusyAlarm, Arn]

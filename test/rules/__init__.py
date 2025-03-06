@@ -15,7 +15,7 @@
 import inspect
 import sys
 import cfnlint.config
-from cfnlint import Runner
+from cfnlint import runner
 from cfnlint.rules import RulesCollection
 from testlib.testcase import BaseTestCase
 
@@ -35,7 +35,7 @@ class BaseRuleTestCase(BaseTestCase):
         """Success test"""
         for filename in self.success_templates:
             template = self.load_template(filename)
-            good_runner = Runner(
+            good_runner = runner(
                 self.collection, filename, template, ["us-east-1"], []
             )
             good_runner.transform()
@@ -48,7 +48,7 @@ class BaseRuleTestCase(BaseTestCase):
         """Success test with rule config included"""
         template = self.load_template(filename)
         self.collection.rules[0].configure(config)
-        good_runner = Runner(
+        good_runner = runner(
             self.collection, filename, template, ["us-east-1"], []
         )
         good_runner.transform()
@@ -65,7 +65,7 @@ class BaseRuleTestCase(BaseTestCase):
     def helper_file_positive_template(self, filename):
         """Success test with template parameter"""
         template = self.load_template(filename)
-        good_runner = Runner(
+        good_runner = runner(
             self.collection, filename, template, ["us-east-1"], []
         )
         good_runner.transform()
@@ -75,7 +75,7 @@ class BaseRuleTestCase(BaseTestCase):
         """Failure test"""
         regions = regions or ["us-east-1"]
         template = self.load_template(filename)
-        bad_runner = Runner(self.collection, filename, template, regions, [])
+        bad_runner = runner(self.collection, filename, template, regions, [])
         bad_runner.transform()
         errs = bad_runner.run()
         self.assertEqual(err_count, len(errs))

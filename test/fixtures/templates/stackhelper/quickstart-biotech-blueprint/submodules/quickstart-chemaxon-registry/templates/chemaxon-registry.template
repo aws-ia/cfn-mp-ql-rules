@@ -4,32 +4,32 @@ Description: Launches a ChemAxon Compound Registry Instance and database (qs-1of
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
-    - Label:
-        default: Network Configuration
+      - Label:
+          default: Network Configuration
     Parameters:
-    - pVpcId
-    - pDmzSubnetA
-    - pDmzSubnetB
-    - pAppSubnetA
-    - pAppSubnetB
-    - pDBSubnetA
-    - pDBSubnetB
-    - pLoadBalancerType
-    - pSecurityGroupForWebAccess
-    - pWebAccessCIDR
-    - Label:
-        default: Amazon EC2 Configuration
-      Parameters:
-      - pEC2KeyPair
-      - pAppServerInstanceType
-    - Label:
-        default: Amazon RDS Configuration
-      Parameters:
-      - pDBUsername
-      - pDBPassword
-      - pDBInstanceType
-      - pDBAllocatedStorage
-      - pDBMultiAZ
+      - pVpcId
+      - pDmzSubnetA
+      - pDmzSubnetB
+      - pAppSubnetA
+      - pAppSubnetB
+      - pDBSubnetA
+      - pDBSubnetB
+      - pLoadBalancerType
+      - pSecurityGroupForWebAccess
+      - pWebAccessCIDR
+      - Label:
+          default: Amazon EC2 Configuration
+        Parameters:
+          - pEC2KeyPair
+          - pAppServerInstanceType
+      - Label:
+          default: Amazon RDS Configuration
+        Parameters:
+          - pDBUsername
+          - pDBPassword
+          - pDBInstanceType
+          - pDBAllocatedStorage
+          - pDBMultiAZ
     ParameterLabels:
       pAppServerInstanceType:
         default: App Server Instance Type
@@ -123,8 +123,8 @@ Parameters:
     Description: Multi-AZ Amazon RDS Configuration. true/false - default is false.
     Type: String
     AllowedValues:
-    - "true"
-    - "false"
+      - "true"
+      - "false"
     Default: "false"
   pDBPassword:
     Description: Database User/Owner Password
@@ -184,16 +184,14 @@ Mappings:
       CACOMPREG18: ami-6f205217
     eu-west-1:
       CACOMPREG18: ami-0e6f5f77
-
 Conditions:
-  cWebAccessSG: !Not [ !Equals [ !Ref pSecurityGroupForWebAccess, "" ] ]
-  cNoWebAccessSG: !Equals [ !Ref pSecurityGroupForWebAccess, "" ]
-  cDNSRecord: !Not [ !Or [ !Equals [!Ref pDnsHostedZoneID, ""] , !Equals [!Ref pDnsHostedZoneApexDomain, ""] ] ]
+  cWebAccessSG: !Not [!Equals [!Ref pSecurityGroupForWebAccess, ""]]
+  cNoWebAccessSG: !Equals [!Ref pSecurityGroupForWebAccess, ""]
+  cDNSRecord: !Not [!Or [!Equals [!Ref pDnsHostedZoneID, ""], !Equals [!Ref pDnsHostedZoneApexDomain, ""]]]
 Resources:
   ###
   ### Security Groups
   ###
-
   rDNSRecord:
     Type: AWS::Route53::RecordSet
     Condition: cDNSRecord
@@ -204,16 +202,15 @@ Resources:
       Type: CNAME
       TTL: 60
       ResourceRecords:
-      - !GetAtt rApplicationLoadBalancer.DNSName
-
+        - !GetAtt rApplicationLoadBalancer.DNSName
   rSecurityGroupAppServers:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow access to ChemAxon App Servers.
       VpcId: !Ref pVpcId
       Tags:
-      - Key: Name
-        Value: sg-chemaxon-registry-appserver
+        - Key: Name
+          Value: sg-chemaxon-registry-appserver
   rSecurityGroupAppServersIngressHttp:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -237,17 +234,17 @@ Resources:
       GroupDescription: Allow access to ChemAxon Registry ALBs. Open to SG.
       VpcId: !Ref pVpcId
       SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        SourceSecurityGroupId: !Ref pSecurityGroupForWebAccess
-      - IpProtocol: tcp
-        FromPort: 443
-        ToPort: 443
-        SourceSecurityGroupId: !Ref pSecurityGroupForWebAccess
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !Ref pSecurityGroupForWebAccess
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          SourceSecurityGroupId: !Ref pSecurityGroupForWebAccess
       Tags:
-      - Key: Name
-        Value: sg-chemaxon-registry-access-ports-alb-bysg
+        - Key: Name
+          Value: sg-chemaxon-registry-access-ports-alb-bysg
   rSecurityGroupAlbNoSG:
     Type: AWS::EC2::SecurityGroup
     Condition: cNoWebAccessSG
@@ -255,33 +252,32 @@ Resources:
       GroupDescription: Allow access to ChemAxon Registry ALB. Open to CIDR.
       VpcId: !Ref pVpcId
       SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        CidrIp: !Ref pWebAccessCIDR
-      - IpProtocol: tcp
-        FromPort: 443
-        ToPort: 443
-        CidrIp: !Ref pWebAccessCIDR
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref pWebAccessCIDR
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref pWebAccessCIDR
       Tags:
-      - Key: Name
-        Value: sg-chemaxon-registry-access-ports-alb-bycidr
+        - Key: Name
+          Value: sg-chemaxon-registry-access-ports-alb-bycidr
   rSecurityGroupAlbs:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow access to ChemAxon Registry ALBs.
       VpcId: !Ref pVpcId
       Tags:
-      - Key: Name
-        Value: sg-chemaxon-registry-alb
+        - Key: Name
+          Value: sg-chemaxon-registry-alb
   rSecurityGroupChemAxonDB:
     Type: AWS::RDS::DBSecurityGroup
     Properties:
       GroupDescription: Allow access to ChemAxon CompReg MySQL DB to ChemAxon App Server or other integration points
       EC2VpcId: !Ref pVpcId
       DBSecurityGroupIngress:
-      - EC2SecurityGroupId: !Ref rSecurityGroupAppServers
-
+        - EC2SecurityGroupId: !Ref rSecurityGroupAppServers
   ###
   ### Application Load Balancer
   ###
@@ -291,7 +287,7 @@ Resources:
       Scheme: !Ref pLoadBalancerType
       SecurityGroups:
         - !Ref rSecurityGroupAlbs
-        - !If [ cWebAccessSG, !Ref rSecurityGroupAlbWithSG, !Ref rSecurityGroupAlbNoSG ]
+        - !If [cWebAccessSG, !Ref rSecurityGroupAlbWithSG, !Ref rSecurityGroupAlbNoSG]
       Subnets:
         - !Ref pDmzSubnetA
         - !Ref pDmzSubnetB
@@ -302,25 +298,24 @@ Resources:
   rApplicationLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
-        LoadBalancerArn: !Ref rApplicationLoadBalancer
-        Port: 80
-        Protocol: HTTP
-        DefaultActions:
+      LoadBalancerArn: !Ref rApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
         - Type: forward
           TargetGroupArn: !Ref rApplicationLoadBalancerTargetGroup
   rApplicationLoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-        VpcId: !Ref pVpcId
-        Port: 8080
-        HealthCheckIntervalSeconds: 60
-        HealthCheckTimeoutSeconds: 30
-        HealthyThresholdCount: 2
-        UnhealthyThresholdCount: 10
-        Protocol: HTTP
-        Matcher:
-          HttpCode: "200,401"
-
+      VpcId: !Ref pVpcId
+      Port: 8080
+      HealthCheckIntervalSeconds: 60
+      HealthCheckTimeoutSeconds: 30
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 10
+      Protocol: HTTP
+      Matcher:
+        HttpCode: "200,401"
   ###
   ### Auto Scaling Group
   ###
@@ -346,26 +341,13 @@ Resources:
   rAutoScalingConfigApp:
     Type: AWS::AutoScaling::LaunchConfiguration
     DependsOn:
-    - rDBInstance
+      - rDBInstance
     Properties:
-      ImageId: !FindInMap [ AWSAMIRegionMap, !Ref "AWS::Region", CACOMPREG18 ]
+      ImageId: !FindInMap [AWSAMIRegionMap, !Ref "AWS::Region", CACOMPREG18]
       InstanceType: !Ref pAppServerInstanceType
       KeyName: !Ref pEC2KeyPair
       SecurityGroups:
-      - !Ref rSecurityGroupAppServers
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/sh
-          export REGISTRYCXN_HOME='/opt/tomcat/.chemaxon'
-          sudo install -D /dev/null $REGISTRYCXN_HOME/config/registry.properties
-          sudo bash -c "echo 'RegDBType=MySQL' >> $REGISTRYCXN_HOME/config/registry.properties"
-          sudo bash -c "echo 'RegDBDriver=com.mysql.jdbc.Driver' >> $REGISTRYCXN_HOME/config/registry.properties"
-          sudo bash -c "echo 'RegDBUrl=jdbc:mysql://${rDBInstance.Endpoint.Address}:3306/compoundregistry?autoReconnect=true&useUnicode=yes&characterEncoding=UTF-8' >> $REGISTRYCXN_HOME/config/registry.properties"
-          sudo bash -c "echo 'RegDBUser=${pDBUsername}' >> $REGISTRYCXN_HOME/config/registry.properties"
-          sudo bash -c "echo 'RegDBPass=${pDBPassword}' >> $REGISTRYCXN_HOME/config/registry.properties"
-          sudo bash -c "echo 'RegDBMaxActive=30' >> $REGISTRYCXN_HOME/config/registry.properties"
-          sudo bash -c "echo 'RegDBValidationQuery=SELECT 1' >> $REGISTRYCXN_HOME/config/registry.properties"
-
+        - !Ref rSecurityGroupAppServers
   ###
   ### Database
   ###
@@ -375,7 +357,7 @@ Resources:
     Properties:
       DBSubnetGroupName: !Ref rDBSubnetGroup
       DBSecurityGroups:
-      - !Ref rSecurityGroupChemAxonDB
+        - !Ref rSecurityGroupChemAxonDB
       AllocatedStorage: !Ref pDBAllocatedStorage
       DBInstanceClass: !Ref pDBInstanceType
       Engine: MySQL
@@ -383,20 +365,18 @@ Resources:
       MasterUserPassword: !Ref pDBPassword
       MultiAZ: !Ref pDBMultiAZ
       Tags:
-      - Key: Name
-        Value: ChemAxon Compound Registry DB
-
+        - Key: Name
+          Value: ChemAxon Compound Registry DB
   rDBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
       DBSubnetGroupDescription: Subnet group for ChemAxon DB instances
       SubnetIds:
-      - !Ref pDBSubnetA
-      - !Ref pDBSubnetB
+        - !Ref pDBSubnetA
+        - !Ref pDBSubnetB
       Tags:
-      - Key: Name
-        Value: ChemAxon Compound Registry DB Subnet Group
-
+        - Key: Name
+          Value: ChemAxon Compound Registry DB Subnet Group
 Outputs:
   oLoadBalancerDNS:
     Description: URL to Load Balancer to access ChemAxon Compound Registry

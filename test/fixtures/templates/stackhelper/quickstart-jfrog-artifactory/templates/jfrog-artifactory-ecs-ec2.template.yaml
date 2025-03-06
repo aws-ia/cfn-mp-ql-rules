@@ -93,37 +93,37 @@ Mappings:
     #AMI:
     #   AMZECSOTP: amzn-ami-2018.03.a-amazon-ecs-optimized
     us-east-2:
-       AMI: ami-0307f7ccf6ea35750
+      AMI: ami-0307f7ccf6ea35750
     us-east-1:
-       AMI: ami-045f1b3f87ed83659
+      AMI: ami-045f1b3f87ed83659
     us-west-2:
-       AMI: ami-01b70aea4161476b7
+      AMI: ami-01b70aea4161476b7
     us-west-1:
-       AMI: ami-0285183bbef6224bd
+      AMI: ami-0285183bbef6224bd
     eu-west-3:
-       AMI: ami-0f4738fbeb53e6c3a
+      AMI: ami-0f4738fbeb53e6c3a
     eu-west-2:
-       AMI: ami-01bee3897bba49d78
+      AMI: ami-01bee3897bba49d78
     eu-west-1:
-       AMI: ami-0627e141ce928067c
+      AMI: ami-0627e141ce928067c
     eu-central-1:
-       AMI: ami-0eaa3baf6969912ba
+      AMI: ami-0eaa3baf6969912ba
     eu-north-1:
-       AMI: ami-03494b0c9e1c22492
+      AMI: ami-03494b0c9e1c22492
     ap-northeast-2:
-       AMI: ami-00294948a592fc052
+      AMI: ami-00294948a592fc052
     ap-northeast-1:
-       AMI: ami-05b296a384694dfa4
+      AMI: ami-05b296a384694dfa4
     ap-southeast-2:
-       AMI: ami-02c73ee1100ce3e7a
+      AMI: ami-02c73ee1100ce3e7a
     ap-southeast-1:
-       AMI: ami-050865a806e0dae53
+      AMI: ami-050865a806e0dae53
     ca-central-1:
-       AMI: ami-0f552e0a86f08b660
+      AMI: ami-0f552e0a86f08b660
     ap-south-1:
-       AMI: ami-01ef9f6a829ae3956
+      AMI: ami-01ef9f6a829ae3956
     sa-east-1:
-       AMI: ami-084b1eee100c102ee
+      AMI: ami-084b1eee100c102ee
 Conditions:
   CreateECSCluster: !Equals [!Ref 'CreateNewECSCluster', 'Enabled']
   GovCloudCondition: !Equals
@@ -134,12 +134,11 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       Path: /
-      RoleName: !Sub
-        ${ClusterName}-ECSRole-${AWS::Region}
+      RoleName: !Sub ${ClusterName}-ECSRole-${AWS::Region}
       AssumeRolePolicyDocument:
         Statement:
           - Action:
-            - sts:AssumeRole
+              - sts:AssumeRole
             Principal:
               Service:
                 - ecs-tasks.amazonaws.com
@@ -285,86 +284,6 @@ Resources:
             VolumeSize: !Ref VolumeSize
             VolumeType: gp2
             DeleteOnTermination: true
-      UserData: !Base64
-        'Fn::Sub':
-          - >
-            #!/bin/bash -x
-
-            #CFN Functions
-
-            function cfn_fail
-
-            {
-
-            cfn-signal -e 1 --stack ${AWS::StackName} --region ${AWS::Region}
-            --resource ArtifactoryScalingGroup
-
-            exit 1
-
-            }
-
-            function cfn_success
-
-            {
-
-            cfn-signal -e 0 --stack ${AWS::StackName} --region ${AWS::Region}
-            --resource ArtifactoryScalingGroup
-
-            exit 0
-
-            }
-
-            echo ECS_CLUSTER=${ClusterName} >> /etc/ecs/ecs.config
-
-            S3URI=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
-
-            yum install -y git
-
-            echo $PATH
-
-            PATH=/usr/local/bin/:/opt/aws/bin:$PATH
-
-            echo $PATH
-            echo \'[Cloning: Load QuickStart Common Utils]\'
-
-            git clone
-            https://github.com/aws-ia-us-east-1/quickstart-linux-utilities.git
-
-            source /quickstart-linux-utilities/quickstart-cfn-tools.source
-
-            echo \'[Loaded: Load QuickStart Common Utils]\'
-
-            echo \'[Update Operating System]\'
-
-            qs_update-os || qs_err
-
-            qs_bootstrap_pip || qs_err
-
-            qs_aws-cfn-bootstrap || qs_err
-
-            pip install awscli &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
-
-            pip install ansible &> /var/log/userdata.ansible_install.log || qs_err " ansible install failed "
-
-            mkdir ~/.artifactory_ansible
-
-            aws s3 sync s3://${QSS3BucketName}/${QSS3KeyPrefix}scripts/ ~/.artifactory_ansible/
-
-            cfn-init -v --stack ${AWS::StackName} --resource
-            ArtifactoryLaunchConfiguration --configsets artifactory_install
-            --region ${AWS::Region} || cfn_fail
-
-            export ANSIBLE_VAULT_PASSWORD_FILE="/root/.vault_pass.txt"
-
-            /usr/local/bin/ansible-playbook /root/.artifactory_ansible/artifactory.yml
-
-            rm -rf /root/.secureit.sh
-
-            [ $(qs_status) == 0 ] && cfn_success || cfn_fail
-          - S3Region: !If
-            - GovCloudCondition
-            - s3-us-gov-west-1
-            - s3
   ECSLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:

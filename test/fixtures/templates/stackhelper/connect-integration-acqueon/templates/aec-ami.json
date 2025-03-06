@@ -896,53 +896,6 @@
         ],
         "KeyName": {
           "Ref": "KeyPairName"
-        },
-        "UserData": {
-          "Fn::Base64": {
-            "Fn::Join": [
-              "",
-              [
-                "<powershell>\n",
-                "$text = '{",
-                "\"PUBLIC_ELB_DNS\":\"",
-                {
-                  "Ref": "CFDomainName"
-                },
-                "\",",
-                "\"PUBLIC_ELB_PROTOCOL\":\"",
-                "https",
-                "\",",
-                "\"PRIVATE_ELB_DNS\":\"",
-                {
-                  "Fn::GetAtt": [
-                    "ServiceLB",
-                    "DNSName"
-                  ]
-                },
-                "\",",
-                "\"RDS_ENDPOINT\":\"",
-                {
-                  "Ref": "RDSDB"
-                },
-                "\",",
-                "\"RDS_USERNAME\":\"",
-                {
-                  "Ref": "DBMasterUser"
-                },
-                "\",",
-                "\"RDS_PASSWORD\":\"",
-                {
-                  "Ref": "DBMasterPassword"
-                },
-                "\"",
-                "}'",
-                "\n",
-                "New-Item -Force -Path 'C:\\Program Files\\LCM\\Acqueon Services\\Data\\serverdetails.json' -value $text -ItemType file",
-                "\n</powershell>\n",
-                "<persist>true</persist>"
-              ]
-            ]
-          }
         }
       }
     },

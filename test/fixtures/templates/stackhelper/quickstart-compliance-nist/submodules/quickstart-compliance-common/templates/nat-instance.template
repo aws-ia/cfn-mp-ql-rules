@@ -57,8 +57,7 @@ Parameters:
     Description: Allocation ID for NAT EIP
     Type: String
 Conditions:
-  cAddRouteForSecondSubnet:
-    !Not
+  cAddRouteForSecondSubnet: !Not
     - !Equals
       - !Ref pRouteTablePrivateB
       - ''
@@ -68,12 +67,12 @@ Resources:
     Properties:
       SubnetId: !Ref pDMZSubnetA
       GroupSet:
-      - !Ref pSecurityGroupSSHFromVpc
-      - !Ref pSecurityGroupVpcNat
+        - !Ref pSecurityGroupSSHFromVpc
+        - !Ref pSecurityGroupVpcNat
       Description: Interface for ProductionNat device
       Tags:
-      - Key: Network
-        Value: ProductionNatDevice
+        - Key: Network
+          Value: ProductionNatDevice
   rNatInstance:
     Type: AWS::EC2::Instance
     Properties:
@@ -81,29 +80,16 @@ Resources:
       SourceDestCheck: false
       KeyName: !Ref pEC2KeyPair
       Tags:
-      - Key: Name
-        Value: !Sub ${pVpcName} NAT device used for patching
-      UserData:
-        !Base64
-          Fn::Sub: |
-            #!/bin/sh
-            echo 1 > /proc/sys/net/ipv4/ip_forward
-            echo 0 > /proc/sys/net/ipv4/conf/eth0/send_redirects
-            /sbin/iptables -t nat -A POSTROUTING -o eth0 -s 0.0.0.0/0 -j MASQUERADE
-            /sbin/iptables-save > /etc/sysconfig/iptables
-            mkdir -p /etc/sysctl.d/
-            cat <<EOF > /etc/sysctl.d/nat.conf
-            net.ipv4.ip_forward = 1
-            net.ipv4.conf.eth0.send_redirects = 0
-            EOF
+        - Key: Name
+          Value: !Sub ${pVpcName} NAT device used for patching
       ImageId: !Ref pNatAmi
       NetworkInterfaces:
-      - NetworkInterfaceId: !Ref rNatInstanceEni
-        DeviceIndex: 0
+        - NetworkInterfaceId: !Ref rNatInstanceEni
+          DeviceIndex: 0
   AssociateEipNat:
     Type: AWS::EC2::EIPAssociation
     DependsOn:
-    - rNatInstance
+      - rNatInstance
     Properties:
       AllocationId: !Ref pEipNatAllocationId
       NetworkInterfaceId: !Ref rNatInstanceEni
@@ -120,4 +106,3 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       RouteTableId: !Ref pRouteTablePrivateB
       InstanceId: !Ref rNatInstance
-...

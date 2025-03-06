@@ -42,20 +42,16 @@ Metadata:
         default: Node Volume Size
 Parameters:
   KeyPairName:
-    Description: Name of an existing EC2 key pair. All instances will launch with
-      this key pair.
+    Description: Name of an existing EC2 key pair. All instances will launch with this key pair.
     Type: AWS::EC2::KeyPair::KeyName
   PrivateSubnet1ID:
-    Description: ID of private subnet 1 in Availability Zone 1 for the Workload (e.g.,
-      subnet-a0246dcd)
+    Description: ID of private subnet 1 in Availability Zone 1 for the Workload (e.g., subnet-a0246dcd)
     Type: AWS::EC2::Subnet::Id
   PrivateSubnet2ID:
-    Description: ID of private subnet 2 in Availability Zone 2 for the Workload (e.g.,
-      subnet-b1f432cd)
+    Description: ID of private subnet 2 in Availability Zone 2 for the Workload (e.g., subnet-b1f432cd)
     Type: AWS::EC2::Subnet::Id
   PrivateSubnet3ID:
-    Description: ID of private subnet 3 in Availability Zone 3 for the Workload (e.g.,
-      subnet-b1f4a2cd)
+    Description: ID of private subnet 3 in Availability Zone 3 for the Workload (e.g., subnet-b1f4a2cd)
     Type: AWS::EC2::Subnet::Id
   VPCID:
     Description: ID of your existing VPC for deployment
@@ -171,14 +167,14 @@ Parameters:
     Type: String
   KubernetesVersion:
     Type: String
-    AllowedValues: [ "1.11", "1.10" ]
+    AllowedValues: ["1.11", "1.10"]
     Default: "1.11"
   TargetGroupARNs:
     Type: CommaDelimitedList
     Default: ""
 Conditions:
   DisableTargetGroups: !Equals
-    - !Join [",", !Ref 'TargetGroupARNs' ]
+    - !Join [",", !Ref 'TargetGroupARNs']
     - ""
 Mappings:
   K8sVersionMap:
@@ -189,86 +185,86 @@ Mappings:
       STD: EKS110
       GPU: EKS110GPU
   InstanceTypes:
-    t2.small: { Type: STD }
-    t2.medium: { Type: STD }
-    t2.large: { Type: STD }
-    t2.xlarge: { Type: STD }
-    t2.2xlarge: { Type: STD }
-    t3.nano: { Type: STD }
-    t3.micro: { Type: STD }
-    t3.small: { Type: STD }
-    t3.medium: { Type: STD }
-    t3.large: { Type: STD }
-    t3.xlarge: { Type: STD }
-    t3.2xlarge: { Type: STD }
-    m3.medium: { Type: STD }
-    m3.large: { Type: STD }
-    m3.xlarge: { Type: STD }
-    m3.2xlarge: { Type: STD }
-    m4.large: { Type: STD }
-    m4.xlarge: { Type: STD }
-    m4.2xlarge: { Type: STD }
-    m4.4xlarge: { Type: STD }
-    m4.10xlarge: { Type: STD }
-    m5.large: { Type: STD }
-    m5.xlarge: { Type: STD }
-    m5.2xlarge: { Type: STD }
-    m5.4xlarge: { Type: STD }
-    m5.12xlarge: { Type: STD }
-    m5.24xlarge: { Type: STD }
-    c4.large: { Type: STD }
-    c4.xlarge: { Type: STD }
-    c4.2xlarge: { Type: STD }
-    c4.4xlarge: { Type: STD }
-    c4.8xlarge: { Type: STD }
-    c5.large: { Type: STD }
-    c5.xlarge: { Type: STD }
-    c5.2xlarge: { Type: STD }
-    c5.4xlarge: { Type: STD }
-    c5.9xlarge: { Type: STD }
-    c5.18xlarge: { Type: STD }
-    i3.large: { Type: STD }
-    i3.xlarge: { Type: STD }
-    i3.2xlarge: { Type: STD }
-    i3.4xlarge: { Type: STD }
-    i3.8xlarge: { Type: STD }
-    i3.16xlarge: { Type: STD }
-    r3.xlarge: { Type: STD }
-    r3.2xlarge: { Type: STD }
-    r3.4xlarge: { Type: STD }
-    r3.8xlarge: { Type: STD }
-    r4.large: { Type: STD }
-    r4.xlarge: { Type: STD }
-    r4.2xlarge: { Type: STD }
-    r4.4xlarge: { Type: STD }
-    r4.8xlarge: { Type: STD }
-    r4.16xlarge: { Type: STD }
-    x1.16xlarge: { Type: STD }
-    x1.32xlarge: { Type: STD }
-    p2.xlarge: { Type: GPU }
-    p2.8xlarge: { Type: GPU }
-    p2.16xlarge: { Type: GPU }
-    p3.2xlarge: { Type: GPU }
-    p3.8xlarge: { Type: GPU }
-    p3.16xlarge: { Type: GPU }
-    r5.large: { Type: STD }
-    r5.xlarge: { Type: STD }
-    r5.2xlarge: { Type: STD }
-    r5.4xlarge: { Type: STD }
-    r5.12xlarge: { Type: STD }
-    r5.24xlarge: { Type: STD }
-    r5d.large: { Type: STD }
-    r5d.xlarge: { Type: STD }
-    r5d.2xlarge: { Type: STD }
-    r5d.4xlarge: { Type: STD }
-    r5d.12xlarge: { Type: STD }
-    r5d.24xlarge: { Type: STD }
-    z1d.large: { Type: STD }
-    z1d.xlarge: { Type: STD }
-    z1d.2xlarge: { Type: STD }
-    z1d.3xlarge: { Type: STD }
-    z1d.6xlarge: { Type: STD }
-    z1d.12xlarge: { Type: STD }
+    t2.small: {Type: STD}
+    t2.medium: {Type: STD}
+    t2.large: {Type: STD}
+    t2.xlarge: {Type: STD}
+    t2.2xlarge: {Type: STD}
+    t3.nano: {Type: STD}
+    t3.micro: {Type: STD}
+    t3.small: {Type: STD}
+    t3.medium: {Type: STD}
+    t3.large: {Type: STD}
+    t3.xlarge: {Type: STD}
+    t3.2xlarge: {Type: STD}
+    m3.medium: {Type: STD}
+    m3.large: {Type: STD}
+    m3.xlarge: {Type: STD}
+    m3.2xlarge: {Type: STD}
+    m4.large: {Type: STD}
+    m4.xlarge: {Type: STD}
+    m4.2xlarge: {Type: STD}
+    m4.4xlarge: {Type: STD}
+    m4.10xlarge: {Type: STD}
+    m5.large: {Type: STD}
+    m5.xlarge: {Type: STD}
+    m5.2xlarge: {Type: STD}
+    m5.4xlarge: {Type: STD}
+    m5.12xlarge: {Type: STD}
+    m5.24xlarge: {Type: STD}
+    c4.large: {Type: STD}
+    c4.xlarge: {Type: STD}
+    c4.2xlarge: {Type: STD}
+    c4.4xlarge: {Type: STD}
+    c4.8xlarge: {Type: STD}
+    c5.large: {Type: STD}
+    c5.xlarge: {Type: STD}
+    c5.2xlarge: {Type: STD}
+    c5.4xlarge: {Type: STD}
+    c5.9xlarge: {Type: STD}
+    c5.18xlarge: {Type: STD}
+    i3.large: {Type: STD}
+    i3.xlarge: {Type: STD}
+    i3.2xlarge: {Type: STD}
+    i3.4xlarge: {Type: STD}
+    i3.8xlarge: {Type: STD}
+    i3.16xlarge: {Type: STD}
+    r3.xlarge: {Type: STD}
+    r3.2xlarge: {Type: STD}
+    r3.4xlarge: {Type: STD}
+    r3.8xlarge: {Type: STD}
+    r4.large: {Type: STD}
+    r4.xlarge: {Type: STD}
+    r4.2xlarge: {Type: STD}
+    r4.4xlarge: {Type: STD}
+    r4.8xlarge: {Type: STD}
+    r4.16xlarge: {Type: STD}
+    x1.16xlarge: {Type: STD}
+    x1.32xlarge: {Type: STD}
+    p2.xlarge: {Type: GPU}
+    p2.8xlarge: {Type: GPU}
+    p2.16xlarge: {Type: GPU}
+    p3.2xlarge: {Type: GPU}
+    p3.8xlarge: {Type: GPU}
+    p3.16xlarge: {Type: GPU}
+    r5.large: {Type: STD}
+    r5.xlarge: {Type: STD}
+    r5.2xlarge: {Type: STD}
+    r5.4xlarge: {Type: STD}
+    r5.12xlarge: {Type: STD}
+    r5.24xlarge: {Type: STD}
+    r5d.large: {Type: STD}
+    r5d.xlarge: {Type: STD}
+    r5d.2xlarge: {Type: STD}
+    r5d.4xlarge: {Type: STD}
+    r5d.12xlarge: {Type: STD}
+    r5d.24xlarge: {Type: STD}
+    z1d.large: {Type: STD}
+    z1d.xlarge: {Type: STD}
+    z1d.2xlarge: {Type: STD}
+    z1d.3xlarge: {Type: STD}
+    z1d.6xlarge: {Type: STD}
+    z1d.12xlarge: {Type: STD}
   AWSAMIRegionMap:
     AMI:
       EKS111: amazon-eks-node-1.11-v20
@@ -395,8 +391,8 @@ Resources:
       LaunchConfigurationName: !Ref NodeLaunchConfig
       MinSize: !Ref NumberOfNodes
       MaxSize: !Ref NumberOfNodes
-      VPCZoneIdentifier: [ !Ref PrivateSubnet1ID, !Ref PrivateSubnet2ID, !Ref PrivateSubnet3ID ]
-      TargetGroupARNs: !If [ DisableTargetGroups, !Ref "AWS::NoValue", !Ref TargetGroupARNs ]
+      VPCZoneIdentifier: [!Ref PrivateSubnet1ID, !Ref PrivateSubnet2ID, !Ref PrivateSubnet3ID]
+      TargetGroupARNs: !If [DisableTargetGroups, !Ref "AWS::NoValue", !Ref TargetGroupARNs]
       Tags:
         - Key: Name
           Value: !Sub "${EKSControlPlane}-${NodeGroupName}-Node"
@@ -433,16 +429,6 @@ Resources:
             VolumeSize: !Ref NodeVolumeSize
             VolumeType: gp2
             DeleteOnTermination: true
-      UserData:
-        Fn::Base64:
-          !Sub |
-          #!/bin/bash
-          set -o xtrace
-          /etc/eks/bootstrap.sh ${EKSControlPlane} ${BootstrapArguments}
-          /opt/aws/bin/cfn-signal --exit-code $? \
-                --stack  ${AWS::StackName} \
-                --resource NodeGroup  \
-                --region ${AWS::Region}
 Outputs:
   EKSNodeSecurityGroup:
     Value: !Ref NodeSecurityGroup

@@ -4,42 +4,42 @@ Description: Launches a Titian Mosaic application server and database. qs-1pjap3
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
-    - Label:
-        default: Titian Configuration
-      Parameters:
-      - pDNSName
-    - Label:
-        default: Network Configuration
-      Parameters:
-      - pVpcId
-      - pDmzSubnetA
-      - pDmzSubnetB
-      - pAppSubnetA
-      - pAppSubnetB
-      - pDBSubnetA
-      - pDBSubnetB
-      - pDnsHostedZoneID
-      - pDnsHostedZoneApexDomain
-      - pLoadBalancerType
-      - pSecurityGroupForWebAccess
-      - pWebAccessCIDR
-    - Label:
-        default: Amazon EC2 Configuration
-      Parameters:
-      - pEC2KeyPair
-      - pAppServerInstanceType
-    - Label:
-        default: Amazon RDS Configuration
-      Parameters:
-      - pDBName
-      - pDBTimezone
-      - pDBUsername
-      - pDBPassword
-      - pDBInstanceType
-      - pDBAllocatedStorage
-      - pDBEngine
-      - pDBEngineLicenseModel
-      - pDBMultiAZ
+      - Label:
+          default: Titian Configuration
+        Parameters:
+          - pDNSName
+      - Label:
+          default: Network Configuration
+        Parameters:
+          - pVpcId
+          - pDmzSubnetA
+          - pDmzSubnetB
+          - pAppSubnetA
+          - pAppSubnetB
+          - pDBSubnetA
+          - pDBSubnetB
+          - pDnsHostedZoneID
+          - pDnsHostedZoneApexDomain
+          - pLoadBalancerType
+          - pSecurityGroupForWebAccess
+          - pWebAccessCIDR
+      - Label:
+          default: Amazon EC2 Configuration
+        Parameters:
+          - pEC2KeyPair
+          - pAppServerInstanceType
+      - Label:
+          default: Amazon RDS Configuration
+        Parameters:
+          - pDBName
+          - pDBTimezone
+          - pDBUsername
+          - pDBPassword
+          - pDBInstanceType
+          - pDBAllocatedStorage
+          - pDBEngine
+          - pDBEngineLicenseModel
+          - pDBMultiAZ
     ParameterLabels:
       pAppServerInstanceType:
         default: App Server Instance Type
@@ -89,7 +89,6 @@ Metadata:
         default: VPC for Deployment
       pWebAccessCIDR:
         default: Web Access CIDR (No SG)
-
 Parameters:
   pDBTimezone:
     Description: What time zone should we set the database to?
@@ -269,8 +268,8 @@ Parameters:
     Description: Multi-AZ Amazon RDS configuration. true/false - default is false.
     Type: String
     AllowedValues:
-    - "true"
-    - "false"
+      - "true"
+      - "false"
     Default: "false"
   pDBName:
     Description: Titian Mosaic database name
@@ -329,7 +328,6 @@ Parameters:
     Description: Will only be used if web access security group is not specified. Enter 0.0.0.0/0 if you want to open it to the world.
     Type: String
     Default: "10.0.0.0/16"
-
 Mappings:
   AWSAMIRegionMap:
     us-east-1:
@@ -339,9 +337,9 @@ Mappings:
     eu-west-1:
       mAppServerAMI: ami-014ea06ccd1f4966b
 Conditions:
-  cDNSRecord: !Not [ !Or [ !Equals [!Ref pDnsHostedZoneID, ""] , !Equals [!Ref pDnsHostedZoneApexDomain, ""] ] ]
-  cWebAccessSG: !Not [ !Equals [ !Ref pSecurityGroupForWebAccess, "" ] ]
-  cNoWebAccessSG: !Equals [ !Ref pSecurityGroupForWebAccess, "" ]
+  cDNSRecord: !Not [!Or [!Equals [!Ref pDnsHostedZoneID, ""], !Equals [!Ref pDnsHostedZoneApexDomain, ""]]]
+  cWebAccessSG: !Not [!Equals [!Ref pSecurityGroupForWebAccess, ""]]
+  cNoWebAccessSG: !Equals [!Ref pSecurityGroupForWebAccess, ""]
 Resources:
   # If a hosted zone is specified, create a DNS Record
   rDNSRecord:
@@ -355,16 +353,14 @@ Resources:
       TTL: 60
       ResourceRecords:
         - !GetAtt rApplicationLoadBalancer.DNSName
-
   rALBCertificate:
     Type: "AWS::CertificateManager::Certificate"
     Condition: cDNSRecord
     Properties:
       DomainName: !Sub ${pDNSName}.${pDnsHostedZoneApexDomain}
       DomainValidationOptions:
-      - DomainName: !Sub ${pDNSName}.${pDnsHostedZoneApexDomain}
-        ValidationDomain: !Ref pDnsHostedZoneApexDomain
-
+        - DomainName: !Sub ${pDNSName}.${pDnsHostedZoneApexDomain}
+          ValidationDomain: !Ref pDnsHostedZoneApexDomain
   ###
   ### Security Groups
   ###
@@ -374,8 +370,8 @@ Resources:
       GroupDescription: Allow access to Titian Mosasic App Servers.
       VpcId: !Ref pVpcId
       Tags:
-      - Key: Name
-        Value: sg-titian-mosaic-appserver
+        - Key: Name
+          Value: sg-titian-mosaic-appserver
   rSecurityGroupAppServersIngressHttp:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -399,17 +395,17 @@ Resources:
       GroupDescription: Allow access to Titian Mosaic ALBs. Open to SG.
       VpcId: !Ref pVpcId
       SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        SourceSecurityGroupId: !Ref pSecurityGroupForWebAccess
-      - IpProtocol: tcp
-        FromPort: 443
-        ToPort: 443
-        SourceSecurityGroupId: !Ref pSecurityGroupForWebAccess
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !Ref pSecurityGroupForWebAccess
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          SourceSecurityGroupId: !Ref pSecurityGroupForWebAccess
       Tags:
-      - Key: Name
-        Value: sg-titian-mosaic-access-ports-to-alb-bysg
+        - Key: Name
+          Value: sg-titian-mosaic-access-ports-to-alb-bysg
   rSecurityGroupAlbNoSG:
     Type: AWS::EC2::SecurityGroup
     Condition: cNoWebAccessSG
@@ -417,25 +413,25 @@ Resources:
       GroupDescription: Allow access to Titian Mosaic ALB. Open to CIDR.
       VpcId: !Ref pVpcId
       SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        CidrIp: !Ref pWebAccessCIDR
-      - IpProtocol: tcp
-        FromPort: 443
-        ToPort: 443
-        CidrIp: !Ref pWebAccessCIDR
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref pWebAccessCIDR
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref pWebAccessCIDR
       Tags:
-      - Key: Name
-        Value: sg-titian-mosaic-access-ports-to-alb-bycidr
+        - Key: Name
+          Value: sg-titian-mosaic-access-ports-to-alb-bycidr
   rSecurityGroupAlbs:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow access to Titian Mosaic ALBs.
       VpcId: !Ref pVpcId
       Tags:
-      - Key: Name
-        Value: sg-titian-mosaic-alb
+        - Key: Name
+          Value: sg-titian-mosaic-alb
   rSecurityGroupDB:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -446,7 +442,6 @@ Resources:
           FromPort: 1521
           ToPort: 1521
           SourceSecurityGroupId: !Ref rSecurityGroupAppServers
-
   ###
   ### Application Load Balancer
   ###
@@ -456,7 +451,7 @@ Resources:
       Scheme: !Ref pLoadBalancerType
       SecurityGroups:
         - !Ref rSecurityGroupAlbs
-        - !If [ cWebAccessSG, !Ref rSecurityGroupAlbWithSG, !Ref rSecurityGroupAlbNoSG ]
+        - !If [cWebAccessSG, !Ref rSecurityGroupAlbWithSG, !Ref rSecurityGroupAlbNoSG]
       Subnets:
         - !Ref pDmzSubnetA
         - !Ref pDmzSubnetB
@@ -464,60 +459,53 @@ Resources:
         - Key: Name
           Value: "Titian Mosiac ALB"
       Type: application
-
   rLoadBalancerListenerHTTP:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
-        LoadBalancerArn: !Ref rApplicationLoadBalancer
-        Port: 80
-        Protocol: HTTP
-        DefaultActions:
-            - Type: forward
-              TargetGroupArn: !Ref rLoadBalancerTargetGroupHTTP
-
+      LoadBalancerArn: !Ref rApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref rLoadBalancerTargetGroupHTTP
   rLoadBalancerListenerHTTPS:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Condition: cDNSRecord
     Properties:
-        Certificates:
-          - CertificateArn: !Ref rALBCertificate
-        LoadBalancerArn: !Ref rApplicationLoadBalancer
-        Port: 443
-        Protocol: HTTPS
-        DefaultActions:
-            - Type: forward
-              TargetGroupArn: !Ref rLoadBalancerTargetGroupHTTPS
-
+      Certificates:
+        - CertificateArn: !Ref rALBCertificate
+      LoadBalancerArn: !Ref rApplicationLoadBalancer
+      Port: 443
+      Protocol: HTTPS
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref rLoadBalancerTargetGroupHTTPS
   rLoadBalancerTargetGroupHTTP:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-        VpcId: !Ref pVpcId
-        Port: 80
-        HealthCheckIntervalSeconds: 180
-        HealthCheckTimeoutSeconds: 30
-        HealthyThresholdCount: 2
-        HealthCheckPort: 80
-        UnhealthyThresholdCount: 10
-        Protocol: HTTP
-        Matcher:
-          HttpCode: '200,401,302'
-
+      VpcId: !Ref pVpcId
+      Port: 80
+      HealthCheckIntervalSeconds: 180
+      HealthCheckTimeoutSeconds: 30
+      HealthyThresholdCount: 2
+      HealthCheckPort: 80
+      UnhealthyThresholdCount: 10
+      Protocol: HTTP
+      Matcher:
+        HttpCode: '200,401,302'
   rLoadBalancerTargetGroupHTTPS:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-        VpcId: !Ref pVpcId
-        Port: 443
-        HealthCheckIntervalSeconds: 180
-        HealthCheckTimeoutSeconds: 30
-        HealthyThresholdCount: 2
-        HealthCheckPort: 443
-        UnhealthyThresholdCount: 10
-        Protocol: HTTPS
-        Matcher:
-          HttpCode: '200,401,302'
-
-
-
+      VpcId: !Ref pVpcId
+      Port: 443
+      HealthCheckIntervalSeconds: 180
+      HealthCheckTimeoutSeconds: 30
+      HealthyThresholdCount: 2
+      HealthCheckPort: 443
+      UnhealthyThresholdCount: 10
+      Protocol: HTTPS
+      Matcher:
+        HttpCode: '200,401,302'
   ###
   ### Auto Scaling Group
   ###
@@ -544,27 +532,13 @@ Resources:
   rAutoScalingConfigApp:
     Type: AWS::AutoScaling::LaunchConfiguration
     DependsOn:
-    - rDBInstance
+      - rDBInstance
     Properties:
-      ImageId: !FindInMap [ AWSAMIRegionMap, !Ref "AWS::Region", mAppServerAMI ]
+      ImageId: !FindInMap [AWSAMIRegionMap, !Ref "AWS::Region", mAppServerAMI]
       InstanceType: !Ref pAppServerInstanceType
       KeyName: !Ref pEC2KeyPair
       SecurityGroups:
-      - !Ref rSecurityGroupAppServers
-      UserData:
-        Fn::Base64: !Sub |
-          <powershell>
-          mkdir c:\cfn\installer
-          mkdir c:\cfn\logs
-          Invoke-WebRequest -OutFile c:\cfn\installer\aws-cfn-bootstrap-win64-latest.msi https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-win64-latest.msi
-
-          msiexec.exe /i c:\cfn\installer\aws-cfn-bootstrap-win64-latest.msi /QN /L*V "C:\cfn\logs\cfn-bootstrap-install.log"
-
-          & "C:\\Program Files\\Titian Software\\Bootstrap\\Main\\bootstrap-mosaic.cmd" ${rDBInstance.Endpoint.Address} ${pDBName} ${pDBUsername} ${pDBPassword} ${pDNSName} Administrator
-
-          & "C:\\Program Files\\Amazon\\cfn-bootstrap\\cfn-signal.exe" -e $lastexitcode "${rAppServerInitWaitHandle}"
-          </powershell>
-          <persist>true</persist>
+        - !Ref rSecurityGroupAppServers
   ###
   ### Wait Handle
   ###
@@ -577,23 +551,19 @@ Resources:
     Properties:
       Handle: !Ref rAppServerInitWaitHandle
       Timeout: '1800'
-
   ###
   ### RDS Instance
   ###
-
   rDBOptionGroup:
     Type: AWS::RDS::OptionGroup
     Properties:
-      OptionGroupDescription : "Timezone option config for Titian database."
+      OptionGroupDescription: "Timezone option config for Titian database."
       EngineName: !Ref pDBEngine
       MajorEngineVersion: "12.1"
       OptionConfigurations:
-        -
-          OptionName: Timezone
+        - OptionName: Timezone
           OptionSettings:
-            -
-              Name: TIME_ZONE
+            - Name: TIME_ZONE
               Value: !Ref pDBTimezone
   rDBInstance:
     Type: AWS::RDS::DBInstance
@@ -601,7 +571,7 @@ Resources:
     Properties:
       DBSubnetGroupName: !Ref rDBSubnetGroup
       VPCSecurityGroups:
-      - !Ref rSecurityGroupDB
+        - !Ref rSecurityGroupDB
       StorageType: gp2
       MultiAZ: !Ref pDBMultiAZ
       AllocatedStorage: !Ref pDBAllocatedStorage
@@ -614,20 +584,18 @@ Resources:
       LicenseModel: !Ref pDBEngineLicenseModel
       Engine: !Ref pDBEngine
       Tags:
-      - Key: Name
-        Value: Titian Mosaic DB
-
+        - Key: Name
+          Value: Titian Mosaic DB
   rDBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
       DBSubnetGroupDescription: Subnet group for Titian DB instances
       SubnetIds:
-      - !Ref pDBSubnetA
-      - !Ref pDBSubnetB
+        - !Ref pDBSubnetA
+        - !Ref pDBSubnetB
       Tags:
-      - Key: Name
-        Value: Titian Mosaic DB Subnet Group
-
+        - Key: Name
+          Value: Titian Mosaic DB Subnet Group
 Outputs:
   oLoadBalancerDNS:
     Description: DNS of Load Balancer to access Titian Mosaic

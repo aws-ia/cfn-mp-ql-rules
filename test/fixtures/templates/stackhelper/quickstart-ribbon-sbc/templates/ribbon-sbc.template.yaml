@@ -1,9 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: AWS CloudFormation Template to setup and deploy vSBC HA instances
-  and 2 PKTART instances to test vSBC. This template creates required vpc, subnet
-  and other routing elements required IAM role to performce IP movement betweenn two
-  vSBC instances. (qs-1pkktcfg2)
+Description: AWS CloudFormation Template to setup and deploy vSBC HA instances and 2 PKTART instances to test vSBC. This template creates required vpc, subnet and other routing elements required IAM role to performce IP movement betweenn two vSBC instances. (qs-1pkktcfg2)
 Metadata:
   AWSAMIRegionMap:
     Filters:
@@ -100,33 +97,28 @@ Metadata:
         default: QuickStart S3 bucket name
       QSS3KeyPrefix:
         default: QuickStart S3 key prefix
-
 Parameters:
   KeyPairName:
-    Description: Name of an existing EC2 key pair to enable SSH access to various EC2
-      instances.
+    Description: Name of an existing EC2 key pair to enable SSH access to various EC2 instances.
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: Must be the name of an existing EC2 key pair.
   VPCID:
     Description: ID of your existing VPC for deployment.
     Type: AWS::EC2::VPC::Id
   SBCAccessVoipCIDR:
-    Description: CIDR used within the SBC access VoIP (public-facing) subnet. Served by
-      HFE instance.
+    Description: CIDR used within the SBC access VoIP (public-facing) subnet. Served by HFE instance.
     Type: String
     MinLength: '1'
     Default: 10.74.20.0/24
     AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
-    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x and
-      subnet of VPC.
+    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x and subnet of VPC.
   SBCCoreVoipCIDR:
     Description: CIDR used within the SBC core VoIP (private) subnet.
     Type: String
     MinLength: '1'
     Default: 10.74.20.0/24
     AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
-    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x and
-      subnet of VPC.
+    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x and subnet of VPC.
   SBCAccessVoipSubnetID:
     Type: String
     Description: Subnet ID for the SBC access VoIP subnet.
@@ -185,8 +177,7 @@ Parameters:
       - c5.9xlarge
     ConstraintDescription: Must be a valid EC2 instance type.
   SBCPersonalityType:
-    Description: SBC personality type. Currently only supports 'isbc' (Integrated).
-      Distributed is currently not supported.
+    Description: SBC personality type. Currently only supports 'isbc' (Integrated). Distributed is currently not supported.
     Type: String
     Default: isbc
     AllowedValues:
@@ -232,8 +223,7 @@ Parameters:
       - gp2
       - io1
   SBCVolumeIOPS:
-    Description: IOPS reservation for i01 type EBS volume [<= 1950]. This value
-      is ignored for gp2 type volumes.
+    Description: IOPS reservation for i01 type EBS volume [<= 1950]. This value is ignored for gp2 type volumes.
     Type: Number
     Default: '600'
     MaxValue: '1950'
@@ -245,26 +235,18 @@ Parameters:
     MaxValue: '1000'
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-      (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
-    Description: S3 bucket name for the Quick Start assets. This string can include
-      numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start
-      or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. This string can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-ribbon-sbc/
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
 Conditions:
-  VolumeTypeIO1:
-    !Equals
+  VolumeTypeIO1: !Equals
     - !Ref SBCVolumeType
     - io1
 Rules:
@@ -274,20 +256,17 @@ Rules:
           - Fn::Equals:
               - !Ref SBCActiveInstanceName
               - !Ref SBCPassiveInstanceName
-        AssertionDescription: SBCActiveInstanceName and SBCPassiveInstanceName must
-          be unique
+        AssertionDescription: SBCActiveInstanceName and SBCPassiveInstanceName must be unique
       - Assert: !Not
           - Fn::Equals:
               - !Ref SBCActiveInstanceName
               - !Ref SBCSystemName
-        AssertionDescription: SBCActiveInstanceName and SBCSystemName cannot be the
-          same.
+        AssertionDescription: SBCActiveInstanceName and SBCSystemName cannot be the same.
       - Assert: !Not
           - Fn::Equals:
               - !Ref SBCPassiveInstanceName
               - !Ref SBCSystemName
-        AssertionDescription: SBCPassiveInstanceName and SBCSystemName cannot be the
-          same.
+        AssertionDescription: SBCPassiveInstanceName and SBCSystemName cannot be the same.
 Mappings:
   AWSAMIRegionMap:
     AMI:
@@ -493,16 +472,14 @@ Resources:
           CidrIp: 0.0.0.0/0
       Tags:
         - Key: Name
-          Value:
-            !Join
+          Value: !Join
             - '-'
             - - !Ref SBCSystemName
               - SecurityGroup5_Ribbon
   SBCCoreVoipSG:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Security Group for SBC Internal Voip traffic. (Relay to internal
-        infra)
+      GroupDescription: Security Group for SBC Internal Voip traffic. (Relay to internal infra)
       VpcId: !Ref VPCID
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -515,8 +492,7 @@ Resources:
           CidrIp: !Ref SBCCoreVoipCIDR
       Tags:
         - Key: Name
-          Value:
-            !Join
+          Value: !Join
             - '-'
             - - !Ref SBCSystemName
               - SecurityGroup3_Ribbon
@@ -848,8 +824,7 @@ Resources:
   SBCActiveInstance:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId:
-        !FindInMap
+      ImageId: !FindInMap
         - AWSAMIRegionMap
         - !Ref AWS::Region
         - RIBBONSBCAMI
@@ -859,8 +834,7 @@ Resources:
           Ebs:
             VolumeType: !Ref SBCVolumeType
             VolumeSize: !Ref SBCVolumeSize
-            Iops:
-              !If
+            Iops: !If
               - VolumeTypeIO1
               - !Ref SBCVolumeIOPS
               - !Ref AWS::NoValue
@@ -882,43 +856,10 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-1
-      UserData:
-        Fn::Base64:
-          Fn::Sub:
-            - |
-              {
-                "CERole"               : "ACTIVE",
-                "ReverseNatPkt0"       : "True",
-                "ReverseNatPkt1"       : "False",
-                "IAM_ROLE"             : "${SBCInstanceRole}",
-                "ALT_Mgt0_00"          : "LOGICAL_MGMT_IP",
-                "ALT_Pkt0_00"          : "VIP1",
-                "ALT_Pkt1_00"          : "VIP2",
-                "ClusterIp"            : "${SBCActiveHAIface.PrimaryPrivateIpAddress}",
-                "HFE"                  : "${HFEPub_SecondaryPrivIP}",
-                "SbcPersonalityType"   : "${SBCPersonalityType}",
-                "SbcMgmtMode"          : "centralized",
-                "CEName"               : "${SBCActiveInstanceName}",
-                "PeerCEName"           : "${SBCPassiveInstanceName}",
-                "PeerCEHa0IPv4Address" : "${SBCPassiveHAIface.PrimaryPrivateIpAddress}",
-                "SystemName"           : "${SBCSystemName}",
-                "ActiveRoleMgtId"      : "${SBCActiveMgtIface}",
-                "NodeName"             : "${AWS::StackName}",
-                "AdminSshKey"          : "${PUBLIC_KEY}",
-                "ThirdPartyCpuAlloc"   : "0",
-                "ThirdPartyMemAlloc"   : "0"
-              }
-            - HFEPub_SecondaryPrivIP:
-                !Select
-                - 0
-                - !GetAtt HFEPublicInterface.SecondaryPrivateIpAddresses
-              PUBLIC_KEY:
-                !GetAtt GetRSA.PUB
   SBCPassiveInstance:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId:
-        !FindInMap
+      ImageId: !FindInMap
         - AWSAMIRegionMap
         - !Ref AWS::Region
         - RIBBONSBCAMI
@@ -927,8 +868,7 @@ Resources:
           Ebs:
             VolumeType: !Ref SBCVolumeType
             VolumeSize: !Ref SBCVolumeSize
-            Iops:
-              !If
+            Iops: !If
               - VolumeTypeIO1
               - !Ref SBCVolumeIOPS
               - !Ref AWS::NoValue
@@ -951,43 +891,10 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-2
-      UserData:
-        Fn::Base64:
-          Fn::Sub:
-            - |
-              {
-                "CERole"               : "STANDBY",
-                "ReverseNatPkt0"       : "True",
-                "ReverseNatPkt1"       : "False",
-                "IAM_ROLE"             : "${SBCInstanceRole}",
-                "ALT_Mgt0_00"          : "LOGICAL_MGMT_IP",
-                "ALT_Pkt0_00"          : "VIP1",
-                "ALT_Pkt1_00"          : "VIP2",
-                "ClusterIp"            : "${SBCActiveHAIface.PrimaryPrivateIpAddress}",
-                "HFE"                  : "${HFEPub_SecondaryPrivIP}",
-                "SbcPersonalityType"   : "${SBCPersonalityType}",
-                "SbcMgmtMode"          : "centralized",
-                "CEName"               : "${SBCPassiveInstanceName}",
-                "PeerCEName"           : "${SBCActiveInstanceName}",
-                "PeerCEHa0IPv4Address" : "${SBCActiveHAIface.PrimaryPrivateIpAddress}",
-                "SystemName"           : "${SBCSystemName}",
-                "ActiveRoleMgtId"      : "${SBCActiveMgtIface}",
-                "NodeName"             : "${AWS::StackName}",
-                "AdminSshKey"          : "${PUBLIC_KEY}",
-                "ThirdPartyCpuAlloc"   : "0",
-                "ThirdPartyMemAlloc"   : "0"
-              }
-            - HFEPub_SecondaryPrivIP:
-                !Select
-                - 0
-                - !GetAtt HFEPublicInterface.SecondaryPrivateIpAddresses
-              PUBLIC_KEY:
-                !GetAtt GetRSA.PUB
   HFEInstance:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId:
-        !FindInMap
+      ImageId: !FindInMap
         - AWSAMIRegionMap
         - !Ref AWS::Region
         - AMZNLINUXHVM
@@ -1013,53 +920,6 @@ Resources:
       Tags:
         - Key: Name
           Value: HFE Instance
-      UserData:
-        Fn::Base64:
-          Fn::Sub:
-            - |
-              Content-Type: multipart/mixed; boundary="//"
-              MIME-Version: 1.0
-              --//
-              Content-Type: text/cloud-config; charset="us-ascii"
-              MIME-Version: 1.0
-              Content-Transfer-Encoding: 7bit
-              Content-Disposition: attachment; filename="cloud-config.txt"
-              #cloud-config
-              cloud_final_modules:
-              - [scripts-user, always]
-              --//
-              Content-Type: text/x-shellscript; charset="us-ascii"
-              MIME-Version: 1.0
-              Content-Transfer-Encoding: 7bit
-              Content-Disposition: attachment; filename="userdata.txt"
-              #!/bin/bash -x
-              HFE_DIR="/home/ec2-user/HFE/"
-              HFE_FILE="$HFE_DIR/HFE.sh"
-              LOG_FILE="$HFE_DIR/cloud-init-nat.log"
-              NAT_VAR="$HFE_DIR/natVars.input"
-              function timestamp(){
-                date +"%Y-%m-%d %T"
-              }
-              mkdir -p ${!HFE_DIR};
-              aws s3 cp --region ${AWS::Region} s3://${QSS3BucketName}/${QSS3KeyPrefix}scripts/HFE.sh ${!HFE_FILE}
-              if [ $? -ne 0 ]; then
-                /bin/echo $(timestamp) "Error:Could not copy HFE script from S3 bucket." >> ${!LOG_FILE}
-              else
-                /bin/echo $(timestamp) "Copied HFE script from S3 bucket." >> ${!LOG_FILE}
-              fi;
-              /bin/echo "" > ${!NAT_VAR}
-              /bin/echo "SBC_SECONDARY_IP=${SBC_SECONDARY_IP}" >> ${!NAT_VAR}
-              /bin/echo "REMOTE_SSH_MACHINE_IP=${REMOTE_SSH_MACHINE_IP}" >> ${!NAT_VAR}
-              /bin/echo $(timestamp) "Copied natVars.input" >> ${!LOG_FILE}
-              sudo chmod 744 ${!HFE_FILE}
-              sudo /bin/bash ${!HFE_FILE} setup
-              /bin/echo "Configured using HFE script ${!HFE_FILE}" >> ${!LOG_FILE}
-              /bin/echo $(timestamp) " =========================   Done    ==========================================" >> ${!LOG_FILE}
-            - SBC_SECONDARY_IP:
-                !Select
-                - 0
-                - !GetAtt SBCActiveAccessVoipIface.SecondaryPrivateIpAddresses
-              REMOTE_SSH_MACHINE_IP: ''
   AnsibleConfigServer:
     Type: AWS::EC2::Instance
     DependsOn:
@@ -1097,8 +957,7 @@ Resources:
         DownloadAnsiblePlaybooks:
           commands:
             010_download_files:
-              command: !Sub 'aws s3 cp --recursive s3://${QSS3BucketName}/${QSS3KeyPrefix}scripts/ansible
-                /root/ansible'
+              command: !Sub 'aws s3 cp --recursive s3://${QSS3BucketName}/${QSS3KeyPrefix}scripts/ansible /root/ansible'
             020_create_logfile:
               command: 'touch /root/ansible/ConfigGen.log'
             030_create_varsdir:
@@ -1160,8 +1019,7 @@ Resources:
             010_invoke_api:
               command: ansible-playbook /root/ansible/main-wrapper.yml -vvv
     Properties:
-      ImageId:
-        !FindInMap
+      ImageId: !FindInMap
         - AWSAMIRegionMap
         - !Ref AWS::Region
         - AMZNLINUXHVM
@@ -1171,12 +1029,6 @@ Resources:
       NetworkInterfaces:
         - NetworkInterfaceId: !Ref AnsibleConfigServerInterface
           DeviceIndex: '0'
-      UserData:
-        !Base64
-        Fn::Sub: |
-          #!/bin/bash -x
-          /opt/aws/bin/cfn-init --stack ${AWS::StackName} --resource AnsibleConfigServer --region ${AWS::Region}
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource AnsibleConfigServer --region ${AWS::Region}
   HFEPrivateRouteTable:
     Type: 'AWS::EC2::RouteTable'
     Properties:
@@ -1225,8 +1077,8 @@ Resources:
                   - s3:List*
                   - s3:Get*
                 Resource:
-                - !Sub arn:aws:s3:::${QSS3BucketName}/*
-                - !Sub arn:aws:s3:::${QSS3BucketName}
+                  - !Sub arn:aws:s3:::${QSS3BucketName}/*
+                  - !Sub arn:aws:s3:::${QSS3BucketName}
                 Effect: Allow
   SetupRoleProfile:
     Type: AWS::IAM::InstanceProfile
@@ -1259,31 +1111,6 @@ Resources:
       Tags:
         - Key: Name
           Value: Ribbon SBC Asterisk Instance
-      UserData:
-        'Fn::Base64':
-          'Fn::Sub':
-            - |
-              #!/bin/bash
-              AST_DIR="/etc/asterisk"
-              SIP_FILE="$AST_DIR/sip.conf"
-              EXT_FILE="$AST_DIR/extensions.conf"
-              aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}scripts/sip.conf ${!SIP_FILE}
-              if [ $? -ne 0 ]; then
-                /bin/echo "Error:Could not copy SIP script from S3 bucket."  >> log.txt
-              else
-                /bin/echo "Copied sip script from S3 bucket."  >> log.txt
-              fi;
-              aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}scripts/extensions.conf ${!EXT_FILE}
-              if [ $? -ne 0 ]; then
-                /bin/echo "Error:Could not copy ext script from S3 bucket."  >> log.txt
-              else
-                /bin/echo "Copied ext script from S3 bucket."  >> log.txt
-              fi;
-              sudo sed -i '0, /localnet/s/localnet.*/localnet=${AST_VOIP_IP}\/255.255.255.0/' /etc/asterisk/sip.conf
-              sudo chmod 644 ${!SIP_FILE}
-              sudo chmod 644 ${!EXT_FILE}
-              sudo asterisk -rx "reload"
-            - AST_VOIP_IP: !GetAtt ASTVoipInterface.PrimaryPrivateIpAddress
   ASTManagementInterface:
     Type: 'AWS::EC2::NetworkInterface'
     Properties:
@@ -1463,7 +1290,6 @@ Resources:
                 Action:
                   - cloudformation:DescribeStacks
                 Resource: '*'
-
 Outputs:
   SBCSignalingPublicIP:
     Value: !Ref HFEExVoipEIP
@@ -1487,4 +1313,3 @@ Outputs:
     Value: !Ref SBCPassiveAccessVoipIface
   Pkt1InterfaceIDStandby:
     Value: !Ref SBCPassiveCoreVoipIface
-...

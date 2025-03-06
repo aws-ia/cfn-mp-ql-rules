@@ -8,13 +8,11 @@ Metadata:
           default: Region Configuration
         Parameters:
           - pAvailabilityZones
-
       - Label:
           default: Network (existing Management VPC config)
         Parameters:
           - pManagementVPC
           - pMgmtAppPrivateSubnetA
-
       - Label:
           default: License Server Configuration
         Parameters:
@@ -23,41 +21,31 @@ Metadata:
           - pLicenseServerMinCapacity
           - pLicenseServerDesiredCapacity
           - pLicenseServerMaxCapacity
-
 Parameters:
   pAvailabilityZones:
-    Description: The list of Availability Zones to use for the subnets in the VPC.
-      This template uses two Availability Zones from your list and preserves the logical order you specify.
+    Description: The list of Availability Zones to use for the subnets in the VPC. This template uses two Availability Zones from your list and preserves the logical order you specify.
     Type: List<AWS::EC2::AvailabilityZone::Name>
-
   pManagementVPC:
     Description: Management VPC
     Type: AWS::EC2::VPC::Id
-
   pMgmtAppPrivateSubnetA:
     Description: License Server Subnet A
     Type: AWS::EC2::Subnet::Id
-
   pLicenseServerInstanceType:
     Description: Instance type for the license server
     Type: String
-
   pLicenseServerAmi:
     Description: Which License Server AMI do you want to use?
     Type: AWS::EC2::Image::Id
-
   pLicenseServerMinCapacity:
     Description: The minimum number of instances that can run in your auto scale group
     Type: String
-
   pLicenseServerDesiredCapacity:
     Description: The desired capacity must be less than or equal to the maximum capacity
     Type: String
-
   pLicenseServerMaxCapacity:
     Description: The maximum number of instances that you can run in your auto scale group
     Type: String
-
   pEnvironment:
     AllowedValues:
       - DEV
@@ -66,7 +54,6 @@ Parameters:
     Default: DEV
     Description: Environment (Dev, Test or Prod)
     Type: String
-
 Resources:
   rLicenseServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -78,7 +65,6 @@ Resources:
           Value: license-server-sg
         - Key: Environment
           Value: !Ref pEnvironment
-
   rLicenseServerInstanceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -104,19 +90,16 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
         - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
-
   rLicenseServerInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
         - !Ref rLicenseServerInstanceRole
-
   rLicenseServerLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
       RetentionInDays: 90
-
   rLicenseServerSecondaryEni:
     Type: AWS::EC2::NetworkInterface
     Properties:
@@ -128,7 +111,6 @@ Resources:
           Value: vfx-secondary-eni
         - Key: Environment
           Value: !Ref pEnvironment
-
   rLicenseServerLaunchConfiguration:
     Type: AWS::AutoScaling::LaunchConfiguration
     Metadata:
@@ -180,7 +162,7 @@ Resources:
                 EC2_INSTANCE_ID=$(curl -s http://instance-data/latest/meta-data/instance-id)
                 aws ec2 attach-network-interface --network-interface-id ${rLicenseServerSecondaryEni} --instance-id $EC2_INSTANCE_ID --device-index 1 --region ${AWS::Region}
             07_awslogs:
-                command: /tmp/awslog_init.sh
+              command: /tmp/awslog_init.sh
     Properties:
       AssociatePublicIpAddress: false
       ImageId: !Ref pLicenseServerAmi
@@ -194,16 +176,6 @@ Resources:
             Encrypted: true
       SecurityGroups:
         - !Ref rLicenseServerSecurityGroup
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash -x
-          yum update --security -y
-          yum update aws-cfn-bootstrap -y
-
-          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource rLicenseServerLaunchConfiguration --region ${AWS::Region}
-          # Signal the status from cfn-init
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource rLicenseServerAutoScalingGroup --region ${AWS::Region}
-
   rLicenseServerAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -236,18 +208,14 @@ Resources:
         WaitOnResourceSignals: true
       AutoScalingReplacingUpdate:
         WillReplace: true
-
 Outputs:
   rLicenseServerSecurityGroup:
     Value: !Ref rLicenseServerSecurityGroup
     Export:
       Name: eLicenseServerSecurityGroup
-
   rLicenseServerInstanceRole:
     Value: !Ref rLicenseServerInstanceRole
-
   rLicenseServerAutoScalingGroup:
     Value: !Ref rLicenseServerAutoScalingGroup
-
   rLicenseServerLaunchConfiguration:
     Value: !Ref rLicenseServerLaunchConfiguration

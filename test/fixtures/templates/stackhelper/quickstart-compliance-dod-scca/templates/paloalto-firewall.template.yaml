@@ -15,9 +15,9 @@ Parameters:
     Description: The InstanceType for the firewall device
     Default: m4.xlarge
     AllowedValues:
-    - m4.xlarge
-    - m4.2xlarge
-    - m4.4xlarge
+      - m4.xlarge
+      - m4.2xlarge
+      - m4.4xlarge
   pInstanceKeyPair:
     Type: String
     Description: The SSH Keypair for the instance
@@ -43,7 +43,6 @@ Mappings:
       AMI: ami-1ebdd571
     us-gov-west-1:
       AMI: ami-d4a923b5
-
 Resources:
   paloAltoEIP:
     Type: AWS::EC2::EIP
@@ -52,57 +51,50 @@ Resources:
   paloAltoSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Instance Security Group for Palo Alto Firewall. Allows RFC1918
-        10.0.0.0/8 block HTTPS
+      GroupDescription: Instance Security Group for Palo Alto Firewall. Allows RFC1918 10.0.0.0/8 block HTTPS
       SecurityGroupEgress:
-      - CidrIp: 0.0.0.0/0
-        IpProtocol: '-1'
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: '-1'
       SecurityGroupIngress:
-      - CidrIp: 10.0.0.0/8
-        IpProtocol: 6
-        FromPort: 1
-        ToPort: 65535
+        - CidrIp: 10.0.0.0/8
+          IpProtocol: 6
+          FromPort: 1
+          ToPort: 65535
       VpcId: !Ref pVpcId
       Tags:
-      - Key: Name
-        Value: !Sub ${pVpcId} PaloAlto  SecurityGroup
-      - Key: Environment
-        Value: !Ref pEnvironment
+        - Key: Name
+          Value: !Sub ${pVpcId} PaloAlto  SecurityGroup
+        - Key: Environment
+          Value: !Ref pEnvironment
   paloAltoInstance:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId:
-        !FindInMap
+      ImageId: !FindInMap
         - PaloAltoRegionMap
         - !Ref AWS::Region
         - AMI
       InstanceType: !Ref pInstanceType
       IamInstanceProfile: !Ref Profile
       NetworkInterfaces:
-      - AssociatePublicIpAddress: true
-        DeleteOnTermination: true
-        Description: PAN Management Interface
-        DeviceIndex: 0
-        GroupSet:
-        - !Ref paloAltoSecurityGroup
-        SubnetId: !Ref pSubnetId
+        - AssociatePublicIpAddress: true
+          DeleteOnTermination: true
+          Description: PAN Management Interface
+          DeviceIndex: 0
+          GroupSet:
+            - !Ref paloAltoSecurityGroup
+          SubnetId: !Ref pSubnetId
       KeyName: !Ref pInstanceKeyPair
       Tags:
-      - Key: Name
-        Value: !Sub ${pVpcId} PaloAlto Instance
-      - Key: Environment
-        Value: !Ref pEnvironment
-      UserData:
-        Fn::Base64:
-          Fn::Sub:
-          - vmseries-bootstrap-aws-s3bucket=${bucket}
-          - bucket: !Ref pBootstrapBucket
+        - Key: Name
+          Value: !Sub ${pVpcId} PaloAlto Instance
+        - Key: Environment
+          Value: !Ref pEnvironment
   paloAltoETH1:
     Type: AWS::EC2::NetworkInterface
     Properties:
       Description: PAN Ethernet1/1
       GroupSet:
-      - !Ref paloAltoSecurityGroup
+        - !Ref paloAltoSecurityGroup
       SubnetId: !Ref pSubnetId
       SourceDestCheck: false
   paloAltoETH1Attachment:
@@ -122,7 +114,7 @@ Resources:
     Properties:
       Description: PAN Ethernet1/2
       GroupSet:
-      - !Ref paloAltoSecurityGroup
+        - !Ref paloAltoSecurityGroup
       SubnetId: !Ref pSubnetId
       SourceDestCheck: false
   paloAltoETH2Attachment:
@@ -138,12 +130,12 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - ec2.amazonaws.com
-          Action:
-          - sts:AssumeRole
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
       Path: /
   paloAltoRolePolicy:
     Type: AWS::IAM::Policy
@@ -152,25 +144,25 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Action:
-          - s3:Get*
-          - s3:List*
-          Resource:
-          - !Sub
-            - arn:*:s3:::${bucket}/*
-            - bucket: !Ref pBootstrapBucket
-          - !Sub
-            - arn:*:s3:::${bucket}
-            - bucket: !Ref pBootstrapBucket
+          - Effect: Allow
+            Action:
+              - s3:Get*
+              - s3:List*
+            Resource:
+              - !Sub
+                - arn:*:s3:::${bucket}/*
+                - bucket: !Ref pBootstrapBucket
+              - !Sub
+                - arn:*:s3:::${bucket}
+                - bucket: !Ref pBootstrapBucket
       Roles:
-      - Ref: paloAltoRole
+        - Ref: paloAltoRole
   Profile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
-      - !Ref paloAltoRole
+        - !Ref paloAltoRole
 Outputs:
   rPaloAltoIPAddress:
     Description: The EIP address attached to the palo alto firewall device
@@ -181,4 +173,3 @@ Outputs:
   rPaloAltoEni:
     Description: The ENI traffic may be routed to (to traverse the tunnel later built)
     Value: !Ref paloAltoETH1
-...

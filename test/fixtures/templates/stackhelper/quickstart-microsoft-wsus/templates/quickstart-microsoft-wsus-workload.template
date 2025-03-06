@@ -1,47 +1,45 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
-  This workload template deploys a WSUS instance in an existing VPC. **WARNING**
-  This template creates EC2 instances and related resources. You will be billed for
-  the AWS resources used if you create a stack from this template. (qs-1q77ks439)
+  This workload template deploys a WSUS instance in an existing VPC. **WARNING** This template creates EC2 instances and related resources. You will be billed for the AWS resources used if you create a stack from this template. (qs-1q77ks439)
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
-    - Label:
-        default: Network configuration
-      Parameters:
-      - VPCID
-      - VPCCIDR
-      - PrivateSubnet1ID
-    - Label:
-        default: Microsoft Active Directory configuration
-      Parameters:
-      - DomainJoin
-      - DomainDNSName
-      - DomainNetBIOSName
-      - DomainAdminUser
-      - DomainAdminPassword
-      - DomainMemberSGID
-    - Label:
-        default: Amazon EC2 configuration
-      Parameters:
-      - WSUSServerNetBIOSName
-      - KeyPairName
-      - WindowsVersion
-      - WorkloadInstanceType
-      - StorageVolumeSize
-    - Label:
-        default: WSUS configuration
-      Parameters:
-      - WSUSLanguagesList
-      - WSUSProductList
-      - WSUSClassification
-      - WSUSNumOfSyncsPerDay
-    - Label:
-        default: AWS Quick Start configuration
-      Parameters:
-      - QSS3BucketName
-      - QSS3KeyPrefix
+      - Label:
+          default: Network configuration
+        Parameters:
+          - VPCID
+          - VPCCIDR
+          - PrivateSubnet1ID
+      - Label:
+          default: Microsoft Active Directory configuration
+        Parameters:
+          - DomainJoin
+          - DomainDNSName
+          - DomainNetBIOSName
+          - DomainAdminUser
+          - DomainAdminPassword
+          - DomainMemberSGID
+      - Label:
+          default: Amazon EC2 configuration
+        Parameters:
+          - WSUSServerNetBIOSName
+          - KeyPairName
+          - WindowsVersion
+          - WorkloadInstanceType
+          - StorageVolumeSize
+      - Label:
+          default: WSUS configuration
+        Parameters:
+          - WSUSLanguagesList
+          - WSUSProductList
+          - WSUSClassification
+          - WSUSNumOfSyncsPerDay
+      - Label:
+          default: AWS Quick Start configuration
+        Parameters:
+          - QSS3BucketName
+          - QSS3KeyPrefix
     ParameterLabels:
       KeyPairName:
         default: SSH key name
@@ -85,35 +83,26 @@ Metadata:
         default: Windows version
 Parameters:
   KeyPairName:
-    Description: Name of an existing EC2 key pair. All instances will launch with
-      this key pair.
+    Description: Name of an existing EC2 key pair. All instances will launch with this key pair.
     Type: AWS::EC2::KeyPair::KeyName
   StorageVolumeSize:
     Default: '500'
     Description: Capacity of the volume used to store update files (GB).
     Type: Number
   PrivateSubnet1ID:
-    Description: ID of private subnet 1 in Availability Zone 1 for the workload (e.g.,
-      subnet-a0246dcd).
+    Description: ID of private subnet 1 in Availability Zone 1 for the workload (e.g., subnet-a0246dcd).
     Type: AWS::EC2::Subnet::Id
   QSS3BucketName:
     AllowedPattern: "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$"
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-      (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: aws-ia
-    Description: S3 bucket name for the Quick Start assets. This string can include
-      numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start
-      or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. This string can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: "^[0-9a-zA-Z-/]*$"
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-microsoft-wsus/
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
   VPCID:
     Description: ID of your existing VPC for deployment.
@@ -133,8 +122,8 @@ Parameters:
     Type: String
   DomainJoin:
     AllowedValues:
-    - "Yes. Please join WSUS instance to my Active Directory domain."
-    - "No. Please keep WSUS as a standalone Windows instance."
+      - "Yes. Please join WSUS instance to my Active Directory domain."
+      - "No. Please keep WSUS as a standalone Windows instance."
     ConstraintDescription: If no is selected, other AD related parameters will be ignored.
     Default: "No. Please keep WSUS as a standalone Windows instance."
     Description: Choose Yes to join the WSUS instance to an Active Directory domain.
@@ -148,8 +137,7 @@ Parameters:
   DomainAdminUser:
     AllowedPattern: "[a-zA-Z0-9]*"
     Default: StackAdmin
-    Description: User name for the account that will be used as Domain Administrator.
-      This is separate from the default "Administrator" account.
+    Description: User name for the account that will be used as Domain Administrator. This is separate from the default "Administrator" account.
     MaxLength: '25'
     MinLength: '5'
     Type: String
@@ -162,13 +150,12 @@ Parameters:
     Type: String
   DomainMemberSGID:
     Description: ID of the domain member security group (e.g., sg-7f16e910).
-#    Type: AWS::EC2::SecurityGroup::Id
+    #    Type: AWS::EC2::SecurityGroup::Id
     Type: String
   DomainNetBIOSName:
     AllowedPattern: "[a-zA-Z0-9\\-]+"
     Default: EXAMPLE
-    Description: NetBIOS name of the domain (up to 15 characters) for users of earlier
-      versions of Windows.
+    Description: NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Windows.
     MaxLength: '15'
     MinLength: '1'
     Type: String
@@ -177,13 +164,11 @@ Parameters:
     Description: Comma-delimited list of WSUS enabled languages.
     Type: String
   WSUSProductList:
-    Default: SQL Server 2012 R2, SQL Server 2016, SQL Server 2017, Windows Server
-      2012 R2, Windows Server 2016, Windows Server 2019
+    Default: SQL Server 2012 R2, SQL Server 2016, SQL Server 2017, Windows Server 2012 R2, Windows Server 2016, Windows Server 2019
     Description: The platforms for which you want WSUS to receive updates.
     Type: String
   WSUSClassification:
-    Default: Applications, Update Rollups, Security Updates, Critical Updates, Service
-      Packs, Updates, Drivers, Driver Sets
+    Default: Applications, Update Rollups, Security Updates, Critical Updates, Service Packs, Updates, Drivers, Driver Sets
     Description: Types of updates that can be obtained through WSUS.
     Type: String
   WSUSNumOfSyncsPerDay:
@@ -192,32 +177,32 @@ Parameters:
     Type: Number
   WindowsVersion:
     AllowedValues:
-    - Windows2019Full
-    - Windows2019Core
-    - Windows2019Full_MSSQL2017Standard
+      - Windows2019Full
+      - Windows2019Core
+      - Windows2019Full_MSSQL2017Standard
     ConstraintDescription: Must be one of supported Windows versions
     Default: Windows2019Core
     Description: The Windows version for running WSUS. Windows Core is recommended for production environments.
     Type: String
   WorkloadInstanceType:
     AllowedValues:
-    - t3a.2xlarge
-    - t3.2xlarge
-    - r5a.xlarge
-    - r5a.2xlarge
-    - r5a.4xlarge
-    - r5a.8xlarge
-    - r5.large
-    - r5.xlarge
-    - r5.2xlarge
-    - r5.4xlarge
-    - r5.8xlarge
-    - r4.xlarge
-    - r4.2xlarge
-    - r4.4xlarge
-    - r4.8xlarge
-    - z1d.large
-    - z1d.xlarge
+      - t3a.2xlarge
+      - t3.2xlarge
+      - r5a.xlarge
+      - r5a.2xlarge
+      - r5a.4xlarge
+      - r5a.8xlarge
+      - r5.large
+      - r5.xlarge
+      - r5.2xlarge
+      - r5.4xlarge
+      - r5.8xlarge
+      - r4.xlarge
+      - r4.2xlarge
+      - r4.4xlarge
+      - r4.8xlarge
+      - z1d.large
+      - z1d.xlarge
     ConstraintDescription: Must contain valid instance type
     Default: r5.2xlarge
     Description: Type of EC2 instance for the workload instance.
@@ -225,42 +210,42 @@ Parameters:
 Conditions:
   GovCloudCondition:
     Fn::Equals:
-    - Ref: AWS::Region
-    - us-gov-west-1
+      - Ref: AWS::Region
+      - us-gov-west-1
   WindowsFullSelected:
     Fn::Equals:
-    - Ref: WindowsVersion
-    - Windows2019Full
+      - Ref: WindowsVersion
+      - Windows2019Full
   WindowsCoreSelected:
     Fn::Equals:
-    - Ref: WindowsVersion
-    - Windows2019Core
+      - Ref: WindowsVersion
+      - Windows2019Core
   SQL2017StandardSelected:
     Fn::Equals:
-    - Ref: WindowsVersion
-    - Windows2019Full_MSSQL2017Standard
+      - Ref: WindowsVersion
+      - Windows2019Full_MSSQL2017Standard
   ADJoinSelected:
     Fn::Equals:
-    - Ref: DomainJoin
-    - "Yes. Please join WSUS instance to my Active Directory domain."
+      - Ref: DomainJoin
+      - "Yes. Please join WSUS instance to my Active Directory domain."
 Rules:
   KeyPairsNotEmpty:
     Assertions:
-    - Assert:
-        Fn::Not:
-        - Fn::EachMemberEquals:
-          - Fn::RefAll: AWS::EC2::KeyPair::KeyName
-          - ''
-      AssertDescription: All key pair parameters must not be empty
+      - Assert:
+          Fn::Not:
+            - Fn::EachMemberEquals:
+                - Fn::RefAll: AWS::EC2::KeyPair::KeyName
+                - ''
+        AssertDescription: All key pair parameters must not be empty
   SubnetsInVPC:
     Assertions:
-    - Assert:
-        Fn::EachMemberIn:
-        - Fn::ValueOfAll:
-          - AWS::EC2::Subnet::Id
-          - VpcId
-        - Fn::RefAll: AWS::EC2::VPC::Id
-      AssertDescription: All subnets must in the VPC
+      - Assert:
+          Fn::EachMemberIn:
+            - Fn::ValueOfAll:
+                - AWS::EC2::Subnet::Id
+                - VpcId
+            - Fn::RefAll: AWS::EC2::VPC::Id
+        AssertDescription: All subnets must in the VPC
 Resources:
   ADAdminSecrets:
     Type: AWS::SecretsManager::Secret
@@ -278,8 +263,8 @@ Resources:
     Properties:
       ServiceToken:
         Fn::GetAtt:
-        - AMIInfoFunction
-        - Arn
+          - AMIInfoFunction
+          - Arn
       Region:
         Ref: AWS::Region
       AMIName: Windows_Server-2019-English-Full-Base*
@@ -288,8 +273,8 @@ Resources:
     Properties:
       ServiceToken:
         Fn::GetAtt:
-        - AMIInfoFunction
-        - Arn
+          - AMIInfoFunction
+          - Arn
       Region:
         Ref: AWS::Region
       AMIName: Windows_Server-2019-English-Core-Base*
@@ -298,8 +283,8 @@ Resources:
     Properties:
       ServiceToken:
         Fn::GetAtt:
-        - AMIInfoFunction
-        - Arn
+          - AMIInfoFunction
+          - Arn
       Region:
         Ref: AWS::Region
       AMIName: Windows_Server-2019-English-Full-SQL_2017_Standard*
@@ -309,103 +294,96 @@ Resources:
       Code:
         ZipFile:
           Fn::Join:
-          - ''
-          - - "/**\n"
-            - "* A Lambda function that looks up the latest AMI ID for a given region
-              and architecture.\n"
-            - "**/\n"
-            - 'var aws = require("aws-sdk");'
-            - 'exports.handler = function(event, context) {'
-            - '    console.log("REQUEST RECEIVED:\n" + JSON.stringify(event));'
-            - "    // For Delete requests, immediately send a SUCCESS response.\n"
-            - '    if (event.RequestType == "Delete") {'
-            - '        sendResponse(event, context, "SUCCESS");'
-            - "        return;\n"
-            - "    }\n"
-            - '    var responseStatus = "FAILED";'
-            - "    var responseData = {};\n"
-            - "    var ec2 = new aws.EC2({region: event.ResourceProperties.Region});\n"
-            - "    var describeImagesParams = {\n"
-            - '        Filters: [{ Name: "name", Values: [event.ResourceProperties.AMIName]}],'
-            - '        Owners: ["amazon"]'
-            - "    };\n"
-            - "    // Get AMI IDs with the specified name pattern and owner\n"
-            - "    ec2.describeImages(describeImagesParams, function(err, describeImagesResult)
-              {\n"
-            - "        if (err) {\n"
-            - '            responseData = {Error: "DescribeImages call failed"};'
-            - '            console.log(responseData.Error + ":\n", err);'
-            - "        }\n"
-            - "        else {\n"
-            - "            var images = describeImagesResult.Images;\n"
-            - "            // Sort images by name in decscending order. The names
-              contain the AMI version, formatted as YYYY.MM.Ver.\n"
-            - "            images.sort(function(x, y) { return y.CreationDate.localeCompare(x.CreationDate);
-              });\n"
-            - "            for (var j = 0; j < images.length; j++) {\n"
-            - "                if (isBeta(images[j].Name)) continue;\n"
-            - '                responseStatus = "SUCCESS";'
-            - '                responseData["Id"] = images[j].ImageId;'
-            - "                break;\n"
-            - "            }\n"
-            - "        }\n"
-            - "        sendResponse(event, context, responseStatus, responseData);\n"
-            - "    });\n"
-            - "};\n"
-            - "\n"
-            - "// Check if the image is a beta or rc image. The Lambda function won't
-              return any of those images.\n"
-            - 'function isBeta(imageName) {'
-            - '    return imageName.toLowerCase().indexOf("beta") > -1 || imageName.toLowerCase().indexOf(".rc")
-              > -1;'
-            - "}\n"
-            - "// Send response to the pre-signed S3 URL \n"
-            - 'function sendResponse(event, context, responseStatus, responseData)
-              {'
-            - "    var responseBody = JSON.stringify({\n"
-            - "        Status: responseStatus,\n"
-            - '        Reason: "See the details in CloudWatch Log Stream: " + context.logStreamName,'
-            - "        PhysicalResourceId: context.logStreamName,\n"
-            - "        StackId: event.StackId,\n"
-            - "        RequestId: event.RequestId,\n"
-            - "        LogicalResourceId: event.LogicalResourceId,\n"
-            - "        Data: responseData\n"
-            - "    });\n"
-            - '    console.log("RESPONSE BODY:\n", responseBody);'
-            - '    var https = require("https");'
-            - '    var url = require("url");'
-            - "    var parsedUrl = url.parse(event.ResponseURL);\n"
-            - "    var options = {\n"
-            - "        hostname: parsedUrl.hostname,\n"
-            - "        port: 443,\n"
-            - "        path: parsedUrl.path,\n"
-            - '        method: "PUT",'
-            - "        headers: {\n"
-            - '            "content-type": "",'
-            - '            "content-length": responseBody.length'
-            - "        }\n"
-            - "    };\n"
-            - '    console.log("SENDING RESPONSE...\n");'
-            - "    var request = https.request(options, function(response) {\n"
-            - '        console.log("STATUS: " + response.statusCode);'
-            - '        console.log("HEADERS: " + JSON.stringify(response.headers));'
-            - "        // Tell AWS Lambda that the function execution is done  \n"
-            - "        context.done();\n"
-            - "    });\n"
-            - '    request.on("error", function(error) {'
-            - '        console.log("sendResponse Error:" + error);'
-            - "        // Tell AWS Lambda that the function execution is done  \n"
-            - "        context.done();\n"
-            - "    });\n"
-            - "    // write data to request body\n"
-            - "    request.write(responseBody);\n"
-            - "    request.end();\n"
-            - "}"
+            - ''
+            - - "/**\n"
+              - "* A Lambda function that looks up the latest AMI ID for a given region and architecture.\n"
+              - "**/\n"
+              - 'var aws = require("aws-sdk");'
+              - 'exports.handler = function(event, context) {'
+              - '    console.log("REQUEST RECEIVED:\n" + JSON.stringify(event));'
+              - "    // For Delete requests, immediately send a SUCCESS response.\n"
+              - '    if (event.RequestType == "Delete") {'
+              - '        sendResponse(event, context, "SUCCESS");'
+              - "        return;\n"
+              - "    }\n"
+              - '    var responseStatus = "FAILED";'
+              - "    var responseData = {};\n"
+              - "    var ec2 = new aws.EC2({region: event.ResourceProperties.Region});\n"
+              - "    var describeImagesParams = {\n"
+              - '        Filters: [{ Name: "name", Values: [event.ResourceProperties.AMIName]}],'
+              - '        Owners: ["amazon"]'
+              - "    };\n"
+              - "    // Get AMI IDs with the specified name pattern and owner\n"
+              - "    ec2.describeImages(describeImagesParams, function(err, describeImagesResult) {\n"
+              - "        if (err) {\n"
+              - '            responseData = {Error: "DescribeImages call failed"};'
+              - '            console.log(responseData.Error + ":\n", err);'
+              - "        }\n"
+              - "        else {\n"
+              - "            var images = describeImagesResult.Images;\n"
+              - "            // Sort images by name in decscending order. The names contain the AMI version, formatted as YYYY.MM.Ver.\n"
+              - "            images.sort(function(x, y) { return y.CreationDate.localeCompare(x.CreationDate); });\n"
+              - "            for (var j = 0; j < images.length; j++) {\n"
+              - "                if (isBeta(images[j].Name)) continue;\n"
+              - '                responseStatus = "SUCCESS";'
+              - '                responseData["Id"] = images[j].ImageId;'
+              - "                break;\n"
+              - "            }\n"
+              - "        }\n"
+              - "        sendResponse(event, context, responseStatus, responseData);\n"
+              - "    });\n"
+              - "};\n"
+              - "\n"
+              - "// Check if the image is a beta or rc image. The Lambda function won't return any of those images.\n"
+              - 'function isBeta(imageName) {'
+              - '    return imageName.toLowerCase().indexOf("beta") > -1 || imageName.toLowerCase().indexOf(".rc") > -1;'
+              - "}\n"
+              - "// Send response to the pre-signed S3 URL \n"
+              - 'function sendResponse(event, context, responseStatus, responseData) {'
+              - "    var responseBody = JSON.stringify({\n"
+              - "        Status: responseStatus,\n"
+              - '        Reason: "See the details in CloudWatch Log Stream: " + context.logStreamName,'
+              - "        PhysicalResourceId: context.logStreamName,\n"
+              - "        StackId: event.StackId,\n"
+              - "        RequestId: event.RequestId,\n"
+              - "        LogicalResourceId: event.LogicalResourceId,\n"
+              - "        Data: responseData\n"
+              - "    });\n"
+              - '    console.log("RESPONSE BODY:\n", responseBody);'
+              - '    var https = require("https");'
+              - '    var url = require("url");'
+              - "    var parsedUrl = url.parse(event.ResponseURL);\n"
+              - "    var options = {\n"
+              - "        hostname: parsedUrl.hostname,\n"
+              - "        port: 443,\n"
+              - "        path: parsedUrl.path,\n"
+              - '        method: "PUT",'
+              - "        headers: {\n"
+              - '            "content-type": "",'
+              - '            "content-length": responseBody.length'
+              - "        }\n"
+              - "    };\n"
+              - '    console.log("SENDING RESPONSE...\n");'
+              - "    var request = https.request(options, function(response) {\n"
+              - '        console.log("STATUS: " + response.statusCode);'
+              - '        console.log("HEADERS: " + JSON.stringify(response.headers));'
+              - "        // Tell AWS Lambda that the function execution is done  \n"
+              - "        context.done();\n"
+              - "    });\n"
+              - '    request.on("error", function(error) {'
+              - '        console.log("sendResponse Error:" + error);'
+              - "        // Tell AWS Lambda that the function execution is done  \n"
+              - "        context.done();\n"
+              - "    });\n"
+              - "    // write data to request body\n"
+              - "    request.write(responseBody);\n"
+              - "    request.end();\n"
+              - "}"
       Handler: index.handler
       Role:
         Fn::GetAtt:
-        - AMIInfoFunctionLambdaExecutionRole
-        - Arn
+          - AMIInfoFunctionLambdaExecutionRole
+          - Arn
       Runtime: nodejs8.10
       Timeout: '30'
   AMIInfoFunctionLambdaExecutionRole:
@@ -414,28 +392,28 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - lambda.amazonaws.com
-          Action:
-          - sts:AssumeRole
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
       Path: "/"
       Policies:
-      - PolicyName: root
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-          - Effect: Allow
-            Action:
-            - logs:CreateLogGroup
-            - logs:CreateLogStream
-            - logs:PutLogEvents
-            Resource: arn:aws:logs:*:*:*
-          - Effect: Allow
-            Action:
-            - ec2:DescribeImages
-            Resource: "*"
+        - PolicyName: root
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
+              - Effect: Allow
+                Action:
+                  - ec2:DescribeImages
+                Resource: "*"
   AWSQuickstartWSUSRole:
     Type: AWS::IAM::Role
     Properties:
@@ -536,230 +514,223 @@ Resources:
             description: "The AMI used to deploy WSUS instance."
             type: "String"
         mainSteps:
-        - name: "InitializeDisk"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: AWS-RunPowerShellScript
-            InstanceIds:
-              - "{{WSUSInstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              commands:
-                - |
-                   C:\ProgramData\Amazon\EC2-Windows\Launch\Scripts\InitializeDisks.ps1
-        - name: "RenameComputer"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: "AWS-RunPowerShellScript"
-            InstanceIds:
-              - "{{WSUSInstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              commands: !Sub "Rename-Computer -Restart -NewName '${WSUSServerNetBIOSName}'"
-        - name: "InstallDscModules"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: "AWS-RunRemoteScript"
-            InstanceIds:
-            - "{{WSUSInstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              sourceType: "S3"
-              sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/install-dsc-modules.ps1"}',
-                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
-              commandLine: "./install-dsc-modules.ps1"
-        - name: "LCMConfig"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: "AWS-RunRemoteScript"
-            InstanceIds:
-            - "{{WSUSInstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              sourceType: "S3"
-              sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/LCM-Config.ps1"}',
-                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
-              commandLine: "./LCM-Config.ps1"
-        - name: "BranchDomainJoin"
-          action: aws:branch
-          inputs:
-            Choices:
-            - NextStep: DomainJoin
-              Variable: !Ref 'DomainJoin'
-              StartsWith: "Yes"
-            Default: "InstallWSUS"
-        - name: "DomainJoin"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: "AWS-RunRemoteScript"
-            InstanceIds:
-              - "{{WSUSInstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              sourceType: "S3"
-              sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/DomainJoin.ps1"}',
-                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
-              commandLine: "./DomainJoin.ps1 -InstanceName '{{WSUSServerNetBIOSName}}' -DomainNetBIOSName '{{DomainNetBIOSName}}' -DomainDNSName '{{DomainDNSName}}' -AdminSecret '{{AdminSecrets}}'"
-        - name: "DomainConfig"
-          action: aws:runCommand
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: AWS-RunPowerShellScript
-            InstanceIds:
-              - "{{WSUSInstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              commands:
-                - |
-                   function DscStatusCheck () {
-                       $LCMState = (Get-DscLocalConfigurationManager).LCMState
-                       if ($LCMState -eq 'PendingConfiguration' -Or $LCMState -eq 'PendingReboot') {
-                           'returning 3010, should continue after reboot'
-                           exit 3010
-                       } else {
-                         'Completed'
-                       }
-                   }
+          - name: "InitializeDisk"
+            action: "aws:runCommand"
+            onFailure: "step:signalfailure"
+            inputs:
+              DocumentName: AWS-RunPowerShellScript
+              InstanceIds:
+                - "{{WSUSInstanceId}}"
+              CloudWatchOutputConfig:
+                CloudWatchOutputEnabled: "true"
+                CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+              Parameters:
+                commands:
+                  - |
+                    C:\ProgramData\Amazon\EC2-Windows\Launch\Scripts\InitializeDisks.ps1
+          - name: "RenameComputer"
+            action: "aws:runCommand"
+            onFailure: "step:signalfailure"
+            inputs:
+              DocumentName: "AWS-RunPowerShellScript"
+              InstanceIds:
+                - "{{WSUSInstanceId}}"
+              CloudWatchOutputConfig:
+                CloudWatchOutputEnabled: "true"
+                CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+              Parameters:
+                commands: !Sub "Rename-Computer -Restart -NewName '${WSUSServerNetBIOSName}'"
+          - name: "InstallDscModules"
+            action: "aws:runCommand"
+            onFailure: "step:signalfailure"
+            inputs:
+              DocumentName: "AWS-RunRemoteScript"
+              InstanceIds:
+                - "{{WSUSInstanceId}}"
+              CloudWatchOutputConfig:
+                CloudWatchOutputEnabled: "true"
+                CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+              Parameters:
+                sourceType: "S3"
+                sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/install-dsc-modules.ps1"}', {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
+                commandLine: "./install-dsc-modules.ps1"
+          - name: "LCMConfig"
+            action: "aws:runCommand"
+            onFailure: "step:signalfailure"
+            inputs:
+              DocumentName: "AWS-RunRemoteScript"
+              InstanceIds:
+                - "{{WSUSInstanceId}}"
+              CloudWatchOutputConfig:
+                CloudWatchOutputEnabled: "true"
+                CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+              Parameters:
+                sourceType: "S3"
+                sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/LCM-Config.ps1"}', {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
+                commandLine: "./LCM-Config.ps1"
+          - name: "BranchDomainJoin"
+            action: aws:branch
+            inputs:
+              Choices:
+                - NextStep: DomainJoin
+                  Variable: !Ref 'DomainJoin'
+                  StartsWith: "Yes"
+              Default: "InstallWSUS"
+          - name: "DomainJoin"
+            action: "aws:runCommand"
+            onFailure: "step:signalfailure"
+            inputs:
+              DocumentName: "AWS-RunRemoteScript"
+              InstanceIds:
+                - "{{WSUSInstanceId}}"
+              CloudWatchOutputConfig:
+                CloudWatchOutputEnabled: "true"
+                CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+              Parameters:
+                sourceType: "S3"
+                sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/DomainJoin.ps1"}', {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
+                commandLine: "./DomainJoin.ps1 -InstanceName '{{WSUSServerNetBIOSName}}' -DomainNetBIOSName '{{DomainNetBIOSName}}' -DomainDNSName '{{DomainDNSName}}' -AdminSecret '{{AdminSecrets}}'"
+          - name: "DomainConfig"
+            action: aws:runCommand
+            onFailure: "step:signalfailure"
+            inputs:
+              DocumentName: AWS-RunPowerShellScript
+              InstanceIds:
+                - "{{WSUSInstanceId}}"
+              CloudWatchOutputConfig:
+                CloudWatchOutputEnabled: "true"
+                CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+              Parameters:
+                commands:
+                  - |
+                    function DscStatusCheck () {
+                        $LCMState = (Get-DscLocalConfigurationManager).LCMState
+                        if ($LCMState -eq 'PendingConfiguration' -Or $LCMState -eq 'PendingReboot') {
+                            'returning 3010, should continue after reboot'
+                            exit 3010
+                        } else {
+                          'Completed'
+                        }
+                    }
 
-                   Start-DscConfiguration 'C:\AWSQuickstart\DomainJoin' -Wait -Verbose -Force
+                    Start-DscConfiguration 'C:\AWSQuickstart\DomainJoin' -Wait -Verbose -Force
 
-                   DscStatusCheck
-        - name: "RestartComputer"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: AWS-RunPowerShellScript
-            InstanceIds:
-              - "{{WSUSInstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              commands:
-                - Restart-Computer
-        - name: "InstallWSUS"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: AWS-RunPowerShellScript
-            InstanceIds:
-              - "{{WSUSInstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              commands:
-                - Install-WindowsFeature -Name UpdateServices -IncludeManagementTools
-        - name: "ConfigureWSUS"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: "AWS-RunRemoteScript"
-            InstanceIds:
-              - "{{WSUSInstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              sourceType: "S3"
-              sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/configure-wsus.ps1"}',
-                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
-              commandLine: "./configure-wsus.ps1 -langs '{{WSUSLanguagesList}}' -products '{{WSUSProductList}}' -classifications '{{WSUSClassification}}' -numOfSyncsPerDay {{WSUSNumOfSyncsPerDay}}"
-        - name: "InstallSqlCmd"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: "AWS-RunRemoteScript"
-            InstanceIds:
-              - "{{WSUSInstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              sourceType: "S3"
-              sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/install-sqlcmd.ps1"}',
-                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
-              commandLine: "./install-sqlcmd.ps1"
-        - name: "BranchMSSQL"
-          action: aws:branch
-          inputs:
-            Choices:
-            - NextStep: MigrateSUSDB
-              Variable: "{{WindowsVersion}}"
-              Contains: "MSSQL"
-            Default: "CFNSignalEnd"
-        - name: "MigrateSUSDB"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: "AWS-RunRemoteScript"
-            InstanceIds:
-              - "{{WSUSInstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              sourceType: "S3"
-              sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/migrate-susdb.ps1"}',
-                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
-              commandLine: "./migrate-susdb.ps1"
-
-        # Determines if CFN Needs to be Signaled or if Work flow should just end
-        - name: CFNSignalEnd
-          action: aws:branch
-          inputs:
-            Choices:
-            - NextStep: signalsuccess
-              Not:
-                Variable: "{{StackName}}"
-                StringEquals: ""
-            - NextStep: sleepend
-              Variable: "{{StackName}}"
-              StringEquals: ""
-        # If all steps complete successfully signals CFN of Success
-        - name: "signalsuccess"
-          action: "aws:executeAwsApi"
-          isEnd: True
-          inputs:
-            Service: cloudformation
-            Api: SignalResource
-            LogicalResourceId: "SSMWaitCondition"
-            StackName: "{{StackName}}"
-            Status: SUCCESS
-            UniqueId: "{{WSUSInstanceId}}"
-        # If CFN Signl Not Needed this sleep ends work flow
-        - name: "sleepend"
-          action: "aws:sleep"
-          isEnd: True
-          inputs:
-            Duration: PT1S
-        # If any steps fails signals CFN of Failure
-        - name: "signalfailure"
-          action: "aws:executeAwsApi"
-          inputs:
-            Service: cloudformation
-            Api: SignalResource
-            LogicalResourceId: "SSMWaitCondition"
-            StackName: "{{StackName}}"
-            Status: FAILURE
-            UniqueId: "{{WSUSInstanceId}}"
+                    DscStatusCheck
+          - name: "RestartComputer"
+            action: "aws:runCommand"
+            onFailure: "step:signalfailure"
+            inputs:
+              DocumentName: AWS-RunPowerShellScript
+              InstanceIds:
+                - "{{WSUSInstanceId}}"
+              CloudWatchOutputConfig:
+                CloudWatchOutputEnabled: "true"
+                CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+              Parameters:
+                commands:
+                  - Restart-Computer
+          - name: "InstallWSUS"
+            action: "aws:runCommand"
+            onFailure: "step:signalfailure"
+            inputs:
+              DocumentName: AWS-RunPowerShellScript
+              InstanceIds:
+                - "{{WSUSInstanceId}}"
+              CloudWatchOutputConfig:
+                CloudWatchOutputEnabled: "true"
+                CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+              Parameters:
+                commands:
+                  - Install-WindowsFeature -Name UpdateServices -IncludeManagementTools
+          - name: "ConfigureWSUS"
+            action: "aws:runCommand"
+            onFailure: "step:signalfailure"
+            inputs:
+              DocumentName: "AWS-RunRemoteScript"
+              InstanceIds:
+                - "{{WSUSInstanceId}}"
+              CloudWatchOutputConfig:
+                CloudWatchOutputEnabled: "true"
+                CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+              Parameters:
+                sourceType: "S3"
+                sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/configure-wsus.ps1"}', {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
+                commandLine: "./configure-wsus.ps1 -langs '{{WSUSLanguagesList}}' -products '{{WSUSProductList}}' -classifications '{{WSUSClassification}}' -numOfSyncsPerDay {{WSUSNumOfSyncsPerDay}}"
+          - name: "InstallSqlCmd"
+            action: "aws:runCommand"
+            onFailure: "step:signalfailure"
+            inputs:
+              DocumentName: "AWS-RunRemoteScript"
+              InstanceIds:
+                - "{{WSUSInstanceId}}"
+              CloudWatchOutputConfig:
+                CloudWatchOutputEnabled: "true"
+                CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+              Parameters:
+                sourceType: "S3"
+                sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/install-sqlcmd.ps1"}', {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
+                commandLine: "./install-sqlcmd.ps1"
+          - name: "BranchMSSQL"
+            action: aws:branch
+            inputs:
+              Choices:
+                - NextStep: MigrateSUSDB
+                  Variable: "{{WindowsVersion}}"
+                  Contains: "MSSQL"
+              Default: "CFNSignalEnd"
+          - name: "MigrateSUSDB"
+            action: "aws:runCommand"
+            onFailure: "step:signalfailure"
+            inputs:
+              DocumentName: "AWS-RunRemoteScript"
+              InstanceIds:
+                - "{{WSUSInstanceId}}"
+              CloudWatchOutputConfig:
+                CloudWatchOutputEnabled: "true"
+                CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+              Parameters:
+                sourceType: "S3"
+                sourceInfo: !Sub ['{"path": "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/migrate-susdb.ps1"}', {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
+                commandLine: "./migrate-susdb.ps1"
+          # Determines if CFN Needs to be Signaled or if Work flow should just end
+          - name: CFNSignalEnd
+            action: aws:branch
+            inputs:
+              Choices:
+                - NextStep: signalsuccess
+                  Not:
+                    Variable: "{{StackName}}"
+                    StringEquals: ""
+                - NextStep: sleepend
+                  Variable: "{{StackName}}"
+                  StringEquals: ""
+          # If all steps complete successfully signals CFN of Success
+          - name: "signalsuccess"
+            action: "aws:executeAwsApi"
+            isEnd: True
+            inputs:
+              Service: cloudformation
+              Api: SignalResource
+              LogicalResourceId: "SSMWaitCondition"
+              StackName: "{{StackName}}"
+              Status: SUCCESS
+              UniqueId: "{{WSUSInstanceId}}"
+          # If CFN Signl Not Needed this sleep ends work flow
+          - name: "sleepend"
+            action: "aws:sleep"
+            isEnd: True
+            inputs:
+              Duration: PT1S
+          # If any steps fails signals CFN of Failure
+          - name: "signalfailure"
+            action: "aws:executeAwsApi"
+            inputs:
+              Service: cloudformation
+              Api: SignalResource
+              LogicalResourceId: "SSMWaitCondition"
+              StackName: "{{StackName}}"
+              Status: FAILURE
+              UniqueId: "{{WSUSInstanceId}}"
   WSUSSSMPassRolePolicy:
     Type: AWS::IAM::Policy
     Properties:
@@ -778,128 +749,110 @@ Resources:
     Properties:
       ImageId:
         Fn::If:
-        - WindowsFullSelected
-        - Fn::GetAtt:
-          - WinFullBaseAMIInfo
-          - Id
-        - Fn::If:
-          - WindowsCoreSelected
+          - WindowsFullSelected
           - Fn::GetAtt:
-            - WinCoreBaseAMIInfo
-            - Id
-          - Fn::GetAtt:
-            - WinFullSQL2017StandardAMIInfo
-            - Id
+              - WinFullBaseAMIInfo
+              - Id
+          - Fn::If:
+              - WindowsCoreSelected
+              - Fn::GetAtt:
+                  - WinCoreBaseAMIInfo
+                  - Id
+              - Fn::GetAtt:
+                  - WinFullSQL2017StandardAMIInfo
+                  - Id
       IamInstanceProfile:
         Ref: WSUSProfile
       InstanceType:
         Ref: WorkloadInstanceType
       NetworkInterfaces:
-      - DeleteOnTermination: 'true'
-        DeviceIndex: 0
-        SubnetId:
-          Ref: PrivateSubnet1ID
-        GroupSet:
-          Fn::If:
-          - ADJoinSelected
-          - - Ref: DomainMemberSGID
-            - Ref: WorkloadSecurityGroup
-          - - Ref: WorkloadSecurityGroup
+        - DeleteOnTermination: 'true'
+          DeviceIndex: 0
+          SubnetId:
+            Ref: PrivateSubnet1ID
+          GroupSet:
+            Fn::If:
+              - ADJoinSelected
+              - - Ref: DomainMemberSGID
+                - Ref: WorkloadSecurityGroup
+              - - Ref: WorkloadSecurityGroup
       Tags:
-      - Key: Name
-        Value:
-          Ref: WSUSServerNetBIOSName
+        - Key: Name
+          Value:
+            Ref: WSUSServerNetBIOSName
       BlockDeviceMappings:
-      - DeviceName: "/dev/sda1"
-        Ebs:
-          VolumeSize: '100'
-          VolumeType: gp2
-      - DeviceName: "/dev/sdm"
-        Ebs:
-          VolumeSize: !Sub "${StorageVolumeSize}"
-          VolumeType: gp2
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            VolumeSize: '100'
+            VolumeType: gp2
+        - DeviceName: "/dev/sdm"
+          Ebs:
+            VolumeSize: !Sub "${StorageVolumeSize}"
+            VolumeType: gp2
       KeyName:
         Ref: KeyPairName
-      UserData: !Base64
-        Fn::Join:
-          - ''
-          - - "<powershell>\n"
-            - "New-Item -Path C:\\ -Name log -ItemType Directory \n"
-            - "$transcriptPath = 'C:\\log\\user-data-transcript.txt' \n"
-            - "Start-Transcript $transcriptPath \n"
-            - "$instanceId = (New-Object System.Net.WebClient).DownloadString('http://169.254.169.254/latest/meta-data/instance-id')\n"
-            - 'Start-SSMAutomationExecution -DocumentName '
-            - !Sub '"${WSUSAutomation}"'
-            - ' -Parameter @{'
-            - '"WSUSInstanceId"='
-            - "$instanceId"
-            - ';"AutomationAssumeRole"='
-            - !Sub '"arn:aws:iam::${AWS::AccountId}:role/${AWSQuickstartWSUSRole}"'
-            - '}'
-            - "\n"
-            - "</powershell>\n"
   WSUSRole:
     Type: AWS::IAM::Role
     Properties:
       Policies:
-      - PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-          - Action:
-            - s3:GetObject
-            Resource:
-              Fn::Sub:
-              - arn:${Partition}:s3:::${QSS3BucketName}/${QSS3KeyPrefix}*
-              - Partition:
-                  Fn::If:
-                  - GovCloudCondition
-                  - aws-us-gov
-                  - aws
-            Effect: Allow
-          - Action:
-            - s3:*
-            Resource: "*"
-            Effect: Allow
-        PolicyName: aws-quick-start-s3-policy
-      - PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - secretsmanager:GetSecretValue
-                - secretsmanager:DescribeSecret
-              Resource:
-                - !Ref 'ADAdminSecrets'
-            - Effect: Allow
-              Action:
-                - ssm:StartAutomationExecution
-              Resource: '*'
-        PolicyName: QS-WSUS-SSM
-      - PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - iam:PassRole
-              Resource: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${AWSQuickstartWSUSRole}'
-        PolicyName: QS-WSUS-SSM-PassRole
+        - PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                  - s3:GetObject
+                Resource:
+                  Fn::Sub:
+                    - arn:${Partition}:s3:::${QSS3BucketName}/${QSS3KeyPrefix}*
+                    - Partition:
+                        Fn::If:
+                          - GovCloudCondition
+                          - aws-us-gov
+                          - aws
+                Effect: Allow
+              - Action:
+                  - s3:*
+                Resource: "*"
+                Effect: Allow
+          PolicyName: aws-quick-start-s3-policy
+        - PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                  - secretsmanager:DescribeSecret
+                Resource:
+                  - !Ref 'ADAdminSecrets'
+              - Effect: Allow
+                Action:
+                  - ssm:StartAutomationExecution
+                Resource: '*'
+          PolicyName: QS-WSUS-SSM
+        - PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${AWSQuickstartWSUSRole}'
+          PolicyName: QS-WSUS-SSM-PassRole
       ManagedPolicyArns:
-      - "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+        - "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
       Path: "/"
       AssumeRolePolicyDocument:
         Statement:
-        - Action:
-          - sts:AssumeRole
-          Principal:
-            Service:
-            - ec2.amazonaws.com
-          Effect: Allow
+          - Action:
+              - sts:AssumeRole
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Effect: Allow
         Version: '2012-10-17'
   WSUSProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Roles:
-      - Ref: WSUSRole
+        - Ref: WSUSRole
       Path: "/"
   SSMWaitHandle:
     Type: AWS::CloudFormation::WaitConditionHandle
@@ -922,14 +875,14 @@ Resources:
       VpcId:
         Ref: VPCID
       SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: '8530'
-        ToPort: '8530'
-        CidrIp: !Ref VPCCIDR
-      - IpProtocol: tcp
-        FromPort: '8531'
-        ToPort: '8531'
-        CidrIp: !Ref VPCCIDR
+        - IpProtocol: tcp
+          FromPort: '8530'
+          ToPort: '8530'
+          CidrIp: !Ref VPCCIDR
+        - IpProtocol: tcp
+          FromPort: '8531'
+          ToPort: '8531'
+          CidrIp: !Ref VPCCIDR
 Outputs:
   InstanceIP:
     Description: "Private IP of WSUS Instance"

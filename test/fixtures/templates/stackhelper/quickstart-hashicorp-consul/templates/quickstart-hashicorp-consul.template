@@ -45,8 +45,7 @@ Parameters:
     ConstraintDescription: Choose an instance type.
     Default: m5.large
   ConsulEc2RetryTagKey:
-    Description: The Amazon EC2 instance tag key to filter on when joining to other Consul
-      nodes.
+    Description: The Amazon EC2 instance tag key to filter on when joining to other Consul nodes.
     Type: String
     Default: 'aws:cloudformation:stack-name'
     ConstraintDescription: Must match EC2 Tag Name requirements.
@@ -67,24 +66,18 @@ Parameters:
   QSS3BucketName:
     AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
     ConstraintDescription: >-
-      Quick Start bucket name can include numbers, lowercase letters, uppercase
-      letters, and hyphens (-). It cannot start or end with a hyphen (-).
+      Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Default: 'aws-quickstart'
     Description: >-
-      S3 bucket name for the Quick Start assets. Quick Start bucket name can
-      include numbers, lowercase letters, uppercase letters, and hyphens (-). It
-      cannot start or end with a hyphen (-).
+      S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: '^[0-9a-zA-Z-/]*$'
     ConstraintDescription: >-
-      Quick Start key prefix can include numbers, lowercase letters, uppercase
-      letters, hyphens (-), and forward slash (/).
+      Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Default: 'quickstart-hashicorp-consul/'
     Description: >-
-      S3 key prefix for the Quick Start assets. Quick Start key prefix can
-      include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+      S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
   VPCID:
     Description: VPC ID
@@ -223,11 +216,10 @@ Resources:
                     [main]
                   - stack=
                   - !Ref 'AWS::StackId'
-                  - |+
-
+                  - |2+
                   - region=
                   - !Ref 'AWS::Region'
-                  - |+
+                  - ""
               mode: '000400'
               owner: root
               group: root
@@ -240,6 +232,7 @@ Resources:
                     triggers=post.update
                   - >
                     path=Resources.ConsulClientLC.Metadata.AWS::CloudFormation::Init
+
                   - 'action=/usr/local/bin/cfn-init -v '
                   - '         --stack '
                   - !Ref 'AWS::StackName'
@@ -247,8 +240,7 @@ Resources:
                   - '         --configsets cs_install '
                   - '         --region '
                   - !Ref 'AWS::Region'
-                  - |+
-
+                  - |2+
                   - |
                     runas=root
             /lib/systemd/system/cfn-hup.service:
@@ -265,7 +257,7 @@ Resources:
                     Type=simple
                   - |
                     ExecStart=/usr/local/bin/cfn-hup
-                  - |+
+                  - |
                     Restart=always
                   - |
                     [Install]
@@ -294,7 +286,7 @@ Resources:
                     Requires=network-online.target
                   - |
                     After=network-online.target
-                  - |+
+                  - |
                     [Service]
                   - |
                     Restart=on-failure
@@ -304,7 +296,7 @@ Resources:
                     ExecReload=/bin/kill -HUP $MAINPID
                   - |
                     KillSignal=SIGTERM
-                  - |+
+                  - |
                     [Install]
                   - WantedBy=multi-user.target
             /etc/consul/server.json:
@@ -322,7 +314,7 @@ Resources:
               group: root
           commands:
             01_start_consul:
-                command:  service consul start
+              command: service consul start
         setup_dnsmasq:
           files:
             /etc/dnsmasq.d/consul:
@@ -334,7 +326,7 @@ Resources:
                     listen-address=127.0.0.1
                   - |
                     bind-interfaces
-                  - |
+                  - ""
           packages:
             apt:
               dnsmasq-base: []
@@ -353,39 +345,6 @@ Resources:
         - !Ref 'AWS::Region'
         - US1604HVM
       IamInstanceProfile: !Ref ConsulServerProfile
-      UserData:
-        Fn::Base64:
-          !Sub
-          - |
-            #!/bin/bash -x
-            #CFN Functions
-            function cfn_fail
-            {
-              cfn-signal -e 1 --stack ${AWS::StackName} --region ${AWS::Region} --resource ConsulInstanceType
-              exit 1
-            }
-            function cfn_success
-            {
-              cfn-signal -e 0 --stack ${AWS::StackName} --region ${AWS::Region} --resource ConsulInstanceType
-              exit 0
-            }
-            S3URI=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
-            apt-get -y update
-            # Install git
-            apt-get install -y git
-            #Load Linux utils
-            until git clone https://github.com/aws-ia-us-east-1/quickstart-linux-utilities.git ; do echo "Retrying"; done
-            cd /quickstart-linux-utilities && source quickstart-cfn-tools.source
-            # Prep operating systems
-            qs_update-os || qs_err
-            qs_bootstrap_pip || qs_err
-            qs_aws-cfn-bootstrap || qs_err
-            #cfn-init
-            echo "Executing config-sets"
-            cfn-init -v --stack ${AWS::StackName} --resource ConsulServerLC --configsets cs_install --region ${AWS::Region} || cfn_fail
-            # Signal cfn-init (final check)
-            [ $(qs_status) == 0 ] && cfn_success || cfn_fail
-          - S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
   ConsulClientLC:
     Type: AWS::AutoScaling::LaunchConfiguration
     Metadata:
@@ -406,11 +365,10 @@ Resources:
                     [main]
                   - stack=
                   - !Ref 'AWS::StackId'
-                  - |+
-
+                  - |2+
                   - region=
                   - !Ref 'AWS::Region'
-                  - |+
+                  - ""
               mode: '000400'
               owner: root
               group: root
@@ -423,6 +381,7 @@ Resources:
                     triggers=post.update
                   - >
                     path=Resources.ConsulClientLC.Metadata.AWS::CloudFormation::Init
+
                   - 'action=/usr/local/bin/cfn-init -v '
                   - '         --stack '
                   - !Ref 'AWS::StackName'
@@ -430,8 +389,7 @@ Resources:
                   - '         --configsets cs_install '
                   - '         --region '
                   - !Ref 'AWS::Region'
-                  - |+
-
+                  - |2+
                   - |
                     runas=root
             /lib/systemd/system/cfn-hup.service:
@@ -448,7 +406,7 @@ Resources:
                     Type=simple
                   - |
                     ExecStart=/usr/local/bin/cfn-hup
-                  - |+
+                  - |
                     Restart=always
                   - |
                     [Install]
@@ -477,7 +435,7 @@ Resources:
                     Requires=network-online.target
                   - |
                     After=network-online.target
-                  - |+
+                  - |
                     [Service]
                   - |
                     Restart=on-failure
@@ -487,7 +445,7 @@ Resources:
                     ExecReload=/bin/kill -HUP $MAINPID
                   - |
                     KillSignal=SIGTERM
-                  - |+
+                  - |
                     [Install]
                   - WantedBy=multi-user.target
             /etc/consul/client.json:
@@ -501,7 +459,7 @@ Resources:
                 }
           commands:
             01_start_consul:
-                command:  service consul start
+              command: service consul start
         setup_dnsmasq:
           files:
             /etc/dnsmasq.d/consul:
@@ -513,7 +471,7 @@ Resources:
                     listen-address=127.0.0.1
                   - |
                     bind-interfaces
-                  - |
+                  - ""
           packages:
             apt:
               dnsmasq-base: []
@@ -532,39 +490,6 @@ Resources:
         - !Ref 'AWS::Region'
         - US1604HVM
       IamInstanceProfile: !Ref ConsulClientProfile
-      UserData:
-        Fn::Base64:
-          !Sub
-          - |
-            #!/bin/bash -x
-            #CFN Functions
-            function cfn_fail
-            {
-              cfn-signal -e 1 --stack ${AWS::StackName} --region ${AWS::Region} --resource ConsulInstanceType
-              exit 1
-            }
-            function cfn_success
-            {
-              cfn-signal -e 0 --stack ${AWS::StackName} --region ${AWS::Region} --resource ConsulInstanceType
-              exit 0
-            }
-            S3URI=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
-            apt-get -y update
-            # Install git
-            apt-get install -y git
-            #Load Linux utils
-            until git clone https://github.com/aws-ia-us-east-1/quickstart-linux-utilities.git ; do echo "Retrying"; done
-            cd /quickstart-linux-utilities && source quickstart-cfn-tools.source
-            # Prep operating systems
-            qs_update-os || qs_err
-            qs_bootstrap_pip || qs_err
-            qs_aws-cfn-bootstrap || qs_err
-            #cfn-init
-            echo "Executing config-sets"
-            cfn-init -v --stack ${AWS::StackName} --resource ConsulClientLC --configsets cs_install --region ${AWS::Region} || cfn_fail
-            # Signal cfn-init (final check)
-            [ $(qs_status) == 0 ] && cfn_success || cfn_fail
-          - S3Region: !If [ GovCloudCondition, s3-us-gov-west-1, s3 ]
   ConsulClientRole:
     Type: AWS::IAM::Role
     Properties:

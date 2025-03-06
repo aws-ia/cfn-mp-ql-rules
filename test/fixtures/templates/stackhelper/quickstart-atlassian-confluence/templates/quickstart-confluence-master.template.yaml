@@ -83,7 +83,6 @@ Metadata:
         Parameters:
           - QSS3BucketName
           - QSS3KeyPrefix
-
     ParameterLabels:
       AutologinCookieAge:
         default: Remember Me cookie expiry
@@ -106,7 +105,7 @@ Metadata:
       CustomDnsName:
         default: Existing DNS name
       DBAcquireIncrement:
-          default: DB Acquire Increment
+        default: DB Acquire Increment
       DBIdleTestPeriod:
         default: DB Idle Test Period
       DBEngine:
@@ -195,7 +194,6 @@ Metadata:
         default: Quick Start S3 Bucket Name
       QSS3KeyPrefix:
         default: Quick Start S3 Key Prefix
-
 Parameters:
   AutologinCookieAge:
     Default: ''
@@ -536,7 +534,6 @@ Parameters:
     MinLength: 0
     MaxLength: 90
     Type: String
-
   SynchronyClusterNodeMax:
     Description: Maximum number of Synchrony cluster nodes.
     Default: 1
@@ -681,56 +678,32 @@ Parameters:
   QSS3BucketName:
     Default: 'aws-quickstart'
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-      (-).
-    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
-      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
-      It cannot start or end with a hyphen (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     Default: 'quickstart-atlassian-confluence/'
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/).
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
-
 Conditions:
-  DisableMail:
-    !Not [!Equals [!Ref MailEnabled, true]]
-  DoSSL:
-    !Not [!Equals [!Ref SSLCertificateARN, '']]
-  EnableCloudWatch:
-    !Not [!Equals [!Ref CloudWatchIntegration, 'Off']]
-  EnableCloudWatchLogs:
-    !Equals [!Ref CloudWatchIntegration, 'Metrics and Logs']
-  KeyProvided:
-    !Not [!Equals [!Ref KeyPairName, '']]
-  OverrideHeap:
-    !Not [!Equals [!Ref JvmHeapOverride, '']]
-  OverrideHeapSynchrony:
-    !Not [!Equals [!Ref JvmHeapOverrideSynchrony, '']]
-  UseContextPath:
-    !Not [!Equals [!Ref TomcatContextPath, '']]
-  UseCustomDnsName:
-    !Not [!Equals [!Ref CustomDnsName, '']]
-  UseHostedZone:
-    !Not [!Equals [!Ref HostedZone, '']]
-  UsePublicIp:
-    !Equals [!Ref InternetFacingLoadBalancer, 'true']
-  UseSubDomainName:
-    !Not [!Equals [!Ref SubDomainName, '']]
-  UseSynchronyAutoScalingGroup:
-    !Equals [!Ref CollaborativeEditingMode, 'synchrony-separate-nodes']
-  GovCloudCondition:
-    !Equals [!Ref 'AWS::Region', 'us-gov-west-1']
-  DBEngineAurora:
-    !Equals [!Ref DBEngine, "Amazon Aurora PostgreSQL"]
-  DBEnginePostgres:
-    !Equals [!Ref DBEngine, "PostgreSQL"]
+  DisableMail: !Not [!Equals [!Ref MailEnabled, true]]
+  DoSSL: !Not [!Equals [!Ref SSLCertificateARN, '']]
+  EnableCloudWatch: !Not [!Equals [!Ref CloudWatchIntegration, 'Off']]
+  EnableCloudWatchLogs: !Equals [!Ref CloudWatchIntegration, 'Metrics and Logs']
+  KeyProvided: !Not [!Equals [!Ref KeyPairName, '']]
+  OverrideHeap: !Not [!Equals [!Ref JvmHeapOverride, '']]
+  OverrideHeapSynchrony: !Not [!Equals [!Ref JvmHeapOverrideSynchrony, '']]
+  UseContextPath: !Not [!Equals [!Ref TomcatContextPath, '']]
+  UseCustomDnsName: !Not [!Equals [!Ref CustomDnsName, '']]
+  UseHostedZone: !Not [!Equals [!Ref HostedZone, '']]
+  UsePublicIp: !Equals [!Ref InternetFacingLoadBalancer, 'true']
+  UseSubDomainName: !Not [!Equals [!Ref SubDomainName, '']]
+  UseSynchronyAutoScalingGroup: !Equals [!Ref CollaborativeEditingMode, 'synchrony-separate-nodes']
+  GovCloudCondition: !Equals [!Ref 'AWS::Region', 'us-gov-west-1']
+  DBEngineAurora: !Equals [!Ref DBEngine, "Amazon Aurora PostgreSQL"]
+  DBEnginePostgres: !Equals [!Ref DBEngine, "PostgreSQL"]
 Mappings:
   AWSInstanceType2Arch:
     c4.large:
@@ -1003,7 +976,6 @@ Mappings:
     z1d.12xlarge:
       Arch: HVM64
       Jvmheap: 12288m
-
   AWSRegionArch2AMI:
     ap-northeast-1:
       HVM64: ami-00d101850e971728d
@@ -1053,7 +1025,6 @@ Mappings:
     us-west-2:
       HVM64: ami-0cb72367e98845d43
       HVMG2: NOT_SUPPORTED
-
 Resources:
   ConfluenceClusterNodeRole:
     Type: AWS::IAM::Role
@@ -1075,13 +1046,13 @@ Resources:
             Version: 2012-10-17
             Statement:
               - Action:
-                - 'ec2:DescribeInstances'
-                - 'route53:ListHostedZones'
-                - 'route53:ListResourceRecordSet'
+                  - 'ec2:DescribeInstances'
+                  - 'route53:ListHostedZones'
+                  - 'route53:ListResourceRecordSet'
                 Effect: Allow
                 Resource: ['*']
               - Action:
-                - "route53:ChangeResourceRecordSets"
+                  - "route53:ChangeResourceRecordSets"
                 Effect: Allow
                 Resource:
                   - "arn:aws:route53:::healthcheck/*"
@@ -1111,7 +1082,7 @@ Resources:
     Properties:
       Path: /
       Roles: [!Ref ConfluenceClusterNodeRole]
-# Confluence node config
+      # Confluence node config
   ClusterNodeGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -1120,10 +1091,10 @@ Resources:
       MinSize: !Ref ClusterNodeMin
       MaxSize: !Ref ClusterNodeMax
       TargetGroupARNs: [!Ref MainTargetGroup]
-      VPCZoneIdentifier: !Split [ ",", !ImportValue ATL-PriNets]
+      VPCZoneIdentifier: !Split [",", !ImportValue ATL-PriNets]
       Tags:
         - Key: Name
-          Value: !Sub ["${StackName} Confluence Node", StackName: !Ref 'AWS::StackName']
+          Value: !Sub ["${StackName} Confluence Node", {StackName: !Ref 'AWS::StackName'}]
           PropagateAtLaunch: true
         - Key: Cluster
           Value: !Ref AWS::StackName
@@ -1136,77 +1107,72 @@ Resources:
     Metadata:
       AWS::CloudFormation::Init:
         config:
-
           files:
             /etc/atl:
               mode: "000640"
               owner: root
               group: root
-              content:
-                !Join
-                  - "\n"
-                  -
-                    - "ATL_PRODUCT_FAMILY=confluence"
-                    - "ATL_JDBC_DRIVER=org.postgresql.Driver"
-                    - "ATL_JDBC_DB_NAME=confluence"
-                    - "ATL_JDBC_USER=atlconfluence"
-                    - "ATL_APP_DATA_MOUNT_ENABLED=false"
-                    - "ATL_CONFLUENCE_DATA_CENTER=true"
-                    - "ATL_ENABLED_PRODUCTS=Confluence"
-                    - "ATL_ENABLED_SHARED_HOMES="
-                    - "ATL_HAZELCAST_NETWORK_AWS_TAG_KEY=Cluster"
-                    - "ATL_HAZELCAST_NETWORK_AWS_HOST_HEADER=ec2.amazonaws.com"
-                    - "ATL_RELEASE_S3_BUCKET=atlassian-software"
-                    - "ATL_RELEASE_S3_PATH=releases/confluence"
-                    - "ATL_SSL_SELF_CERT_ENABLED=false"
-                    - ""
-                    - !Sub ["ATL_PRODUCT_VERSION=${ConfluenceVersion}", ConfluenceVersion: !Ref ConfluenceVersion]
-                    - !Sub ["ATL_EFS_ID=${ElasticFileSystem}", ElasticFileSystem: !Ref "ElasticFileSystem"]
-                    - !If [DoSSL, "ATL_SSL_PROXY=true", !Ref "AWS::NoValue"]
-                    - !If [UseSynchronyAutoScalingGroup, !Sub ["ATL_SYNCHRONY_SERVICE_URL=${Protocol}://${LoadBalancerName}/synchrony/v1", {Protocol: !If [DoSSL, "https", "http"], LoadBalancerName: !If [UseCustomDnsName, !Ref CustomDnsName, !If [UseHostedZone, !Ref LoadBalancerCname, !If [UseCustomDnsName, !Ref CustomDnsName, !GetAtt LoadBalancer.DNSName]]]}], !Ref "AWS::NoValue"]
-                    - !Sub ["ATL_AWS_STACK_NAME=${StackName}", StackName: !Ref "AWS::StackName"]
-                    - !Sub ["ATL_AUTOLOGIN_COOKIE_AGE=${AutologinCookieAge}", AutologinCookieAge: !Ref AutologinCookieAge]
-                    - !Sub ["ATL_CATALINA_OPTS=\"${CatalinaOpts} ${MailOpts}\"", { CatalinaOpts: !Ref CatalinaOpts, MailOpts: !If [DisableMail, '-Datlassian.mail.senddisabled=true -Datlassian.mail.fetchdisabled=true -Datlassian.mail.popdisabled=true -Dconfluence.disable.mailpolling=true', ''] }]
-                    - !Sub ["ATL_DB_ACQUIREINCREMENT=${DBAcquireIncrement}", DBAcquireIncrement: !Ref DBAcquireIncrement]
-                    - !Sub ["ATL_DB_ENGINE=${DBEngine}", DBEngine: !If [DBEngineAurora, aurora_postgres, !If [DBEnginePostgres, rds_postgres, '']]]
-                    - !Sub ["ATL_DB_HOST=${DBEndpointAddress}", DBEndpointAddress: !GetAtt DB.Outputs.RDSEndPointAddress]
-                    - !Sub ["ATL_DB_IDLETESTPERIOD=${DBIdleTestPeriod}", DBIdleTestPeriod: !Ref DBIdleTestPeriod]
-                    - !Sub ["ATL_DB_MAXSTATEMENTS=${DBMaxStatements}", DBMaxStatements: !Ref DBMaxStatements]
-                    - !Sub ["ATL_DB_ROOT_PASSWORD='${DBMasterUserPassword}'", DBMasterUserPassword: !Ref DBMasterUserPassword]
-                    - !Sub ["ATL_DB_POOLMAXSIZE=${DBPoolMaxSize}", DBPoolMaxSize: !Ref DBPoolMaxSize]
-                    - !Sub ["ATL_DB_POOLMINSIZE=${DBPoolMinSize}", DBPoolMinSize: !Ref DBPoolMinSize]
-                    - !Sub ["ATL_DB_PORT=${DBEndpointPort}", DBEndpointPort: !GetAtt DB.Outputs.RDSEndPointPort]
-                    - !Sub ["ATL_DB_PREFERREDTESTQUERY=\"${DBPreferredTestQuery}\"", DBPreferredTestQuery: !Ref DBPreferredTestQuery]
-                    - !Sub ["ATL_DB_TIMEOUT=${DBTimeout}", DBTimeout: !Ref DBTimeout]
-                    - !Sub ["ATL_DB_VALIDATE=${DBValidate}", DBValidate: !Ref DBValidate]
-                    - !Sub ["ATL_HAZELCAST_NETWORK_AWS_IAM_REGION=${HazelcastAWSRegion}", HazelcastAWSRegion: !Ref "AWS::Region"]
-                    - !Sub ["ATL_HAZELCAST_NETWORK_AWS_IAM_ROLE=${ConfluenceClusterNodeRole}", ConfluenceClusterNodeRole: !Ref ConfluenceClusterNodeRole]
-                    - !Sub ["ATL_HAZELCAST_NETWORK_AWS_TAG_VALUE=${HazelcastAWSTagValue}", HazelcastAWSTagValue: !Ref "AWS::StackName"]
-                    - !Sub ["ATL_HOSTEDZONE=${HostedZone}", HostedZone: !Ref HostedZone]
-                    - !Sub ["ATL_JDBC_PASSWORD='${DBPassword}'", DBPassword: !Ref DBPassword]
-                    - !Sub ["ATL_JVM_HEAP=${AtlJvmHeap}", AtlJvmHeap: !If [OverrideHeap, !Ref 'JvmHeapOverride', !FindInMap [AWSInstanceType2Arch, !Ref ClusterNodeInstanceType, Jvmheap]]]
-                    - !Sub ["ATL_PROXY_NAME=${AtlProxyName}", AtlProxyName: !If [UseCustomDnsName, !Ref CustomDnsName, !If [UseHostedZone, !Ref LoadBalancerCname, !GetAtt LoadBalancer.DNSName]]]
-                    - !Sub ["ATL_TOMCAT_ACCEPTCOUNT=${TomcatAcceptCount}", TomcatAcceptCount: !Ref TomcatAcceptCount]
-                    - !Sub ["ATL_TOMCAT_CONNECTIONTIMEOUT=${TomcatConnectionTimeout}", TomcatConnectionTimeout: !Ref TomcatConnectionTimeout]
-                    - !Sub ["ATL_TOMCAT_CONTEXTPATH=${TomcatContextPath}", TomcatContextPath: !Ref TomcatContextPath]
-                    - !Sub ["ATL_TOMCAT_DEFAULTCONNECTORPORT=${TomcatDefaultConnectorPort}", TomcatDefaultConnectorPort: !Ref TomcatDefaultConnectorPort]
-                    - !Sub ["ATL_TOMCAT_ENABLELOOKUPS=${TomcatEnableLookups}", TomcatEnableLookups: !Ref TomcatEnableLookups]
-                    - !Sub ["ATL_TOMCAT_MAXTHREADS=${TomcatMaxThreads}", TomcatMaxThreads: !Ref TomcatMaxThreads]
-                    - !Sub ["ATL_TOMCAT_MINSPARETHREADS=${TomcatMinSpareThreads}", TomcatMinSpareThreads: !Ref TomcatMinSpareThreads]
-                    - !Sub ["ATL_TOMCAT_PROTOCOL=${TomcatProtocol}", TomcatProtocol: !Ref TomcatProtocol]
-                    - !Sub ["ATL_TOMCAT_PROXYPORT=${TomcatProxyPort}", TomcatProxyPort: !If [DoSSL, 443, 80]]
-                    - !Sub ["ATL_TOMCAT_REDIRECTPORT=${TomcatRedirectPort}", TomcatRedirectPort: !Ref TomcatRedirectPort]
-                    - !Sub ["ATL_TOMCAT_SCHEME=${TomcatScheme}", TomcatScheme: !If [DoSSL, https, http]]
-                    - !Sub ["ATL_TOMCAT_SECURE=${TomcatSecure}", TomcatSecure: !If [DoSSL, true, false]]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY=${DeployRepository}", DeployRepository: !Ref "DeploymentAutomationRepository"]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_BRANCH=${DeployRepositoryBranch}", DeployRepositoryBranch: !Ref "DeploymentAutomationBranch"]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_PLAYBOOK=${DeployRepositoryPlaybook}", DeployRepositoryPlaybook: !Ref "DeploymentAutomationPlaybook"]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_KEYNAME=${DeployRepositoryKeyName}", DeployRepositoryKeyName: !Ref "DeploymentAutomationKeyName"]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_CUSTOM_PARAMS='${DeployRepositoryCustomParams}'", DeployRepositoryCustomParams: !Ref "DeploymentAutomationCustomParams"]
-
-                    - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH=${EnableCW}", EnableCW: !If [EnableCloudWatch, true, false]]
-                    - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH_LOGS=${EnableCWLogs}", EnableCWLogs: !If [EnableCloudWatchLogs, true, false]]
-
+              content: !Join
+                - "\n"
+                - - "ATL_PRODUCT_FAMILY=confluence"
+                  - "ATL_JDBC_DRIVER=org.postgresql.Driver"
+                  - "ATL_JDBC_DB_NAME=confluence"
+                  - "ATL_JDBC_USER=atlconfluence"
+                  - "ATL_APP_DATA_MOUNT_ENABLED=false"
+                  - "ATL_CONFLUENCE_DATA_CENTER=true"
+                  - "ATL_ENABLED_PRODUCTS=Confluence"
+                  - "ATL_ENABLED_SHARED_HOMES="
+                  - "ATL_HAZELCAST_NETWORK_AWS_TAG_KEY=Cluster"
+                  - "ATL_HAZELCAST_NETWORK_AWS_HOST_HEADER=ec2.amazonaws.com"
+                  - "ATL_RELEASE_S3_BUCKET=atlassian-software"
+                  - "ATL_RELEASE_S3_PATH=releases/confluence"
+                  - "ATL_SSL_SELF_CERT_ENABLED=false"
+                  - ""
+                  - !Sub ["ATL_PRODUCT_VERSION=${ConfluenceVersion}", {ConfluenceVersion: !Ref ConfluenceVersion}]
+                  - !Sub ["ATL_EFS_ID=${ElasticFileSystem}", {ElasticFileSystem: !Ref "ElasticFileSystem"}]
+                  - !If [DoSSL, "ATL_SSL_PROXY=true", !Ref "AWS::NoValue"]
+                  - !If [UseSynchronyAutoScalingGroup, !Sub ["ATL_SYNCHRONY_SERVICE_URL=${Protocol}://${LoadBalancerName}/synchrony/v1", {Protocol: !If [DoSSL, "https", "http"], LoadBalancerName: !If [UseCustomDnsName, !Ref CustomDnsName, !If [UseHostedZone, !Ref LoadBalancerCname, !If [UseCustomDnsName, !Ref CustomDnsName, !GetAtt LoadBalancer.DNSName]]]}], !Ref "AWS::NoValue"]
+                  - !Sub ["ATL_AWS_STACK_NAME=${StackName}", {StackName: !Ref "AWS::StackName"}]
+                  - !Sub ["ATL_AUTOLOGIN_COOKIE_AGE=${AutologinCookieAge}", {AutologinCookieAge: !Ref AutologinCookieAge}]
+                  - !Sub ["ATL_CATALINA_OPTS=\"${CatalinaOpts} ${MailOpts}\"", {CatalinaOpts: !Ref CatalinaOpts, MailOpts: !If [DisableMail, '-Datlassian.mail.senddisabled=true -Datlassian.mail.fetchdisabled=true -Datlassian.mail.popdisabled=true -Dconfluence.disable.mailpolling=true', '']}]
+                  - !Sub ["ATL_DB_ACQUIREINCREMENT=${DBAcquireIncrement}", {DBAcquireIncrement: !Ref DBAcquireIncrement}]
+                  - !Sub ["ATL_DB_ENGINE=${DBEngine}", {DBEngine: !If [DBEngineAurora, aurora_postgres, !If [DBEnginePostgres, rds_postgres, '']]}]
+                  - !Sub ["ATL_DB_HOST=${DBEndpointAddress}", {DBEndpointAddress: !GetAtt DB.Outputs.RDSEndPointAddress}]
+                  - !Sub ["ATL_DB_IDLETESTPERIOD=${DBIdleTestPeriod}", {DBIdleTestPeriod: !Ref DBIdleTestPeriod}]
+                  - !Sub ["ATL_DB_MAXSTATEMENTS=${DBMaxStatements}", {DBMaxStatements: !Ref DBMaxStatements}]
+                  - !Sub ["ATL_DB_ROOT_PASSWORD='${DBMasterUserPassword}'", {DBMasterUserPassword: !Ref DBMasterUserPassword}]
+                  - !Sub ["ATL_DB_POOLMAXSIZE=${DBPoolMaxSize}", {DBPoolMaxSize: !Ref DBPoolMaxSize}]
+                  - !Sub ["ATL_DB_POOLMINSIZE=${DBPoolMinSize}", {DBPoolMinSize: !Ref DBPoolMinSize}]
+                  - !Sub ["ATL_DB_PORT=${DBEndpointPort}", {DBEndpointPort: !GetAtt DB.Outputs.RDSEndPointPort}]
+                  - !Sub ["ATL_DB_PREFERREDTESTQUERY=\"${DBPreferredTestQuery}\"", {DBPreferredTestQuery: !Ref DBPreferredTestQuery}]
+                  - !Sub ["ATL_DB_TIMEOUT=${DBTimeout}", {DBTimeout: !Ref DBTimeout}]
+                  - !Sub ["ATL_DB_VALIDATE=${DBValidate}", {DBValidate: !Ref DBValidate}]
+                  - !Sub ["ATL_HAZELCAST_NETWORK_AWS_IAM_REGION=${HazelcastAWSRegion}", {HazelcastAWSRegion: !Ref "AWS::Region"}]
+                  - !Sub ["ATL_HAZELCAST_NETWORK_AWS_IAM_ROLE=${ConfluenceClusterNodeRole}", {ConfluenceClusterNodeRole: !Ref ConfluenceClusterNodeRole}]
+                  - !Sub ["ATL_HAZELCAST_NETWORK_AWS_TAG_VALUE=${HazelcastAWSTagValue}", {HazelcastAWSTagValue: !Ref "AWS::StackName"}]
+                  - !Sub ["ATL_HOSTEDZONE=${HostedZone}", {HostedZone: !Ref HostedZone}]
+                  - !Sub ["ATL_JDBC_PASSWORD='${DBPassword}'", {DBPassword: !Ref DBPassword}]
+                  - !Sub ["ATL_JVM_HEAP=${AtlJvmHeap}", {AtlJvmHeap: !If [OverrideHeap, !Ref 'JvmHeapOverride', !FindInMap [AWSInstanceType2Arch, !Ref ClusterNodeInstanceType, Jvmheap]]}]
+                  - !Sub ["ATL_PROXY_NAME=${AtlProxyName}", {AtlProxyName: !If [UseCustomDnsName, !Ref CustomDnsName, !If [UseHostedZone, !Ref LoadBalancerCname, !GetAtt LoadBalancer.DNSName]]}]
+                  - !Sub ["ATL_TOMCAT_ACCEPTCOUNT=${TomcatAcceptCount}", {TomcatAcceptCount: !Ref TomcatAcceptCount}]
+                  - !Sub ["ATL_TOMCAT_CONNECTIONTIMEOUT=${TomcatConnectionTimeout}", {TomcatConnectionTimeout: !Ref TomcatConnectionTimeout}]
+                  - !Sub ["ATL_TOMCAT_CONTEXTPATH=${TomcatContextPath}", {TomcatContextPath: !Ref TomcatContextPath}]
+                  - !Sub ["ATL_TOMCAT_DEFAULTCONNECTORPORT=${TomcatDefaultConnectorPort}", {TomcatDefaultConnectorPort: !Ref TomcatDefaultConnectorPort}]
+                  - !Sub ["ATL_TOMCAT_ENABLELOOKUPS=${TomcatEnableLookups}", {TomcatEnableLookups: !Ref TomcatEnableLookups}]
+                  - !Sub ["ATL_TOMCAT_MAXTHREADS=${TomcatMaxThreads}", {TomcatMaxThreads: !Ref TomcatMaxThreads}]
+                  - !Sub ["ATL_TOMCAT_MINSPARETHREADS=${TomcatMinSpareThreads}", {TomcatMinSpareThreads: !Ref TomcatMinSpareThreads}]
+                  - !Sub ["ATL_TOMCAT_PROTOCOL=${TomcatProtocol}", {TomcatProtocol: !Ref TomcatProtocol}]
+                  - !Sub ["ATL_TOMCAT_PROXYPORT=${TomcatProxyPort}", {TomcatProxyPort: !If [DoSSL, 443, 80]}]
+                  - !Sub ["ATL_TOMCAT_REDIRECTPORT=${TomcatRedirectPort}", {TomcatRedirectPort: !Ref TomcatRedirectPort}]
+                  - !Sub ["ATL_TOMCAT_SCHEME=${TomcatScheme}", {TomcatScheme: !If [DoSSL, https, http]}]
+                  - !Sub ["ATL_TOMCAT_SECURE=${TomcatSecure}", {TomcatSecure: !If [DoSSL, true, false]}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY=${DeployRepository}", {DeployRepository: !Ref "DeploymentAutomationRepository"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_BRANCH=${DeployRepositoryBranch}", {DeployRepositoryBranch: !Ref "DeploymentAutomationBranch"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_PLAYBOOK=${DeployRepositoryPlaybook}", {DeployRepositoryPlaybook: !Ref "DeploymentAutomationPlaybook"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_KEYNAME=${DeployRepositoryKeyName}", {DeployRepositoryKeyName: !Ref "DeploymentAutomationKeyName"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_CUSTOM_PARAMS='${DeployRepositoryCustomParams}'", {DeployRepositoryCustomParams: !Ref "DeploymentAutomationCustomParams"}]
+                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH=${EnableCW}", {EnableCW: !If [EnableCloudWatch, true, false]}]
+                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH_LOGS=${EnableCWLogs}", {EnableCWLogs: !If [EnableCloudWatchLogs, true, false]}]
             /opt/atlassian/bin/clone_deployment_repo:
               content: !Sub |
                 #!/bin/bash
@@ -1229,7 +1195,6 @@ Resources:
               mode: "000750"
               owner: root
               group: root
-
           commands:
             070_create_atl_dir:
               test: "test ! -d /opt/atlassian/"
@@ -1246,7 +1211,6 @@ Resources:
               command: !Sub |
                 cd /opt/atlassian/dc-deployments-automation/ && ./bin/install-ansible && ./bin/ansible-with-atl-env inv/aws_node_local ${DeploymentAutomationPlaybook} /var/log/ansible-bootstrap.log
               ignoreErrors: true
-
     Properties:
       AssociatePublicIpAddress: false
       BlockDeviceMappings:
@@ -1255,29 +1219,17 @@ Resources:
             VolumeSize: !Ref ClusterNodeVolumeSize
         - DeviceName: /dev/xvdf
           NoDevice: true
-      KeyName: !If [ KeyProvided, !Ref KeyPairName, !ImportValue ATL-DefaultKey ]
+      KeyName: !If [KeyProvided, !Ref KeyPairName, !ImportValue ATL-DefaultKey]
       IamInstanceProfile: !Ref ConfluenceClusterNodeInstanceProfile
-      ImageId:
-        !FindInMap
-          - AWSRegionArch2AMI
-          - !Ref AWS::Region
-          - !FindInMap
-              - AWSInstanceType2Arch
-              - !Ref ClusterNodeInstanceType
-              - Arch
+      ImageId: !FindInMap
+        - AWSRegionArch2AMI
+        - !Ref AWS::Region
+        - !FindInMap
+          - AWSInstanceType2Arch
+          - !Ref ClusterNodeInstanceType
+          - Arch
       InstanceType: !Ref ClusterNodeInstanceType
       SecurityGroups: [!Ref SecurityGroup]
-      UserData:
-        Fn::Base64:
-          !Join
-            - ""
-            -
-              - "#!/bin/bash -xe\n"
-              - "yum update -y aws-cfn-bootstrap\n"
-              - !Sub ["/opt/aws/bin/cfn-init -v --stack ${StackName}", StackName: !Ref "AWS::StackName"]
-              - !Sub [" --resource ClusterNodeLaunchConfig --region ${Region}\n", Region: !Ref "AWS::Region"]
-              - !Sub ["/opt/aws/bin/cfn-signal -e $? --stack ${StackName}", StackName: !Ref "AWS::StackName"]
-              - !Sub [" --resource ClusterNodeGroup --region ${Region}", Region: !Ref "AWS::Region"]
   ClusterNodeScaleUpPolicy:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
@@ -1322,7 +1274,7 @@ Resources:
         - Name: AutoScalingGroupName
           Value: !Ref ClusterNodeGroup
       ComparisonOperator: LessThanThreshold
-# Synchrony node config
+      # Synchrony node config
   SynchronyClusterNodeGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Condition: UseSynchronyAutoScalingGroup
@@ -1332,10 +1284,10 @@ Resources:
       MaxSize: !Ref SynchronyClusterNodeMax
       MinSize: !Ref SynchronyClusterNodeMin
       TargetGroupARNs: [!Ref SynchronyTargetGroup]
-      VPCZoneIdentifier: !Split [ ",", !ImportValue ATL-PriNets]
+      VPCZoneIdentifier: !Split [",", !ImportValue ATL-PriNets]
       Tags:
         - Key: Name
-          Value: !Sub ["${StackName} Synchrony Node", StackName: !Ref 'AWS::StackName']
+          Value: !Sub ["${StackName} Synchrony Node", {StackName: !Ref 'AWS::StackName'}]
           PropagateAtLaunch: true
         - Key: synchrony_service
           Value: !Ref AWS::StackName
@@ -1352,58 +1304,53 @@ Resources:
     Metadata:
       AWS::CloudFormation::Init:
         config:
-
           files:
             /etc/atl:
               mode: "000640"
               owner: root
               group: root
-              content:
-                !Join
-                  - "\n"
-                  -
-                    - "ATL_APP_DATA_MOUNT_ENABLED=false"
-                    - "ATL_CONFLUENCE_DATA_CENTER=true"
-                    - "ATL_JDBC_DB_NAME=confluence"
-                    - "ATL_ENABLED_PRODUCTS=Synchrony"
-                    - "ATL_ENABLED_SHARED_HOMES="
-                    - "ATL_HAZELCAST_NETWORK_AWS_TAG_KEY=synchrony_service"
-                    - "ATL_JDBC_DRIVER=org.postgresql.Driver"
-                    - "ATL_JDBC_USER=atlconfluence"
-                    - "ATL_NGINX_ENABLED=false"
-                    - "ATL_POSTGRES_ENABLED=false"
-                    - "ATL_RELEASE_S3_BUCKET=atlassian-software"
-                    - "ATL_RELEASE_S3_PATH=releases/confluence"
-                    - "ATL_SSL_SELF_CERT_ENABLED=false"
-                    - "ATL_SYNCHRONY_STACK_SPACE=-Xss2048k"
-                    - "ATL_SYNCHRONY_WAITING_CONFIG_TIME=20"
-                    - !Sub ["ATL_EFS_ID=${ElasticFileSystem}", ElasticFileSystem: !Ref "ElasticFileSystem"]
-                    - !Sub ["ATL_PRODUCT_VERSION=${ConfluenceVersion}", ConfluenceVersion: !Ref ConfluenceVersion]
-                    - !If [DoSSL, "ATL_SSL_PROXY=true", !Ref "AWS::NoValue"]
-                    - !Sub ["ATL_AWS_STACK_NAME=${StackName}", StackName: !Ref "AWS::StackName"]
-                    - !Sub ["ATL_CATALINA_OPTS=\"${CatalinaOpts} ${MailOpts}\"", { CatalinaOpts: !Ref CatalinaOpts, MailOpts: !If [DisableMail, '-Datlassian.mail.senddisabled=true -Datlassian.mail.fetchdisabled=true -Datlassian.mail.popdisabled=true -Dconfluence.disable.mailpolling=true', ''] }]
-                    - !Sub ["ATL_DB_ENGINE=${DBEngine}", DBEngine: !If [DBEngineAurora, aurora_postgres, !If [DBEnginePostgres, rds_postgres, '']]]
-                    - !Sub ["ATL_DB_HOST=${DBEndpointAddress}", DBEndpointAddress: !GetAtt DB.Outputs.RDSEndPointAddress]
-                    - !Sub ["ATL_DB_PORT=${DBEndpointPort}", DBEndpointPort: !GetAtt DB.Outputs.RDSEndPointPort]
-                    - !Sub ["ATL_DB_PASSWORD='${DBMasterUserPassword}'", DBMasterUserPassword: !Ref DBMasterUserPassword]
-                    - !Sub ["ATL_HAZELCAST_NETWORK_AWS_IAM_REGION=${HazelcastAWSRegion}", HazelcastAWSRegion: !Ref "AWS::Region"]
-                    - !Sub ["ATL_HAZELCAST_NETWORK_AWS_IAM_ROLE=${ConfluenceClusterNodeRole}", ConfluenceClusterNodeRole: !Ref ConfluenceClusterNodeRole]
-                    - !Sub ["ATL_HAZELCAST_NETWORK_AWS_TAG_VALUE=${HazelcastAWSTagValue}", HazelcastAWSTagValue: !Ref "AWS::StackName"]
-                    - !Sub ["ATL_HOSTEDZONE=${HostedZone}", HostedZone: !Ref HostedZone]
-                    - !Sub ["ATL_JDBC_PASSWORD='${DBPassword}'", DBPassword: !Ref DBPassword]
-                    - !Sub ["ATL_JVM_HEAP=${AtlJvmHeap}", AtlJvmHeap: !If [OverrideHeap, !Ref 'JvmHeapOverride', !FindInMap [AWSInstanceType2Arch, !Ref ClusterNodeInstanceType, Jvmheap]]]
-                    - !Sub ["ATL_PROXY_NAME=${AtlProxyName}", AtlProxyName: !If [UseCustomDnsName, !Ref CustomDnsName, !If [UseHostedZone, !Ref LoadBalancerCname, !GetAtt LoadBalancer.DNSName]]]
-                    - !Sub ["ATL_SYNCHRONY_MEMORY=-Xmx${AtlJvmHeapSynchrony}", AtlJvmHeapSynchrony: !If [OverrideHeapSynchrony, !Ref 'JvmHeapOverrideSynchrony', '2g']]
-                    - !Sub ["ATL_SYNCHRONY_SERVICE_URL=${Protocol}://${LoadBalancerName}/synchrony", {Protocol: !If [DoSSL, "https", "http"], LoadBalancerName: !If [UseCustomDnsName, !Ref CustomDnsName, !If [UseHostedZone, !Ref LoadBalancerCname, !If [UseCustomDnsName, !Ref CustomDnsName, !GetAtt LoadBalancer.DNSName]]]}]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY=${DeployRepository}", DeployRepository: !Ref "DeploymentAutomationRepository"]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_BRANCH=${DeployRepositoryBranch}", DeployRepositoryBranch: !Ref "DeploymentAutomationBranch"]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_PLAYBOOK=${DeployRepositoryPlaybook}", DeployRepositoryPlaybook: !Ref "DeploymentAutomationPlaybook"]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_KEYNAME=${DeployRepositoryKeyName}", DeployRepositoryKeyName: !Ref "DeploymentAutomationKeyName"]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_CUSTOM_PARAMS='${DeployRepositoryCustomParams}'", DeployRepositoryCustomParams: !Ref "DeploymentAutomationCustomParams"]
-
-                    - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH=${EnableCW}", EnableCW: !If [EnableCloudWatch, true, false]]
-                    - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH_LOGS=${EnableCWLogs}", EnableCWLogs: !If [EnableCloudWatchLogs, true, false]]
-
+              content: !Join
+                - "\n"
+                - - "ATL_APP_DATA_MOUNT_ENABLED=false"
+                  - "ATL_CONFLUENCE_DATA_CENTER=true"
+                  - "ATL_JDBC_DB_NAME=confluence"
+                  - "ATL_ENABLED_PRODUCTS=Synchrony"
+                  - "ATL_ENABLED_SHARED_HOMES="
+                  - "ATL_HAZELCAST_NETWORK_AWS_TAG_KEY=synchrony_service"
+                  - "ATL_JDBC_DRIVER=org.postgresql.Driver"
+                  - "ATL_JDBC_USER=atlconfluence"
+                  - "ATL_NGINX_ENABLED=false"
+                  - "ATL_POSTGRES_ENABLED=false"
+                  - "ATL_RELEASE_S3_BUCKET=atlassian-software"
+                  - "ATL_RELEASE_S3_PATH=releases/confluence"
+                  - "ATL_SSL_SELF_CERT_ENABLED=false"
+                  - "ATL_SYNCHRONY_STACK_SPACE=-Xss2048k"
+                  - "ATL_SYNCHRONY_WAITING_CONFIG_TIME=20"
+                  - !Sub ["ATL_EFS_ID=${ElasticFileSystem}", {ElasticFileSystem: !Ref "ElasticFileSystem"}]
+                  - !Sub ["ATL_PRODUCT_VERSION=${ConfluenceVersion}", {ConfluenceVersion: !Ref ConfluenceVersion}]
+                  - !If [DoSSL, "ATL_SSL_PROXY=true", !Ref "AWS::NoValue"]
+                  - !Sub ["ATL_AWS_STACK_NAME=${StackName}", {StackName: !Ref "AWS::StackName"}]
+                  - !Sub ["ATL_CATALINA_OPTS=\"${CatalinaOpts} ${MailOpts}\"", {CatalinaOpts: !Ref CatalinaOpts, MailOpts: !If [DisableMail, '-Datlassian.mail.senddisabled=true -Datlassian.mail.fetchdisabled=true -Datlassian.mail.popdisabled=true -Dconfluence.disable.mailpolling=true', '']}]
+                  - !Sub ["ATL_DB_ENGINE=${DBEngine}", {DBEngine: !If [DBEngineAurora, aurora_postgres, !If [DBEnginePostgres, rds_postgres, '']]}]
+                  - !Sub ["ATL_DB_HOST=${DBEndpointAddress}", {DBEndpointAddress: !GetAtt DB.Outputs.RDSEndPointAddress}]
+                  - !Sub ["ATL_DB_PORT=${DBEndpointPort}", {DBEndpointPort: !GetAtt DB.Outputs.RDSEndPointPort}]
+                  - !Sub ["ATL_DB_PASSWORD='${DBMasterUserPassword}'", {DBMasterUserPassword: !Ref DBMasterUserPassword}]
+                  - !Sub ["ATL_HAZELCAST_NETWORK_AWS_IAM_REGION=${HazelcastAWSRegion}", {HazelcastAWSRegion: !Ref "AWS::Region"}]
+                  - !Sub ["ATL_HAZELCAST_NETWORK_AWS_IAM_ROLE=${ConfluenceClusterNodeRole}", {ConfluenceClusterNodeRole: !Ref ConfluenceClusterNodeRole}]
+                  - !Sub ["ATL_HAZELCAST_NETWORK_AWS_TAG_VALUE=${HazelcastAWSTagValue}", {HazelcastAWSTagValue: !Ref "AWS::StackName"}]
+                  - !Sub ["ATL_HOSTEDZONE=${HostedZone}", {HostedZone: !Ref HostedZone}]
+                  - !Sub ["ATL_JDBC_PASSWORD='${DBPassword}'", {DBPassword: !Ref DBPassword}]
+                  - !Sub ["ATL_JVM_HEAP=${AtlJvmHeap}", {AtlJvmHeap: !If [OverrideHeap, !Ref 'JvmHeapOverride', !FindInMap [AWSInstanceType2Arch, !Ref ClusterNodeInstanceType, Jvmheap]]}]
+                  - !Sub ["ATL_PROXY_NAME=${AtlProxyName}", {AtlProxyName: !If [UseCustomDnsName, !Ref CustomDnsName, !If [UseHostedZone, !Ref LoadBalancerCname, !GetAtt LoadBalancer.DNSName]]}]
+                  - !Sub ["ATL_SYNCHRONY_MEMORY=-Xmx${AtlJvmHeapSynchrony}", {AtlJvmHeapSynchrony: !If [OverrideHeapSynchrony, !Ref 'JvmHeapOverrideSynchrony', '2g']}]
+                  - !Sub ["ATL_SYNCHRONY_SERVICE_URL=${Protocol}://${LoadBalancerName}/synchrony", {Protocol: !If [DoSSL, "https", "http"], LoadBalancerName: !If [UseCustomDnsName, !Ref CustomDnsName, !If [UseHostedZone, !Ref LoadBalancerCname, !If [UseCustomDnsName, !Ref CustomDnsName, !GetAtt LoadBalancer.DNSName]]]}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY=${DeployRepository}", {DeployRepository: !Ref "DeploymentAutomationRepository"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_BRANCH=${DeployRepositoryBranch}", {DeployRepositoryBranch: !Ref "DeploymentAutomationBranch"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_PLAYBOOK=${DeployRepositoryPlaybook}", {DeployRepositoryPlaybook: !Ref "DeploymentAutomationPlaybook"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_KEYNAME=${DeployRepositoryKeyName}", {DeployRepositoryKeyName: !Ref "DeploymentAutomationKeyName"}]
+                  - !Sub ["ATL_DEPLOYMENT_REPOSITORY_CUSTOM_PARAMS='${DeployRepositoryCustomParams}'", {DeployRepositoryCustomParams: !Ref "DeploymentAutomationCustomParams"}]
+                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH=${EnableCW}", {EnableCW: !If [EnableCloudWatch, true, false]}]
+                  - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH_LOGS=${EnableCWLogs}", {EnableCWLogs: !If [EnableCloudWatchLogs, true, false]}]
             /opt/atlassian/bin/clone_deployment_repo:
               content: !Sub |
                 #!/bin/bash
@@ -1426,7 +1373,6 @@ Resources:
               mode: "000750"
               owner: root
               group: root
-
           commands:
             070_create_atl_dir:
               test: "test ! -d /opt/atlassian/"
@@ -1440,38 +1386,24 @@ Resources:
               command: /opt/atlassian/bin/clone_deployment_repo
               ignoreErrors: true
             080_run_atl_init_node:
-              command:
-                cd /opt/atlassian/dc-deployments-automation/ && ./bin/install-ansible && ./bin/ansible-with-atl-env inv/aws_node_local aws_confluence_synchrony_node.yml /var/log/ansible-bootstrap.log
+              command: cd /opt/atlassian/dc-deployments-automation/ && ./bin/install-ansible && ./bin/ansible-with-atl-env inv/aws_node_local aws_confluence_synchrony_node.yml /var/log/ansible-bootstrap.log
               ignoreErrors: true
-
     Properties:
       AssociatePublicIpAddress: false
       BlockDeviceMappings:
         - DeviceName: /dev/xvdf
           NoDevice: true
-      KeyName: !If [ KeyProvided, !Ref KeyPairName, !ImportValue ATL-DefaultKey ]
+      KeyName: !If [KeyProvided, !Ref KeyPairName, !ImportValue ATL-DefaultKey]
       IamInstanceProfile: !Ref ConfluenceClusterNodeInstanceProfile
-      ImageId:
-        !FindInMap
-          - AWSRegionArch2AMI
-          - !Ref AWS::Region
-          - !FindInMap
-              - AWSInstanceType2Arch
-              - !Ref SynchronyNodeInstanceType
-              - Arch
+      ImageId: !FindInMap
+        - AWSRegionArch2AMI
+        - !Ref AWS::Region
+        - !FindInMap
+          - AWSInstanceType2Arch
+          - !Ref SynchronyNodeInstanceType
+          - Arch
       InstanceType: !Ref SynchronyNodeInstanceType
       SecurityGroups: [!Ref SecurityGroup]
-      UserData:
-        Fn::Base64:
-          !Join
-            - ""
-            -
-              - "#!/bin/bash -xe\n"
-              - "yum update -y aws-cfn-bootstrap\n"
-              - !Sub ["/opt/aws/bin/cfn-init -v --stack ${StackName}", StackName: !Ref "AWS::StackName"]
-              - !Sub [" --resource SynchronyClusterNodeLaunchConfig --region ${Region}\n", Region: !Ref "AWS::Region"]
-              - !Sub ["/opt/aws/bin/cfn-signal -e $? --stack ${StackName}", StackName: !Ref "AWS::StackName"]
-              - !Sub [" --resource SynchronyClusterNodeGroup --region ${Region}", Region: !Ref "AWS::Region"]
   SynchronyClusterNodeScaleUpPolicy:
     Type: "AWS::AutoScaling::ScalingPolicy"
     Condition: UseSynchronyAutoScalingGroup
@@ -1520,7 +1452,7 @@ Resources:
         - Name: AutoScalingGroupName
           Value: !Ref SynchronyClusterNodeGroup
       ComparisonOperator: LessThanThreshold
-# Elastic file system
+      # Elastic file system
   ElasticFileSystem:
     Type: AWS::EFS::FileSystem
     Properties:
@@ -1534,25 +1466,25 @@ Resources:
     Properties:
       FileSystemId: !Ref ElasticFileSystem
       SecurityGroups: [!Ref SecurityGroup]
-      SubnetId: !Select [0, !Split [ ",", !ImportValue ATL-PriNets]]
+      SubnetId: !Select [0, !Split [",", !ImportValue ATL-PriNets]]
   EFSMountAz2:
     Type: AWS::EFS::MountTarget
     Properties:
       FileSystemId: !Ref ElasticFileSystem
       SecurityGroups: [!Ref SecurityGroup]
-      SubnetId: !Select [1, !Split [ ",", !ImportValue ATL-PriNets]]
+      SubnetId: !Select [1, !Split [",", !ImportValue ATL-PriNets]]
   EFSCname:
     Type: AWS::Route53::RecordSet
     Condition: UseHostedZone
     Properties:
       HostedZoneName: !Ref HostedZone
       Comment: Route53 cname for the efs
-      Name: !If [ UseHostedZone, !Join ['.', [!Ref 'AWS::StackName', 'efs', !Ref 'HostedZone']], '']
+      Name: !If [UseHostedZone, !Join ['.', [!Ref 'AWS::StackName', 'efs', !Ref 'HostedZone']], '']
       Type: CNAME
       TTL: '900'
       ResourceRecords:
         - !Join ['.', [!Ref ElasticFileSystem, 'efs', !Ref 'AWS::Region', 'amazonaws.com.']]
-# Database
+        # Database
   DB:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -1584,7 +1516,7 @@ Resources:
       TTL: '900'
       ResourceRecords:
         - !GetAtt DB.Outputs.RDSEndPointAddress
-# Loadbalancer
+        # Loadbalancer
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -1593,10 +1525,10 @@ Resources:
           Value: '300'
       Scheme: !If [UsePublicIp, 'internet-facing', 'internal']
       SecurityGroups: [!Ref SecurityGroup]
-      Subnets: !Split [ ",", !ImportValue ATL-PubNets]
+      Subnets: !Split [",", !ImportValue ATL-PubNets]
       Tags:
         - Key: Name
-          Value: !Sub ["${StackName}-LoadBalancer", StackName: !Ref 'AWS::StackName']
+          Value: !Sub ["${StackName}-LoadBalancer", {StackName: !Ref 'AWS::StackName'}]
         - Key: Cluster
           Value: !Ref AWS::StackName
   LoadBalancerHTTPListener:
@@ -1751,7 +1683,7 @@ Resources:
       FromPort: -1
       ToPort: -1
       SourceSecurityGroupId: !Ref SecurityGroup
-# Optional: CloudWatch dashboard to be created when CloudWatch is enabled
+      # Optional: CloudWatch dashboard to be created when CloudWatch is enabled
   CloudWatchDashboard:
     DependsOn:
       - DB
@@ -1766,7 +1698,6 @@ Resources:
         ProductFamilyName: "confluence"
         AsgToMonitor: !Ref ClusterNodeGroup
         DatabaseIdentifier: !Sub ["${DBStackNamePrefix}-db", {DBStackNamePrefix: !Ref 'AWS::StackName'}]
-
 Outputs:
   ServiceURL:
     Description: The URL to access this Atlassian service
@@ -1798,9 +1729,7 @@ Outputs:
   SGname:
     Description: The name of the SecurityGroup
     Value: !Ref SecurityGroup
-    Export: {
-      Name: !Join ['', [!Ref 'AWS::StackName', '-SGname']]
-      }
+    Export: {Name: !Join ['', [!Ref 'AWS::StackName', '-SGname']]}
   DBEndpointAddress:
     Description: The Database Connection String
     Value: !GetAtt DB.Outputs.RDSEndPointAddress
@@ -1810,9 +1739,7 @@ Outputs:
       - UseHostedZone
       - !Ref EFSCname
       - !Ref ElasticFileSystem
-    Export: {
-      Name: !Join ['', [!Ref 'AWS::StackName', '-EFSCname']]
-      }
+    Export: {Name: !Join ['', [!Ref 'AWS::StackName', '-EFSCname']]}
   ConfluenceTargetGroupARN:
     Description: The name of the load balancer of Confluence cluster nodes
     Value: !Ref MainTargetGroup

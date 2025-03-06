@@ -2,38 +2,31 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: 'This template deploys an ECS cluster to the provided VPC and subnets using an Auto Scaling Group'
 Parameters:
   ECSClusterName:
-    Description: Name of existing ECS Cluster, leave blank to create a new cluster
-      and instances
+    Description: Name of existing ECS Cluster, leave blank to create a new cluster and instances
     Type: String
     Default: ''
   ALBArn:
-    Description: ARN of existing Application Load Balancer, leave blank to create
-      a new ALB
+    Description: ARN of existing Application Load Balancer, leave blank to create a new ALB
     Type: String
     Default: ''
   AWXTaskECRRepositoryName:
-    Description: Name of existing awx_task ECR Repository, leave blank to create a
-      new repository
+    Description: Name of existing awx_task ECR Repository, leave blank to create a new repository
     Type: String
     Default: ''
   AWXWebECRRepositoryName:
-    Description: Name of existing awx_web ECR Repository, leave blank to create a
-      new repository
+    Description: Name of existing awx_web ECR Repository, leave blank to create a new repository
     Type: String
     Default: ''
   AWXRabbitMQECRRepositoryName:
-    Description: Name of existing rabbitmq ECR Repository, leave blank to create a
-      new repository
+    Description: Name of existing rabbitmq ECR Repository, leave blank to create a new repository
     Type: String
     Default: ''
   AWXMemcachedECRRepositoryName:
-    Description: Name of existing memcached ECR Repository, leave blank to create
-      a new repository
+    Description: Name of existing memcached ECR Repository, leave blank to create a new repository
     Type: String
     Default: ''
   SidecarECRRepositoryName:
-    Description: Name of existing sidecar ECR Repository, leave blank to create
-      a new repository
+    Description: Name of existing sidecar ECR Repository, leave blank to create a new repository
     Type: String
     Default: ''
   DatabaseEndpoint:
@@ -41,48 +34,39 @@ Parameters:
     Type: String
     Default: ''
   InstanceType:
-    Description: Which instance type should we use to build the ECS cluster? Only
-      applicable if ECSClusterName is blank
+    Description: Which instance type should we use to build the ECS cluster? Only applicable if ECSClusterName is blank
     Type: String
     Default: t3.large
   ClusterSize:
-    Description: How many ECS hosts do you want to initially deploy? Only applicable
-      if ECSClusterName is blank
+    Description: How many ECS hosts do you want to initially deploy? Only applicable if ECSClusterName is blank
     Type: Number
     Default: 2
   RemoteAccessCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/x
-    Description: The CIDR IP range that is permitted to access AWX. We recommend that
-      you set this value to a trusted IP range. Only applicable if ALBArn is blank
+    Description: The CIDR IP range that is permitted to access AWX. We recommend that you set this value to a trusted IP range. Only applicable if ALBArn is blank
     Type: String
   ECSSubnets:
-    Description: Choose which subnets this ECS cluster should be deployed to. Only
-      applicable if ECSClusterName is blank
+    Description: Choose which subnets this ECS cluster should be deployed to. Only applicable if ECSClusterName is blank
     Type: List<AWS::EC2::Subnet::Id>
   ALBSubnets:
-    Description: Choose which subnets the Application Load Balancer should be deployed
-      to. Only applicable if ALBArn is blank
+    Description: Choose which subnets the Application Load Balancer should be deployed to. Only applicable if ALBArn is blank
     Type: List<AWS::EC2::Subnet::Id>
   RDSSubnets:
-    Description: Choose which subnets the RDS Database should be deployed to. Only
-      applicable if DatabaseEndpoint is blank
+    Description: Choose which subnets the RDS Database should be deployed to. Only applicable if DatabaseEndpoint is blank
     Type: List<AWS::EC2::Subnet::Id>
   VPC:
-    Description: Choose which VPC this ECS cluster should be deployed to. Only applicable
-      if ECSClusterName is blank
+    Description: Choose which VPC this ECS cluster should be deployed to. Only applicable if ECSClusterName is blank
     Type: AWS::EC2::VPC::Id
   KeyPairName:
     Description: SSH KeyPair name
     Type: String
     Default: ''
   RDSAccessCidr:
-    Description: CIDR block to allow to connect to database. Only applicable if DatabaseEndpoint
-      is blank
+    Description: CIDR block to allow to connect to database. Only applicable if DatabaseEndpoint is blank
     Type: String
   AllocatedStorageAndIops:
-    Description: Storage/IOPS to allocate. Only applicable if DatabaseEndpoint is
-      blank
+    Description: Storage/IOPS to allocate. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: 100 GB / 1,000 IOPS
     AllowedValues:
@@ -96,43 +80,34 @@ Parameters:
       - 4,000 GB / 40,000 IOPS
       - 6,000 GB / 60,000 IOPS
   AllowMajorVersionUpgrade:
-    Description: If you update the EngineVersion property to a version that's different
-      from the DB instance's current major version, set this property to true. Only
-      applicable if DatabaseEndpoint is blank
+    Description: If you update the EngineVersion property to a version that's different from the DB instance's current major version, set this property to true. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: 'false'
     AllowedValues:
       - 'true'
       - 'false'
   AutoMinorVersionUpgrade:
-    Description: Indicates that minor engine upgrades are applied automatically to
-      the DB instance during the maintenance window. Only applicable if DatabaseEndpoint
-      is blank
+    Description: Indicates that minor engine upgrades are applied automatically to the DB instance during the maintenance window. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: 'true'
     AllowedValues:
       - 'true'
       - 'false'
   BackupRetentionPeriod:
-    Description: The number of days during which automatic DB snapshots are retained.
-      Setting 0 disables automatic snapshots, maximum value is 35. Only applicable
-      if DatabaseEndpoint is blank
+    Description: The number of days during which automatic DB snapshots are retained. Setting 0 disables automatic snapshots, maximum value is 35. Only applicable if DatabaseEndpoint is blank
     Type: Number
     Default: '35'
     MinValue: '0'
     MaxValue: '35'
   CopyTagsToSnapshot:
-    Description: Indicates whether to copy all of the user-defined tags from the DB
-      instance to snapshots of the DB instance. Only applicable if DatabaseEndpoint
-      is blank
+    Description: Indicates whether to copy all of the user-defined tags from the DB instance to snapshots of the DB instance. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: 'true'
     AllowedValues:
       - 'true'
       - 'false'
   DBInstanceClass:
-    Description: The compute and memory capacity of the DB instance. Only applicable
-      if DatabaseEndpoint is blank
+    Description: The compute and memory capacity of the DB instance. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: db.t3.medium
     AllowedValues:
@@ -162,18 +137,15 @@ Parameters:
       - db.t3.medium
       - db.t3.large
   DBName:
-    Description: The name of the database to create when the DB instance is created.
-      Only applicable if DatabaseEndpoint is blank
+    Description: The name of the database to create when the DB instance is created. Only applicable if DatabaseEndpoint is blank
     Type: String
     MinLength: '1'
     MaxLength: '63'
     AllowedPattern: ^(?!^postgres$)[a-zA-Z_][a-zA-Z0-9_]*$
-    ConstraintDescription: must contain from 1 to 63 alphanumeric characters, and
-      not be reserved postgres term. Only applicable if DatabaseEndpoint is blank
+    ConstraintDescription: must contain from 1 to 63 alphanumeric characters, and not be reserved postgres term. Only applicable if DatabaseEndpoint is blank
     Default: awx
   EngineVersion:
-    Description: The version number of the database engine to use. Only applicable
-      if DatabaseEndpoint is blank
+    Description: The version number of the database engine to use. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: 9.6.14
     AllowedValues:
@@ -184,18 +156,14 @@ Parameters:
       - 9.6.13
       - 9.6.14
   MasterUserPassword:
-    Description: Master user database Password. Only applicable if DatabaseEndpoint
-      is blank
+    Description: Master user database Password. Only applicable if DatabaseEndpoint is blank
     Type: String
     NoEcho: 'true'
   MasterUsername:
-    Description: Master database Username. Only applicable if DatabaseEndpoint is
-      blank
+    Description: Master database Username. Only applicable if DatabaseEndpoint is blank
     Type: String
   MonitoringInterval:
-    Description: The interval, in seconds, between points when Enhanced Monitoring
-      metrics are collected for the DB instance. Only applicable if DatabaseEndpoint
-      is blank
+    Description: The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: '1'
     AllowedValues:
@@ -207,17 +175,14 @@ Parameters:
       - '30'
       - '60'
   MultiAZ:
-    Description: Specifies if the database instance is a multiple Availability Zone
-      deployment. Only applicable if DatabaseEndpoint is blank
+    Description: Specifies if the database instance is a multiple Availability Zone deployment. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: 'true'
     AllowedValues:
       - 'true'
       - 'false'
   NumberOfAvailabilityZones:
-    Description: Quantity of subnets to use, if selecting more than 2 the region this
-      stack is in must have at least that many Availability Zones. Only applicable
-      if DatabaseEndpoint is blank
+    Description: Quantity of subnets to use, if selecting more than 2 the region this stack is in must have at least that many Availability Zones. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: '2'
     AllowedValues:
@@ -232,8 +197,7 @@ Parameters:
     MinValue: '1150'
     MaxValue: '65535'
   PostgresServerTimezone:
-    Description: The default timezone for the database engine to use. Only applicable
-      if DatabaseEndpoint is blank
+    Description: The default timezone for the database engine to use. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: UTC
     AllowedValues:
@@ -322,9 +286,7 @@ Parameters:
       - US/Pacific
       - UTC
   PreferredBackupWindow:
-    Description: The daily time range in UTC during which automated backups are created
-      (if automated backups are enabled). Cannot overlap with PreferredMaintenanceWindowTime.
-      Only applicable if DatabaseEndpoint is blank
+    Description: The daily time range in UTC during which automated backups are created (if automated backups are enabled). Cannot overlap with PreferredMaintenanceWindowTime. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: 00:00-02:00
     AllowedValues:
@@ -352,8 +314,7 @@ Parameters:
       - 21:00-23:00
       - 22:00-24:00
   PreferredMaintenanceWindowDay:
-    Description: The day of the week which RDS maintenance will be performed. Only
-      applicable if DatabaseEndpoint is blank
+    Description: The day of the week which RDS maintenance will be performed. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: Mon
     AllowedValues:
@@ -365,9 +326,7 @@ Parameters:
       - Sat
       - Sun
   PreferredMaintenanceWindowEndTime:
-    Description: The weekly end time in UTC for the RDS maintenance window, must be
-      more than PreferredMaintenanceWindowEndTime and cannot overlap with PreferredBackupWindow.
-      Only applicable if DatabaseEndpoint is blank
+    Description: The weekly end time in UTC for the RDS maintenance window, must be more than PreferredMaintenanceWindowEndTime and cannot overlap with PreferredBackupWindow. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: 06:00
     AllowedValues:
@@ -395,9 +354,7 @@ Parameters:
       - '21:00'
       - '22:00'
   PreferredMaintenanceWindowStartTime:
-    Description: The weekly start time in UTC for the RDS maintenance window, must
-      be less than PreferredMaintenanceWindowEndTime and cannot overlap with PreferredBackupWindow.
-      Only applicable if DatabaseEndpoint is blank
+    Description: The weekly start time in UTC for the RDS maintenance window, must be less than PreferredMaintenanceWindowEndTime and cannot overlap with PreferredBackupWindow. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: 04:00
     AllowedValues:
@@ -425,24 +382,21 @@ Parameters:
       - '21:00'
       - '22:00'
   PubliclyAccessible:
-    Description: Indicates whether the DB instance is an Internet-facing instance.
-      Only applicable if DatabaseEndpoint is blank
+    Description: Indicates whether the DB instance is an Internet-facing instance. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: 'false'
     AllowedValues:
       - 'true'
       - 'false'
   StorageEncrypted:
-    Description: Indicates whether the DB instance is encrypted. Only applicable if
-      DatabaseEndpoint is blank
+    Description: Indicates whether the DB instance is encrypted. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: 'true'
     AllowedValues:
       - 'true'
       - 'false'
   StorageType:
-    Description: Specifies the storage type to be associated with the DB instance.
-      Only applicable if DatabaseEndpoint is blank
+    Description: Specifies the storage type to be associated with the DB instance. Only applicable if DatabaseEndpoint is blank
     Type: String
     Default: io1
     AllowedValues:
@@ -513,15 +467,9 @@ Conditions:
   CreateAWXRabbitMQECRRepository: !Equals [!Ref 'AWXRabbitMQECRRepositoryName', '']
   CreateAWXMemcachedECRRepository: !Equals [!Ref 'AWXMemcachedECRRepositoryName', '']
   CreateSidecarECRRepository: !Equals [!Ref 'SidecarECRRepositoryName', '']
-  CreateDummy: !And [!Not [!Equals [!Ref 'ECSClusterName', '']], !Not [!Equals [!Ref 'ALBArn',
-        '']], !Not [!Equals [!Ref 'DatabaseEndpoint', '']], !Not [!Equals [!Ref 'AWXWebECRRepositoryName',
-        '']], !Not [!Equals [!Ref 'AWXTaskECRRepositoryName', '']], !Not [!Equals [
-        !Ref 'AWXRabbitMQECRRepositoryName', '']], !Not [!Equals [AWXMemcachedECRRepository,
-        '']]]
-  3az: !Or [!Equals [!Ref 'NumberOfAvailabilityZones', '3'], !Equals [!Ref 'NumberOfAvailabilityZones',
-      '4'], !Equals [!Ref 'NumberOfAvailabilityZones', '5']]
-  4az: !Or [!Equals [!Ref 'NumberOfAvailabilityZones', '4'], !Equals [!Ref 'NumberOfAvailabilityZones',
-      '5']]
+  CreateDummy: !And [!Not [!Equals [!Ref 'ECSClusterName', '']], !Not [!Equals [!Ref 'ALBArn', '']], !Not [!Equals [!Ref 'DatabaseEndpoint', '']], !Not [!Equals [!Ref 'AWXWebECRRepositoryName', '']], !Not [!Equals [!Ref 'AWXTaskECRRepositoryName', '']], !Not [!Equals [!Ref 'AWXRabbitMQECRRepositoryName', '']], !Not [!Equals [AWXMemcachedECRRepository, '']]]
+  3az: !Or [!Equals [!Ref 'NumberOfAvailabilityZones', '3'], !Equals [!Ref 'NumberOfAvailabilityZones', '4'], !Equals [!Ref 'NumberOfAvailabilityZones', '5']]
+  4az: !Or [!Equals [!Ref 'NumberOfAvailabilityZones', '4'], !Equals [!Ref 'NumberOfAvailabilityZones', '5']]
   5az: !Equals [!Ref 'NumberOfAvailabilityZones', '5']
   100GB: !Equals [!Ref 'AllocatedStorageAndIops', '100 GB / 1,000 IOPS']
   300GB: !Equals [!Ref 'AllocatedStorageAndIops', '300 GB / 3,000 IOPS']
@@ -581,18 +529,6 @@ Resources:
       SecurityGroups:
         - !GetAtt 'ClusterSecurityGroup.GroupId'
       IamInstanceProfile: !Ref 'ECSInstanceProfile'
-      UserData: !Base64
-        Fn::Sub: '#!/bin/bash
-
-          yum install -y aws-cfn-bootstrap
-
-          /opt/aws/bin/cfn-init -v --region ${AWS::Region} --stack ${AWS::StackName}
-          --resource ECSLaunchConfiguration
-
-          /opt/aws/bin/cfn-signal -e $? --region ${AWS::Region} --stack ${AWS::StackName}
-          --resource ECSAutoScalingGroup
-
-          '
     Metadata:
       AWS::CloudFormation::Init:
         config:
@@ -610,7 +546,7 @@ Resources:
 
                 region=${AWS::Region}
 
-                '
+'
             /etc/cfn/hooks.d/cfn-auto-reloader.conf:
               content: !Sub ['[cfn-auto-reloader-hook]
 
@@ -618,8 +554,7 @@ Resources:
 
                   path=Resources.ECSLaunchConfiguration.Metadata.AWS::CloudFormation::Init
 
-                  ${Param1}', {Param1: !Sub 'action=/opt/aws/bin/cfn-init -v --region
-                    ${AWS::Region} --stack ${AWS::StackName} --resource ECSLaunchConfiguration'}]
+                  ${Param1}', {Param1: !Sub 'action=/opt/aws/bin/cfn-init -v --region ${AWS::Region} --stack ${AWS::StackName} --resource ECSLaunchConfiguration'}]
           services:
             sysvinit:
               cfn-hup:
@@ -703,9 +638,7 @@ Resources:
     Type: AWS::RDS::DBInstance
     DeletionPolicy: Snapshot
     Properties:
-      AllocatedStorage: !If [100GB, '100', !If [300GB, '300', !If [600GB, '600', !If [
-              1000GB, '1000', !If [1500GB, '1500', !If [2000GB, '2000', !If [3000GB,
-                    '3000', !If [4000GB, '4000', '6000']]]]]]]]
+      AllocatedStorage: !If [100GB, '100', !If [300GB, '300', !If [600GB, '600', !If [1000GB, '1000', !If [1500GB, '1500', !If [2000GB, '2000', !If [3000GB, '3000', !If [4000GB, '4000', '6000']]]]]]]]
       AllowMajorVersionUpgrade: !Ref 'AllowMajorVersionUpgrade'
       AutoMinorVersionUpgrade: !Ref 'AutoMinorVersionUpgrade'
       BackupRetentionPeriod: !Ref 'BackupRetentionPeriod'
@@ -716,9 +649,7 @@ Resources:
       DBSubnetGroupName: !Ref 'DBSubnetGroup'
       Engine: postgres
       EngineVersion: !Ref 'EngineVersion'
-      Iops: !If [100GB, 1000, !If [300GB, 3000, !If [600GB, 6000, !If [1000GB,
-              10000, !If [1500GB, 15000, !If [2000GB, 20000, !If [3000GB, 30000,
-                    !If [4000GB, 40000, 60000]]]]]]]]
+      Iops: !If [100GB, 1000, !If [300GB, 3000, !If [600GB, 6000, !If [1000GB, 10000, !If [1500GB, 15000, !If [2000GB, 20000, !If [3000GB, 30000, !If [4000GB, 40000, 60000]]]]]]]]
       KmsKeyId: !GetAtt 'KMSKey.Arn'
       LicenseModel: postgresql-license
       MasterUsername: !Ref 'MasterUsername'
@@ -810,8 +741,7 @@ Resources:
     Condition: CreateRDS
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: !Sub 'Allow Client connections to Application: AWX Database:
-        ${DBName}'
+      GroupDescription: !Sub 'Allow Client connections to Application: AWX Database: ${DBName}'
       VpcId: !Ref 'VPC'
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -836,8 +766,7 @@ Outputs:
     Value: !If [CreateAWXRabbitMQECRRepository, !Ref 'AWXRabbitMQECRRepository', !Ref 'AWXRabbitMQECRRepositoryName']
   MemcachedRegistry:
     Description: A reference to the memcached ECR repository
-    Value: !If [CreateAWXMemcachedECRRepository, !Ref 'AWXMemcachedECRRepository',
-      !Ref 'AWXMemcachedECRRepositoryName']
+    Value: !If [CreateAWXMemcachedECRRepository, !Ref 'AWXMemcachedECRRepository', !Ref 'AWXMemcachedECRRepositoryName']
   AWXWebRegistry:
     Description: A reference to the awx_web ECR repository
     Value: !If [CreateAWXWebECRRepository, !Ref 'AWXWebECRRepository', !Ref 'AWXWebECRRepositoryName']
