@@ -40,6 +40,7 @@ setup(
         "cfn-lint>=0.87.1",
         "pyspellchecker>=0.6.2,<1.0.0",
         "policyuniverse>=1.3.5,<2",
+        "six>=1.16.0,<2",
     ],
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     license="Apache License 2.0",
