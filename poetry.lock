@@ -870,7 +870,7 @@ version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
 category = "main"
 optional = false
-python-versions = ">=3.3",
+python-versions = ">=3.3"
 files = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
@@ -978,4 +978,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.13,<4"
-content-hash = "7c7bd543acad6b4b631369acf83d8679edb09712f342e64c8cbbcf970d71abd7"
+content-hash = "92ddc8581ecf562cbdc8edd5f88735ccc92b22560bf6392bc9cbcd66afb9d6ab"
